@@ -183,7 +183,8 @@
         cursor: default;
     }
 
-    #nev {
+    #nev,
+    #csoport {
         width: 100%;
         padding: 12px;
         font-size: 16px;
@@ -192,9 +193,20 @@
         outline: none;
     }
 
-    #nev:focus {
+    #nev:focus,
+    #csoport:focus {
         border-color: #2563eb;
     }
+
+
+    #teszt-lap, #visszajelzes-lap { }
+    .lap-cim { text-align: center; color: #2563eb; margin: 30px 0 15px; }
+    .feedback-item { margin: 20px 0; padding: 18px; border: 1px solid #fecaca; border-left: 6px solid #dc2626; border-radius: 12px; background: #fffafa; }
+    .feedback-item h3 { margin-top: 0; line-height: 1.5; }
+    .feedback-item p { margin: 6px 0; }
+    .sajat { padding: 10px 12px; border-radius: 8px; background: #fee2e2; color: #991b1b; margin: 10px 0 6px; }
+    .helyes { padding: 10px 12px; border-radius: 8px; background: #dcfce7; color: #166534; margin: 6px 0; }
+    .minden-jo { padding: 20px; text-align: center; font-size: 20px; background: #ecfdf5; border: 2px solid #22c55e; border-radius: 12px; }
 
 </style>
 
@@ -211,6 +223,8 @@
     <!-- =================================================
          BEVEZETŐ
     ================================================== -->
+
+    <div id="teszt-lap">
 
     <div class="intro">
 
@@ -241,6 +255,9 @@
                 required
             >
             <div id="nev-hiba" class="warning"></div>
+            <label for="csoport" style="margin:15px 0 8px 0;"><strong>Osztály / csoport:</strong></label>
+            <input type="text" id="csoport" name="csoport" placeholder="pl. 10.B vagy Python csoport" autocomplete="off" required>
+            <div id="csoport-hiba" class="warning"></div>
         </div>
 
     <!-- =================================================
@@ -970,13 +987,17 @@ banán
          EREDMÉNY GOMB
     ================================================== -->
 
-    <button onclick="ertekeles()">
+    <button id="ertekelesGomb" onclick="ertekeles()">
         Eredmény megtekintése
     </button>
+
+    </div> <!-- /teszt-lap -->
 
     <!-- =================================================
          EREDMÉNY
     ================================================== -->
+
+    <div id="visszajelzes-lap" style="display:none">
 
     <div id="eredmeny">
 
@@ -1007,6 +1028,12 @@ banán
 
     </div>
 
+
+    <h2 class="lap-cim">📋 Visszajelzés: mit érdemes átnézni?</h2>
+    <div id="visszajelzes"></div>
+
+    </div> <!-- /visszajelzes-lap -->
+
 </div>
 
 <!-- =====================================================
@@ -1017,211 +1044,169 @@ banán
 
     /*
      * GOOGLE TÁBLÁZAT BEÁLLÍTÁSA
-     * 1. Hozz létre egy Google Táblázatot.
-     * 2. Bővítmények → Apps Script.
-     * 3. A mellékelt Code.gs tartalmát illeszd be.
-     * 4. Telepítsd Webalkalmazásként.
-     * 5. A kapott /exec URL-t másold ide.
+     * A Code.gs (app_script_kodja.gs) tartalmát illeszd be az Apps Scriptbe,
+     * majd Telepítés → Telepítések kezelése → Szerkesztés → Új verzió.
+     * Az /exec URL ugyanaz marad.
      */
     const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbySUheQjZRnNMt0xwIBfdJgZZSNx63psaGgv1nMPSQ-URWAjxIXiGF9w1Go22ifLsk/exec";
+    const OSSZES = 21;
+    let elkuldve = false;
 
-    function eredmenyMenteseGoogleSheets(nev, pont, osszes, szazalek, megvalaszolatlan) {
+    function szoveg(el) {
+        return el.textContent.replace(/\s+/g, " ").trim();
+    }
+
+    function eredmenyMenteseGoogleSheets(adat) {
         if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL.includes("IDE_MÁSOLANDÓ")) {
             console.warn("A Google Sheets URL még nincs beállítva.");
             return;
         }
-
-        const adat = {
-            nev: nev,
-            pont: pont,
-            osszes: osszes,
-            szazalek: szazalek,
-            megvalaszolatlan: megvalaszolatlan,
-            datum: new Date().toISOString()
-        };
-
-        // no-cors módban a böngésző nem engedi a válasz tartalmának olvasását,
-        // de az adat POST-tal eljut a Google Apps Script webapphoz.
+        // no-cors módban a válasz nem olvasható, de az adat eljut az Apps Scripthez.
         fetch(GOOGLE_SHEETS_URL, {
             method: "POST",
             mode: "no-cors",
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8"
-            },
+            keepalive: true,
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(adat)
-        }).catch(function(hiba) {
+        }).catch(function (hiba) {
             console.error("Nem sikerült az eredményt elküldeni:", hiba);
+        });
+    }
+
+    function visszajelzesEpitese(hibak) {
+        const doboz = document.getElementById("visszajelzes");
+        doboz.innerHTML = "";
+
+        if (hibak.length === 0) {
+            const jo = document.createElement("div");
+            jo.className = "minden-jo";
+            jo.textContent = "🎉 Minden válaszod helyes volt, nincs mit javítani!";
+            doboz.appendChild(jo);
+            return;
+        }
+
+        hibak.forEach(function (h) {
+            const elem = document.createElement("div");
+            elem.className = "feedback-item";
+
+            // kérdés szövege és a hozzá tartozó kód/magyarázó rész
+            Array.from(h.kerdes.children).forEach(function (gyerek) {
+                if (["H3", "PRE", "P"].includes(gyerek.tagName)) {
+                    elem.appendChild(gyerek.cloneNode(true));
+                }
+            });
+
+            const sajat = document.createElement("div");
+            sajat.className = "sajat";
+            sajat.textContent = h.sajat === null
+                ? "❌ Nem válaszoltál erre a kérdésre."
+                : "❌ A te válaszod: " + h.sajat;
+            elem.appendChild(sajat);
+
+            const helyes = document.createElement("div");
+            helyes.className = "helyes";
+            helyes.textContent = "✅ Helyes válasz: " + h.helyes;
+            elem.appendChild(helyes);
+
+            doboz.appendChild(elem);
         });
     }
 
     function ertekeles() {
 
-        /* ---------------------------------------------
-           NÉV ELLENŐRZÉSE
-        --------------------------------------------- */
+        if (elkuldve) return;
 
+        /* NÉV ÉS CSOPORT ELLENŐRZÉSE */
         const nevMezo = document.getElementById("nev");
-        const nevHiba = document.getElementById("nev-hiba");
+        const csoportMezo = document.getElementById("csoport");
         const nev = nevMezo.value.trim();
+        const csoport = csoportMezo.value.trim();
+
+        document.getElementById("nev-hiba").textContent = "";
+        document.getElementById("csoport-hiba").textContent = "";
 
         if (!nev) {
-            nevHiba.innerHTML = "⚠️ Kérlek, add meg a neved!";
+            document.getElementById("nev-hiba").textContent = "⚠️ Kérlek, add meg a neved!";
             nevMezo.focus();
             return;
         }
+        if (!csoport) {
+            document.getElementById("csoport-hiba").textContent = "⚠️ Kérlek, add meg az osztályod vagy csoportod azonosítóját!";
+            csoportMezo.focus();
+            return;
+        }
 
-        nevHiba.innerHTML = "";
-
-        /* ---------------------------------------------
-           ALAPADATOK
-        --------------------------------------------- */
-
+        /* VÁLASZOK ELLENŐRZÉSE – FELADATONKÉNTI PONTOK */
+        const osszes = OSSZES;
+        const pontok = [];
+        const hibak = [];
         let pont = 0;
-        let osszes = 21;
         let megvalaszolatlan = 0;
 
-        /* ---------------------------------------------
-           VÁLASZOK ELLENŐRZÉSE
-        --------------------------------------------- */
-
         for (let i = 1; i <= osszes; i++) {
-
-            let valasz = document.querySelector(
-                'input[name="q' + i + '"]:checked'
-            );
+            const valasz = document.querySelector('input[name="q' + i + '"]:checked');
+            const helyesInput = document.querySelector('input[name="q' + i + '"][value="1"]');
+            const kerdes = helyesInput.closest(".question");
+            let feladatPont = 0;
 
             if (valasz) {
-
-                pont += Number(valasz.value);
-
+                feladatPont = Number(valasz.value);
             } else {
-
                 megvalaszolatlan++;
-
             }
 
+            pontok.push(feladatPont);
+            pont += feladatPont;
+
+            if (feladatPont !== 1) {
+                hibak.push({
+                    kerdes: kerdes,
+                    sajat: valasz ? szoveg(valasz.closest("label")) : null,
+                    helyes: szoveg(helyesInput.closest("label"))
+                });
+            }
         }
 
-        /* ---------------------------------------------
-           SZÁZALÉK KISZÁMÍTÁSA
-        --------------------------------------------- */
+        const szazalek = Math.round((pont / osszes) * 100);
 
-        let szazalek = Math.round(
-            (pont / osszes) * 100
-        );
+        /* EREDMÉNY MEGJELENÍTÉSE */
+        document.getElementById("eredmenyNev").textContent = "👤 " + nev + " (" + csoport + ")";
+        document.getElementById("pontszam").textContent = pont + " / " + osszes + " pont";
+        document.getElementById("szazalek").textContent = szazalek + "%";
 
-        /* ---------------------------------------------
-           PONTSZÁM MEGJELENÍTÉSE
-        --------------------------------------------- */
+        let uzenet;
+        if (szazalek >= 90) uzenet = "🏆 Kiváló! Nagyon jól érted a program működését.";
+        else if (szazalek >= 75) uzenet = "😊 Nagyon jó! Csak néhány részletet érdemes átismételni.";
+        else if (szazalek >= 60) uzenet = "👍 Jó alapok! Egy kis gyakorlással még biztosabb lesz a tudásod.";
+        else if (szazalek >= 40) uzenet = "📚 Érdemes még egyszer átnézni a programot.";
+        else uzenet = "🔄 Javasolt újra átvenni az alapfogalmakat.";
+        document.getElementById("uzenet").textContent = uzenet;
 
-        document.getElementById("eredmenyNev").innerHTML =
-            "👤 " + nev;
+        document.getElementById("figyelmeztetes").textContent = megvalaszolatlan > 0
+            ? "⚠️ " + megvalaszolatlan + " kérdés nem lett megválaszolva."
+            : "✅ Minden kérdés meg lett válaszolva.";
 
-        document.getElementById("pontszam").innerHTML =
-            pont + " / " + osszes + " pont";
+        /* MENTÉS A GOOGLE TÁBLÁZATBA (csak egyszer) */
+        elkuldve = true;
+        document.getElementById("ertekelesGomb").disabled = true;
 
-        /* ---------------------------------------------
-           SZÁZALÉK MEGJELENÍTÉSE
-        --------------------------------------------- */
-
-        document.getElementById("szazalek").innerHTML =
-            szazalek + "%";
-
-        /* ---------------------------------------------
-           SZÖVEGES ÉRTÉKELÉS
-        --------------------------------------------- */
-
-        let uzenet = "";
-
-        if (szazalek >= 90) {
-
-            uzenet =
-                "🏆 Kiváló! Nagyon jól érted a program működését.";
-
-        }
-
-        else if (szazalek >= 75) {
-
-            uzenet =
-                "😊 Nagyon jó! Csak néhány részletet érdemes átismételni.";
-
-        }
-
-        else if (szazalek >= 60) {
-
-            uzenet =
-                "👍 Jó alapok! Egy kis gyakorlással még biztosabb lesz a tudásod.";
-
-        }
-
-        else if (szazalek >= 40) {
-
-            uzenet =
-                "📚 Érdemes még egyszer átnézni a programot.";
-
-        }
-
-        else {
-
-            uzenet =
-                "🔄 Javasolt újra átvenni az alapfogalmakat.";
-
-        }
-
-        document.getElementById("uzenet").innerHTML =
-            uzenet;
-
-        /* ---------------------------------------------
-           EREDMÉNY MENTÉSE GOOGLE TÁBLÁZATBA
-        --------------------------------------------- */
-
-        eredmenyMenteseGoogleSheets(
-            nev,
-            pont,
-            osszes,
-            szazalek,
-            megvalaszolatlan
-        );
-
-        /* ---------------------------------------------
-           MEGVÁLASZOLATLAN KÉRDÉSEK
-        --------------------------------------------- */
-
-        if (megvalaszolatlan > 0) {
-
-            document.getElementById("figyelmeztetes").innerHTML =
-                "⚠️ " +
-                megvalaszolatlan +
-                " kérdés nem lett megválaszolva.";
-
-        }
-
-        else {
-
-            document.getElementById("figyelmeztetes").innerHTML =
-                "✅ Minden kérdés meg lett válaszolva.";
-
-        }
-
-        /* ---------------------------------------------
-           EREDMÉNY MEGJELENÍTÉSE
-        --------------------------------------------- */
-
-        document.getElementById("eredmeny").style.display =
-            "block";
-
-        /* ---------------------------------------------
-           AUTOMATIKUS GÖRGETÉS
-        --------------------------------------------- */
-
-        window.scrollTo({
-
-            top: document.body.scrollHeight,
-
-            behavior: "smooth"
-
+        eredmenyMenteseGoogleSheets({
+            nev: nev,
+            csoport: csoport,
+            pont: pont,
+            osszes: osszes,
+            szazalek: szazalek,
+            megvalaszolatlan: megvalaszolatlan,
+            pontok: pontok,
+            datum: new Date().toISOString()
         });
 
+        /* ÁTVÁLTÁS A VISSZAJELZŐ LAPRA */
+        visszajelzesEpitese(hibak);
+        document.getElementById("teszt-lap").style.display = "none";
+        document.getElementById("visszajelzes-lap").style.display = "block";
+        document.getElementById("eredmeny").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
 </script>
