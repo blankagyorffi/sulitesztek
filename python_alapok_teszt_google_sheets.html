@@ -1056,6 +1056,9 @@ banán
         return el.textContent.replace(/\s+/g, " ").trim();
     }
 
+console.log("ELKÜLDÖTT PONTOK:", pontok);
+console.log("PONTOK SZÁMA:", pontok.length);
+	
     function eredmenyMenteseGoogleSheets(adat) {
         if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL.includes("IDE_MÁSOLANDÓ")) {
             console.warn("A Google Sheets URL még nincs beállítva.");
