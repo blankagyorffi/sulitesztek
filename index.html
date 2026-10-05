@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sulitesztek</title>
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #1f2933;
+      --muted: #6b7785;
+      --accent: #2563eb;
+      --border: #e1e6ec;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14181d;
+        --card: #1e242b;
+        --text: #e8ecf0;
+        --muted: #9aa5b1;
+        --accent: #6ea0ff;
+        --border: #2d353e;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    main { max-width: 640px; margin: 0 auto; }
+    h1 { margin: 0 0 .25rem; font-size: 1.8rem; }
+    p.sub { margin: 0 0 1.5rem; color: var(--muted); }
+    ul { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; }
+    a.card {
+      display: block;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      text-decoration: none;
+      transition: border-color .15s, transform .15s;
+    }
+    a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+    a.card strong { display: block; color: var(--accent); font-size: 1.1rem; }
+    a.card span { color: var(--muted); font-size: .95rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Sulitesztek</h1>
+    <p class="sub">Válassz egy tesztet:</p>
+
+    <ul>
+      <li>
+        <a class="card" href="python_alapok_teszt_google_sheets.html">
+          <strong>Python alapok teszt</strong>
+          <span>Google Sheets kapcsolattal</span>
+        </a>
+      </li>
+
+      <!-- ÚJ LINK HOZZÁADÁSA: másold ki az egész <li>...</li> blokkot,
+           illeszd be ide, és írd át a href-et, a címet és a leírást.
+
+      <li>
+        <a class="card" href="uj_oldal.html">
+          <strong>Új teszt címe</strong>
+          <span>Rövid leírás</span>
+        </a>
+      </li>
+      -->
+    </ul>
+  </main>
+</body>
+</html>
