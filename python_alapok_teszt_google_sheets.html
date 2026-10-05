@@ -1059,22 +1059,35 @@ banán
 console.log("ELKÜLDÖTT PONTOK:", pontok);
 console.log("PONTOK SZÁMA:", pontok.length);
 	
-    function eredmenyMenteseGoogleSheets(adat) {
-        if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL.includes("IDE_MÁSOLANDÓ")) {
-            console.warn("A Google Sheets URL még nincs beállítva.");
-            return;
-        }
-        // no-cors módban a válasz nem olvasható, de az adat eljut az Apps Scripthez.
-        fetch(GOOGLE_SHEETS_URL, {
-            method: "POST",
-            mode: "no-cors",
-            keepalive: true,
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify(adat)
-        }).catch(function (hiba) {
-            console.error("Nem sikerült az eredményt elküldeni:", hiba);
-        });
+function eredmenyMenteseGoogleSheets(adat) {
+
+    if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL.includes("IDE_MÁSOLANDÓ")) {
+        console.warn("A Google Sheets URL még nincs beállítva.");
+        return;
     }
+
+    // DIAGNOSZTIKA
+    console.log("KÜLDÖTT ADAT:", adat);
+    console.log("KÜLDÖTT JSON:", JSON.stringify(adat));
+    console.log("KÜLDÖTT PONTOK:", adat.pontok);
+    console.log("PONTOK SZÁMA:", Array.isArray(adat.pontok) ? adat.pontok.length : "NEM TÖMB");
+
+    fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        keepalive: true,
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(adat)
+    })
+    .then(function () {
+        console.log("Az eredmény elküldése megtörtént.");
+    })
+    .catch(function (hiba) {
+        console.error("Nem sikerült az eredményt elküldeni:", hiba);
+    });
+}
 
     function visszajelzesEpitese(hibak) {
         const doboz = document.getElementById("visszajelzes");
