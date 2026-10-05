@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emelt digitális kultúra – HTML szóbeli gyakorló</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px 20px 50px;
+        }
+
+        header {
+            background: #1e3a8a;
+            color: white;
+            padding: 30px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+        }
+
+        header h1 {
+            margin-top: 0;
+        }
+
+        .subtitle {
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: #cbd5e1;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: #22c55e;
+            transition: width 0.3s;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .question-number {
+            color: #64748b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .question {
+            font-size: 1.35rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .code {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: Consolas, monospace;
+            white-space: pre-wrap;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .answers {
+            display: grid;
+            gap: 12px;
+        }
+
+        .answer {
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 15px;
+            background: white;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .answer:hover:not(:disabled) {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .answer:disabled {
+            cursor: default;
+        }
+
+        .answer.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+        }
+
+        .answer.wrong {
+            background: #fee2e2;
+            border-color: #dc2626;
+            color: #991b1b;
+        }
+
+        .feedback {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .feedback.correct {
+            display: block;
+            background: #dcfce7;
+            border-left: 5px solid #16a34a;
+        }
+
+        .feedback.wrong {
+            display: block;
+            background: #fee2e2;
+            border-left: 5px solid #dc2626;
+        }
+
+        .feedback h3 {
+            margin-top: 0;
+        }
+
+        .correct-answer {
+            font-weight: bold;
+        }
+
+        button.next {
+            display: none;
+            margin-top: 20px;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button.next:hover {
+            background: #1d4ed8;
+        }
+
+        .result {
+            display: none;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .restart {
+            margin-top: 20px;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #1e3a8a;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .oral-tip {
+            margin-top: 25px;
+            padding: 15px;
+            background: #fef3c7;
+            border-left: 5px solid #f59e0b;
+            border-radius: 6px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            .question-card {
+                padding: 20px;
+            }
+
+            .question {
+                font-size: 1.15rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <header>
+        <h1>Emelt digitális kultúra</h1>
+        <h2>HTML – szóbeli érettségi gyakorló</h2>
+        <p class="subtitle">
+            15 kérdés • azonnali visszajelzés • magyarázat • emelt szintű gyakorlás
+        </p>
+
+        <div class="progress-container">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div id="progressText">
+            1 / 15 kérdés
+        </div>
+    </header>
+
+    <main id="quiz">
+
+        <div class="question-card">
+
+            <div class="question-number" id="questionNumber"></div>
+
+            <div class="question" id="questionText"></div>
+
+            <div id="codeBlock" class="code" style="display:none;"></div>
+
+            <div class="answers" id="answers"></div>
+
+            <div id="feedback" class="feedback">
+                <h3 id="feedbackTitle"></h3>
+                <p id="feedbackText"></p>
+                <p>
+                    <span class="correct-answer">Helyes válasz:</span>
+                    <span id="correctAnswer"></span>
+                </p>
+
+                <div class="oral-tip">
+                    <strong>🎓 Szóbeli tipp:</strong>
+                    <span id="oralTip"></span>
+                </div>
+            </div>
+
+            <button class="next" id="nextButton" onclick="nextQuestion()">
+                Következő kérdés →
+            </button>
+
+        </div>
+
+    </main>
+
+    <section class="result" id="result">
+        <h2>🎉 A teszt véget ért!</h2>
+
+        <div class="score" id="score"></div>
+
+        <p id="resultText"></p>
+
+        <div class="oral-tip">
+            <strong>Érdemes szóban is gyakorolni:</strong>
+            minden kérdésnél próbáld meg a választ 30–60 másodpercben,
+            összefüggően elmagyarázni, nem csak a helyes opciót megjegyezni.
+        </div>
+
+        <button class="restart" onclick="restartQuiz()">
+            Teszt újrakezdése
+        </button>
+    </section>
+
+    <footer>
+        Saját készítésű gyakorlóteszt – nem hivatalos érettségi feladatsor.
+    </footer>
+
+</div>
+
+
+<script>
+
+const questions = [
+
+    {
+        question:
+            "Mi a HTML elsődleges feladata egy weboldal elkészítése során?",
+
+        answers: [
+            "Az oldal tartalmának és szerkezetének leírása.",
+            "A képek és szövegek grafikai megjelenítésének teljes beállítása.",
+            "A szerver és a böngésző közötti adatbázis-kapcsolat létrehozása.",
+            "A JavaScript programok fordítása."
+        ],
+
+        correct: 0,
+
+        explanation:
+            "A HTML (HyperText Markup Language) jelölőnyelv. Elsősorban a weboldal tartalmának és logikai szerkezetének leírására szolgál. A megjelenítés finomhangolását jellemzően CSS-sel, a dinamikus működést JavaScripttel oldjuk meg.",
+
+        oral:
+            "Szóban érdemes megemlíteni a HTML, CSS és JavaScript szerepének különbségét."
+    },
+
+
+    {
+        question:
+            "Melyik elem tartalmazza egy HTML-dokumentum látható tartalmát?",
+
+        answers: [
+            "<head>",
+            "<body>",
+            "<html>",
+            "<meta>"
+        ],
+
+        correct: 1,
+
+        explanation:
+            "A <body> elem tartalmazza azt a tartalmat, amelyet a böngésző az oldal részeként megjelenít. A <head> elsősorban metaadatokat, címet, stíluslapokra való hivatkozásokat és egyéb beállításokat tartalmaz.",
+
+        oral:
+            "Tudd megkülönböztetni a <head> és a <body> szerepét, mert ez gyakori alapozó kérdés."
+    },
+
+
+    {
+        question:
+            "Melyik HTML-elem használható első szintű címsor létrehozására?",
+
+        answers: [
+            "<title>",
+            "<header>",
+            "<h1>",
+            "<heading>"
+        ],
+
+        correct: 2,
+
+        explanation:
+            "A <h1> az első szintű címsor. A címsorok <h1>-től <h6>-ig terjednek. A <title> nem az oldal törzsében megjelenő címsor, hanem a dokumentum címét adja meg, amely például a böngésző lapján jelenik meg.",
+
+        oral:
+            "Emelt szinten érdemes tudni, hogy a címsorok nem pusztán betűméretet jelentenek, hanem a dokumentum szemantikai szerkezetét is meghatározzák."
+    },
+
+
+    {
+        question:
+            "Mit jelent az, hogy egy HTML-elem szemantikus?",
+
+        answers: [
+            "Azt, hogy az elemhez kötelező CSS-kód tartozik.",
+            "Azt, hogy az elem jelentést is hordoz a tartalom szerkezetében.",
+            "Azt, hogy az elem kizárólag szöveget tartalmazhat.",
+            "Azt, hogy az elem csak JavaScripttel működik."
+        ],
+
+        correct: 1,
+
+        explanation:
+            "A szemantikus HTML-elemek a tartalom jelentését és szerepét is kifejezik. Például a <nav> navigációt, a <main> a dokumentum fő tartalmát, az <article> pedig önálló tartalmi egységet jelöl.",
+
+        oral:
+            "Példaként említheted a <header>, <nav>, <main>, <section>, <article> és <footer> elemeket."
+    },
+
+
+    {
+        question:
+            "Mit eredményez az alábbi kód?",
+
+        code:
+`<a href="https://pelda.hu">Weboldal</a>`,
+
+        answers: [
+            "Képet illeszt be a dokumentumba.",
+            "Egy hivatkozást hoz létre.",
+            "Új bekezdést hoz létre.",
+            "Automatikusan megnyit egy új böngészőablakot."
+        ],
+
+        correct: 1,
+
+        explanation:
+            "Az <a> elem hiperhivatkozást hoz létre. A href attribútum határozza meg a hivatkozás célját.",
+
+        oral:
+            "Érdemes tudni a href mellett a target attribútum szerepét is, például a target=\"_blank\" használatát."
+    },
+
+
+    {
+        question:
+            "Melyik attribútummal adható meg egy kép alternatív szövege?",
+
+        answers: [
+            "title",
+            "src",
+            "alt",
+            "text"
+        ],
+
+        correct: 2,
+
+        explanation:
+            "Az <img> elem alt attribútuma adja meg a kép alternatív szövegét. Ez különösen fontos akadálymentességi szempontból, illetve akkor, ha a kép nem tölthető be.",
+
+        oral:
+            "Szóban érdemes kitérni arra, hogy az alt nem egyszerűen egy képaláírás."
+    },
+
+
+    {
+        question:
+            "Mit jelent a HTML-ben az attribútum?",
+
+        answers: [
+            "Az elemhez tartozó kiegészítő információt vagy beállítást.",
+            "Egy különálló HTML
