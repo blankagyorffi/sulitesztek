@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emelt digitális kultúra – HTML szóbeli gyakorló</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#f1f5f9; color:#1e293b; line-height:1.5; }
+  .container { max-width:900px; margin:0 auto; padding:30px 20px 50px; }
+  header { background:#1e3a8a; color:#fff; padding:30px; border-radius:14px; margin-bottom:25px; }
+  header h1 { margin:0 0 4px; }
+  header h2 { margin:0 0 10px; font-weight:normal; font-size:1.1rem; }
+  .subtitle { opacity:.9; margin:0; }
+  .progress-container { background:#475fa8; height:12px; border-radius:10px; overflow:hidden; margin:20px 0 8px; }
+  .progress { height:100%; width:0; background:#22c55e; transition:width .3s; }
+  .card { background:#fff; border-radius:14px; padding:30px; box-shadow:0 3px 15px rgba(0,0,0,.08); }
+  .question-number { color:#64748b; font-weight:bold; margin-bottom:10px; }
+  .question { font-size:1.35rem; font-weight:bold; margin-bottom:25px; }
+  .code { background:#0f172a; color:#e2e8f0; padding:15px; border-radius:8px; font-family:Consolas,monospace; white-space:pre-wrap; margin:15px 0; overflow-x:auto; }
+  .answers { display:grid; gap:12px; }
+  .answer { border:2px solid #cbd5e1; border-radius:10px; padding:15px; background:#fff; cursor:pointer; text-align:left; font-size:1rem; font-family:inherit; color:inherit; transition:.2s; }
+  .answer:hover:not(:disabled) { border-color:#2563eb; background:#eff6ff; }
+  .answer:focus-visible, button:focus-visible { outline:3px solid #f59e0b; outline-offset:2px; }
+  .answer:disabled { cursor:default; }
+  .answer.correct { background:#dcfce7; border-color:#16a34a; color:#166534; }
+  .answer.wrong { background:#fee2e2; border-color:#dc2626; color:#991b1b; }
+  .feedback { display:none; margin-top:25px; padding:20px; border-radius:10px; }
+  .feedback.correct { display:block; background:#dcfce7; border-left:5px solid #16a34a; }
+  .feedback.wrong { display:block; background:#fee2e2; border-left:5px solid #dc2626; }
+  .feedback h3 { margin-top:0; }
+  .oral-tip { margin-top:20px; padding:15px; background:#fef3c7; border-left:5px solid #f59e0b; border-radius:6px; text-align:left; }
+  button.primary { margin-top:20px; padding:13px 25px; border:none; border-radius:8px; background:#2563eb; color:#fff; font-size:1rem; cursor:pointer; }
+  button.primary:hover { background:#1d4ed8; }
+  #nextButton { display:none; }
+  .result { display:none; text-align:center; }
+  .score { font-size:3rem; font-weight:bold; color:#2563eb; }
+  .status { font-size:.85rem; color:#cbd5e1; margin-top:10px; }
+  .status.error { color:#fde68a; }
+  footer { text-align:center; margin-top:30px; color:#64748b; font-size:.9rem; }
+  @media (max-width:600px) {
+    .container { padding:15px; } .card { padding:20px; } .question { font-size:1.15rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Emelt digitális kultúra</h1>
+    <h2>HTML – szóbeli érettségi gyakorló</h2>
+    <p class="subtitle">Azonnali visszajelzés • magyarázat • szóbeli tippek</p>
+    <div class="progress-container"><div class="progress" id="progress"></div></div>
+    <div id="progressText">Betöltés…</div>
+    <div class="status" id="status"></div>
+  </header>
+
+  <main>
+    <section class="card" id="quiz">
+      <div class="question-number" id="questionNumber"></div>
+      <div class="question" id="questionText">Kérdések betöltése…</div>
+      <pre id="codeBlock" class="code" style="display:none;"></pre>
+      <div class="answers" id="answers"></div>
+
+      <div id="feedback" class="feedback" aria-live="polite">
+        <h3 id="feedbackTitle"></h3>
+        <p id="feedbackText"></p>
+        <p><strong>Helyes válasz:</strong> <span id="correctAnswer"></span></p>
+        <div class="oral-tip" id="oralBox"><strong>🎓 Szóbeli tipp:</strong> <span id="oralTip"></span></div>
+      </div>
+
+      <button class="primary" id="nextButton" type="button">Következő kérdés →</button>
+    </section>
+
+    <section class="card result" id="result">
+      <h2>A teszt véget ért!</h2>
+      <div class="score" id="score"></div>
+      <p id="resultText"></p>
+      <div class="oral-tip">
+        <strong>Érdemes szóban is gyakorolni:</strong>
+        minden kérdésnél próbáld a választ 30–60 másodpercben, összefüggően elmagyarázni.
+      </div>
+      <button class="primary" id="restartButton" type="button">Teszt újrakezdése</button>
+    </section>
+  </main>
+
+  <footer>Saját készítésű gyakorlóteszt – nem hivatalos érettségi feladatsor.</footer>
+</div>
+
+<script>
+/* ============================================================
+   BEÁLLÍTÁS: a Google Sheet "Közzététel a weben" CSV-linkje.
+   Üresen hagyva a beépített kérdések futnak.
+   ============================================================ */
+const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vT3pcVhnWLCpXmMmvAZ_P2cSAxp-eLtblrG9YOiILv7Dgio6eauUaR4e9xT9L8j_XL_l_170zFu50ZY/pub?output=tsv";
+
+/* Kérdések megkeverése induláskor? */
+const SHUFFLE_QUESTIONS = true;
+const SHUFFLE_ANSWERS = true;
+
+/* ---------- Beépített (tartalék) kérdések ---------- */
+const FALLBACK_QUESTIONS = [
+  {
+    question: "Mi a HTML elsődleges feladata egy weboldal elkészítése során?",
+    answers: [
+      "Az oldal tartalmának és szerkezetének leírása.",
+      "A képek és szövegek grafikai megjelenítésének teljes beállítása.",
+      "A szerver és a böngésző közötti adatbázis-kapcsolat létrehozása.",
+      "A JavaScript programok fordítása."
+    ],
+    correct: 0,
+    explanation: "A HTML (HyperText Markup Language) jelölőnyelv. Elsősorban a weboldal tartalmának és logikai szerkezetének leírására szolgál. A megjelenítést jellemzően CSS-sel, a dinamikus működést JavaScripttel oldjuk meg.",
+    oral: "Említsd meg a HTML, CSS és JavaScript szerepének különbségét."
+  },
+  {
+    question: "Melyik elem tartalmazza egy HTML-dokumentum látható tartalmát?",
+    answers: ["<head>", "<body>", "<html>", "<meta>"],
+    correct: 1,
+    explanation: "A <body> elem tartalmazza azt, amit a böngésző megjelenít. A <head> metaadatokat, címet, stíluslapokra mutató hivatkozásokat tartalmaz.",
+    oral: "Tudd megkülönböztetni a <head> és a <body> szerepét."
+  },
+  {
+    question: "Melyik HTML-elem használható első szintű címsor létrehozására?",
+    answers: ["<title>", "<header>", "<h1>", "<heading>"],
+    correct: 2,
+    explanation: "A <h1> az első szintű címsor; a címsorok <h1>-től <h6>-ig terjednek. A <title> a dokumentum címét adja meg (pl. a böngészőfülön jelenik meg).",
+    oral: "A címsorok nemcsak betűméretet jelentenek, hanem a dokumentum szemantikai szerkezetét is."
+  },
+  {
+    question: "Mit jelent az, hogy egy HTML-elem szemantikus?",
+    answers: [
+      "Azt, hogy az elemhez kötelező CSS-kód tartozik.",
+      "Azt, hogy az elem jelentést is hordoz a tartalom szerkezetében.",
+      "Azt, hogy az elem kizárólag szöveget tartalmazhat.",
+      "Azt, hogy az elem csak JavaScripttel működik."
+    ],
+    correct: 1,
+    explanation: "A szemantikus elemek a tartalom szerepét is kifejezik: a <nav> navigációt, a <main> a fő tartalmat, az <article> önálló tartalmi egységet jelöl.",
+    oral: "Példák: <header>, <nav>, <main>, <section>, <article>, <footer>."
+  },
+  {
+    question: "Mit eredményez az alábbi kód?",
+    code: '<a href="https://pelda.hu">Weboldal</a>',
+    answers: [
+      "Képet illeszt be a dokumentumba.",
+      "Egy hivatkozást hoz létre.",
+      "Új bekezdést hoz létre.",
+      "Automatikusan megnyit egy új böngészőablakot."
+    ],
+    correct: 1,
+    explanation: "Az <a> elem hiperhivatkozást hoz létre; a href attribútum a hivatkozás célját adja meg.",
+    oral: "A href mellett említsd a target attribútumot, pl. target=\"_blank\"."
+  },
+  {
+    question: "Melyik attribútummal adható meg egy kép alternatív szövege?",
+    answers: ["title", "src", "alt", "text"],
+    correct: 2,
+    explanation: "Az <img> elem alt attribútuma az alternatív szöveg. Akadálymentességi szempontból fontos, és akkor is megjelenik, ha a kép nem tölthető be.",
+    oral: "Az alt nem egyszerűen képaláírás."
+  },
+  {
+    question: "Mit jelent a HTML-ben az attribútum?",
+    answers: [
+      "Az elemhez tartozó kiegészítő információt vagy beállítást.",
+      "Egy különálló HTML-dokumentumot.",
+      "Egy CSS-szabályt, amely az egész oldalra vonatkozik.",
+      "A böngésző egyik beépített programját."
+    ],
+    correct: 0,
+    explanation: "Az attribútum a nyitó címkében megadott név–érték pár (pl. href, src, alt, class, id), amely az elem viselkedését vagy tulajdonságait módosítja.",
+    oral: "Hozz példát: <img src=\"kep.jpg\" alt=\"Leírás\">."
+  }
+];
+
+/* ---------- CSV feldolgozás (idézőjeles mezők, sortörés is) ---------- */
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = "", inQuotes = false;
+  text = text.replace(/^\uFEFF/, "");
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (inQuotes) {
+      if (c === '"') {
+        if (text[i + 1] === '"') { field += '"'; i++; }
+        else inQuotes = false;
+      } else field += c;
+    } else if (c === '"') inQuotes = true;
+    else if (c === ",") { row.push(field); field = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i + 1] === "\n") i++;
+      row.push(field); field = "";
+      rows.push(row); row = [];
+    } else field += c;
+  }
+  if (field !== "" || row.length) { row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(cell => cell.trim() !== ""));
+}
+
+/* A Sheet oszlopai (az első sor fejléc):
+   kerdes | kod | a | b | c | d | helyes | magyarazat | szobeli_tipp
+   helyes: A/B/C/D vagy 1/2/3/4 */
+function rowsToQuestions(rows) {
+  if (rows.length < 2) return [];
+  const head = rows[0].map(h => h.trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+  const idx = name => head.indexOf(name);
+  const col = { q: idx("kerdes"), code: idx("kod"), a: idx("a"), b: idx("b"),
+    c: idx("c"), d: idx("d"), ok: idx("helyes"), ex: idx("magyarazat"), oral: idx("szobeli_tipp") };
+  if (col.q < 0 || col.a < 0 || col.b < 0 || col.ok < 0)
+    throw new Error("Hiányzó oszlop a Sheetben (kerdes, a, b, helyes kötelező).");
+
+  const get = (r, i) => (i >= 0 && r[i] !== undefined ? r[i].trim() : "");
+  const out = [];
+  for (const r of rows.slice(1)) {
+    const question = get(r, col.q);
+    if (!question) continue;
+    const answers = [get(r, col.a), get(r, col.b), get(r, col.c), get(r, col.d)].filter(Boolean);
+    const key = get(r, col.ok).toUpperCase();
+    let correct = "ABCD".indexOf(key);
+    if (correct < 0) correct = parseInt(key, 10) - 1;
+    if (answers.length < 2 || !(correct >= 0 && correct < answers.length)) continue;
+    out.push({
+      question,
+      code: get(r, col.code),
+      answers,
+      correct,
+      explanation: get(r, col.ex),
+      oral: get(r, col.oral)
+    });
+  }
+  return out;
+}
+
+/* ---------- Állapot és megjelenítés ---------- */
+const $ = id => document.getElementById(id);
+let questions = [], current = 0, score = 0, answered = false;
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function prepare(list) {
+  let qs = list.map(q => ({ ...q }));
+  if (SHUFFLE_ANSWERS) {
+    qs = qs.map(q => {
+      const order = shuffle(q.answers.map((_, i) => i));
+      return { ...q, answers: order.map(i => q.answers[i]), correct: order.indexOf(q.correct) };
+    });
+  }
+  return SHUFFLE_QUESTIONS ? shuffle(qs) : qs;
+}
+
+function showQuestion() {
+  const q = questions[current];
+  answered = false;
+  $("questionNumber").textContent = "Kérdés " + (current + 1) + " / " + questions.length;
+  $("questionText").textContent = q.question;
+  $("progressText").textContent = (current + 1) + " / " + questions.length + " kérdés";
+  $("progress").style.width = (current / questions.length * 100) + "%";
+
+  const code = $("codeBlock");
+  if (q.code) { code.textContent = q.code; code.style.display = "block"; }
+  else code.style.display = "none";
+
+  const box = $("answers");
+  box.innerHTML = "";
+  q.answers.forEach((text, i) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "answer";
+    b.textContent = text;
+    b.addEventListener("click", () => choose(i));
+    box.appendChild(b);
+  });
+
+  $("feedback").className = "feedback";
+  $("nextButton").style.display = "none";
+}
+
+function choose(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const buttons = $("answers").children;
+  for (let k = 0; k < buttons.length; k++) {
+    buttons[k].disabled = true;
+    if (k === q.correct) buttons[k].classList.add("correct");
+  }
+  const ok = i === q.correct;
+  if (ok) score++; else buttons[i].classList.add("wrong");
+
+  $("feedback").className = "feedback " + (ok ? "correct" : "wrong");
+  $("feedbackTitle").textContent = ok ? "✅ Helyes!" : "❌ Nem egészen.";
+  $("feedbackText").textContent = q.explanation || "";
+  $("correctAnswer").textContent = q.answers[q.correct];
+  $("oralTip").textContent = q.oral || "";
+  $("oralBox").style.display = q.oral ? "block" : "none";
+
+  const last = current === questions.length - 1;
+  $("nextButton").textContent = last ? "Eredmény megtekintése" : "Következő kérdés →";
+  $("nextButton").style.display = "inline-block";
+}
+
+function nextQuestion() {
+  if (current < questions.length - 1) { current++; showQuestion(); }
+  else showResult();
+}
+
+function showResult() {
+  $("quiz").style.display = "none";
+  $("result").style.display = "block";
+  $("progress").style.width = "100%";
+  const pct = Math.round(score / questions.length * 100);
+  $("score").textContent = score + " / " + questions.length + " (" + pct + "%)";
+  $("resultText").textContent =
+    pct >= 80 ? "Remek eredmény, szóban is magabiztos lehetsz." :
+    pct >= 50 ? "Jó alap, a hibás kérdéseket érdemes még átnézni." :
+                "Érdemes újra átnézni az anyagot, aztán próbáld újra.";
+}
+
+function startQuiz(list) {
+  questions = prepare(list);
+  current = 0; score = 0;
+  $("result").style.display = "none";
+  $("quiz").style.display = "block";
+  showQuestion();
+}
+
+$("nextButton").addEventListener("click", nextQuestion);
+$("restartButton").addEventListener("click", () => startQuiz(sourceList));
+
+/* ---------- Indítás ---------- */
+let sourceList = FALLBACK_QUESTIONS;
+
+async function init() {
+  const status = $("status");
+  if (SHEET_CSV_URL) {
+    try {
+      const res = await fetch(SHEET_CSV_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      const list = rowsToQuestions(parseCSV(await res.text()));
+      if (!list.length) throw new Error("A Sheetben nincs használható kérdés.");
+      sourceList = list;
+      status.textContent = "Kérdések a Google Sheetből: " + list.length + " db";
+    } catch (err) {
+      status.textContent = "A Sheet nem érhető el (" + err.message + "), a beépített kérdések futnak.";
+      status.className = "status error";
+    }
+  } else {
+    status.textContent = "Beépített kérdések (nincs Sheet megadva).";
+  }
+  startQuiz(sourceList);
+}
+init();
+</script>
+</body>
+</html>
