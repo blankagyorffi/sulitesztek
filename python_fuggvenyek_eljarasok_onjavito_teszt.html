@@ -26,6 +26,14 @@
   .hidden{display:none}
   .progress{font-weight:bold}
   .small{font-size:.92em;color:#555}
+  .adatok{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 6px}
+  .adatok label{flex:1 1 220px;padding:0;cursor:default;font-weight:bold}
+  .adatok label:hover{background:none}
+  .adatok input{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:10px;font-size:16px;border:1px solid #bbb;border-radius:7px;font-weight:normal}
+  #kuldesStatus{margin:0 0 10px;padding:10px 14px;border-radius:8px;font-size:15px}
+  .ok-status{background:#d9f5df}
+  .err-status{background:#ffe0e0}
+  .wait-status{background:#eef5ff}
   .review{font-size:16px;font-weight:normal;margin-top:14px;padding:12px 14px;background:#fff;border:1px solid #ddd;border-radius:10px}
   .review h4{margin:0 0 8px}
   .review ul{margin:0;padding-left:20px}
@@ -45,6 +53,11 @@
   <p class="small">Javasolt szint: középiskolai Python-alapok.</p>
 </div>
 
+<div class="adatok">
+  <label>Név<input type="text" id="nev" placeholder="Pl. Kiss Anna" autocomplete="name"></label>
+  <label>Osztály/csoport<input type="text" id="csoport" placeholder="Pl. 10.A" autocomplete="off"></label>
+</div>
+
 <div id="quiz"></div>
 
 <div>
@@ -52,9 +65,15 @@
   <button onclick="resetQuiz()">Újrakezdés</button>
 </div>
 <div id="result" class="hidden"></div>
+<div id="kuldesStatus" class="hidden"></div>
 </div>
 
 <script>
+/* ===== Beállítások az eredmények Google Sheetbe küldéséhez ===== */
+const WEBAPP_URL = "IDE_ILLESZD_BE_A_WEBALKALMAZAS_URL-T";   // Apps Script webalkalmazás URL (https://script.google.com/macros/s/.../exec)
+const TESZT_NEV  = "Python függvények";                        // ez lesz a munkalap neve a táblázatban
+let elkuldve = false;                                           // újrakezdésig csak egyszer küldi be
+
 const questions = [
 {q:`Melyik kulcsszóval definiálunk függvényt vagy eljárást Pythonban?`,a:["function","def","func","define"],c:1,e:"Pythonban mind a függvényt, mind az eljárást a def kulcsszóval kezdjük. Hogy melyik a kettő közül, azt dönti el, hogy van-e benne return."},
 {q:`Melyik a helyes függvénydefiníció? (A függvény a köszöntő szöveget <strong>visszaadja</strong>.)`,a:["<code>def koszon(nev): return 'Szia, ' + nev</code>","<code>function koszon(nev): return 'Szia, ' + nev</code>","<code>def koszon[nev]: return 'Szia, ' + nev</code>","<code>create koszon(nev): return 'Szia, ' + nev</code>"],c:0,e:"A helyes forma: def függvénynév(paraméterek): – a törzsben a return sor adja vissza az eredményt."},
@@ -88,6 +107,14 @@ questions.forEach((item,i)=>{
 });
 
 function checkAnswers(){
+  const nev=document.getElementById("nev").value.trim();
+  if(!nev){
+    alert("Kérlek, add meg a neved az ellenőrzés előtt!");
+    document.getElementById("nev").focus();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+  const pontok=new Array(questions.length).fill(0);
   let score=0, answered=0;
   const wrong=[];
   questions.forEach((item,i)=>{
@@ -97,7 +124,7 @@ function checkAnswers(){
     box.classList.remove("correct","incorrect");
     if(selected){
       answered++;
-      if(Number(selected.value)===item.c){score++; box.classList.add("correct");}
+      if(Number(selected.value)===item.c){score++; pontok[i]=1; box.classList.add("correct");}
       else {box.classList.add("incorrect"); wrong.push({i:i,given:Number(selected.value)});}
       exp.innerHTML="<strong>Magyarázat:</strong> "+item.e;
       exp.style.display="block";
@@ -114,7 +141,48 @@ function checkAnswers(){
   result.classList.remove("hidden");
   result.innerHTML=`Eredmény: ${score}/${questions.length} pont (${percent}%) – <strong>${grade}</strong><br>
   <span class="small">Megválaszolt kérdések: ${answered}/${questions.length}. A hibás válaszok alatt látható a magyarázat.</span>`+buildReview(wrong);
+  kuldes({
+    teszt:TESZT_NEV,
+    nev:nev,
+    csoport:document.getElementById("csoport").value.trim(),
+    pont:score,
+    osszes:questions.length,
+    szazalek:percent,
+    megvalaszolatlan:questions.length-answered,
+    pontok:pontok
+  });
   window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+
+function allapot(osztaly,szoveg){
+  const el=document.getElementById("kuldesStatus");
+  el.className=osztaly;
+  el.textContent=szoveg;
+}
+
+async function kuldes(adat){
+  if(elkuldve) return;
+  if(!WEBAPP_URL || WEBAPP_URL.indexOf("IDE_ILLESZD")===0){
+    allapot("err-status","Az eredmény nincs elmentve: a tanár még nem állította be a webalkalmazás URL-jét.");
+    return;
+  }
+  allapot("wait-status","Eredmény mentése…");
+  try{
+    const valasz=await fetch(WEBAPP_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(adat)
+    });
+    const json=await valasz.json();
+    if(json.sikeres){
+      elkuldve=true;
+      allapot("ok-status","Az eredményed el lett mentve.");
+    } else {
+      allapot("err-status","A mentés nem sikerült: "+(json.hiba||"ismeretlen hiba")+" Kattints újra az Ellenőrzés gombra.");
+    }
+  }catch(hiba){
+    allapot("err-status","A mentés nem sikerült (hálózati hiba). Kattints újra az Ellenőrzés gombra.");
+  }
 }
 
 function buildReview(wrong){
@@ -135,6 +203,8 @@ function resetQuiz(){
   document.querySelectorAll(".question").forEach(x=>x.classList.remove("correct","incorrect"));
   document.querySelectorAll(".explanation").forEach(x=>x.style.display="none");
   document.getElementById("result").classList.add("hidden");
+  document.getElementById("kuldesStatus").className="hidden";
+  elkuldve=false;
   window.scrollTo({top:0,behavior:"smooth"});
 }
 </script>
