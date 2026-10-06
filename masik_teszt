@@ -1,0 +1,1230 @@
+<!DOCTYPE html> <html lang="hu"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Python alapok – önjavító teszt</title>
+
+<style>
+
+    /* =====================================================
+       ALAPBEÁLLÍTÁSOK
+    ===================================================== */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f1f5f9;
+        margin: 0;
+        padding: 20px;
+        color: #1e293b;
+    }
+
+    /* =====================================================
+       TESZT KONTÉNER
+    ===================================================== */
+
+    .container {
+        max-width: 900px;
+        margin: auto;
+        background: white;
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+    }
+
+    /* =====================================================
+       CÍM
+    ===================================================== */
+
+    h1 {
+        color: #2563eb;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    /* =====================================================
+       BEVEZETŐ
+    ===================================================== */
+
+    .intro {
+        background: #eff6ff;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        line-height: 1.6;
+    }
+
+    /* =====================================================
+       KÉRDÉSEK
+    ===================================================== */
+
+    .question {
+        margin-bottom: 25px;
+        padding: 20px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: #ffffff;
+    }
+
+    .question h3 {
+        margin-top: 0;
+        line-height: 1.5;
+    }
+
+    /* =====================================================
+       VÁLASZLEHETŐSÉGEK
+    ===================================================== */
+
+    label {
+        display: block;
+        padding: 12px;
+        margin: 8px 0;
+        background: #f8fafc;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        line-height: 1.4;
+    }
+
+    label:hover {
+        background: #dbeafe;
+    }
+
+    input[type="radio"] {
+        margin-right: 10px;
+    }
+
+    /* =====================================================
+       KÓDMEZŐK
+    ===================================================== */
+
+    pre {
+        background: #0f172a;
+        color: #e2e8f0;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    /* =====================================================
+       GOMB
+    ===================================================== */
+
+    button {
+        display: block;
+        margin: 30px auto;
+        padding: 15px 35px;
+        font-size: 18px;
+        font-weight: bold;
+        color: white;
+        background: #2563eb;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+
+    /* =====================================================
+       EREDMÉNY
+    ===================================================== */
+
+    #eredmeny {
+        display: none;
+        margin-top: 30px;
+        padding: 25px;
+        text-align: center;
+        border-radius: 12px;
+        background: #ecfdf5;
+        border: 2px solid #22c55e;
+    }
+
+    .score {
+        font-size: 32px;
+        font-weight: bold;
+        color: #15803d;
+        margin-top: 10px;
+    }
+
+    .percentage {
+        font-size: 22px;
+        margin-top: 10px;
+    }
+
+    .result-message {
+        font-size: 20px;
+        margin-top: 15px;
+    }
+
+    .warning {
+        color: #dc2626;
+        font-weight: bold;
+        margin-top: 15px;
+    }
+
+    .name-field {
+        margin: 0 0 25px 0;
+        padding: 18px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+    }
+
+    .name-field label {
+        display: block;
+        padding: 0;
+        margin: 0 0 8px 0;
+        background: transparent;
+        cursor: default;
+    }
+
+    #nev,
+    #csoport {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+    }
+
+    #nev:focus,
+    #csoport:focus {
+        border-color: #2563eb;
+    }
+
+
+    #teszt-lap, #visszajelzes-lap { }
+    .lap-cim { text-align: center; color: #2563eb; margin: 30px 0 15px; }
+    .feedback-item { margin: 20px 0; padding: 18px; border: 1px solid #fecaca; border-left: 6px solid #dc2626; border-radius: 12px; background: #fffafa; }
+    .feedback-item h3 { margin-top: 0; line-height: 1.5; }
+    .feedback-item p { margin: 6px 0; }
+    .sajat { padding: 10px 12px; border-radius: 8px; background: #fee2e2; color: #991b1b; margin: 10px 0 6px; }
+    .helyes { padding: 10px 12px; border-radius: 8px; background: #dcfce7; color: #166534; margin: 6px 0; }
+    .minden-jo { padding: 20px; text-align: center; font-size: 20px; background: #ecfdf5; border: 2px solid #22c55e; border-radius: 12px; }
+
+</style>
+
+</head> <body>
+
+<div class="container">
+
+    <!-- =================================================
+         CÍM
+    ================================================== -->
+
+    <h1>🐍 Python alapok – teszt</h1>
+
+    <!-- =================================================
+         BEVEZETŐ
+    ================================================== -->
+
+    <div id="teszt-lap">
+
+    <div class="intro">
+
+        <strong>Utasítás:</strong>
+
+        Minden kérdésnél válaszd ki az egyetlen helyes választ!
+
+        A teszt végén kattints az
+        <strong>„Eredmény megtekintése”</strong>
+        gombra.
+
+        <br>
+        <br>
+
+        <strong>Összesen: 21 pont</strong>
+
+    </div>
+
+
+        <div class="name-field">
+            <label for="nev"><strong>Név:</strong></label>
+            <input
+                type="text"
+                id="nev"
+                name="nev"
+                placeholder="Írd be a neved"
+                autocomplete="name"
+                required
+            >
+            <div id="nev-hiba" class="warning"></div>
+            <label for="csoport" style="margin:15px 0 8px 0;"><strong>Osztály / csoport:</strong></label>
+            <input type="text" id="csoport" name="csoport" placeholder="pl. 10.B vagy Python csoport" autocomplete="off" required>
+            <div id="csoport-hiba" class="warning"></div>
+        </div>
+
+    <!-- =================================================
+         1. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            1. Mit csinál az input() utasítás? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q1" value="0">
+            Kiír egy szöveget a képernyőre.
+        </label>
+
+        <label>
+            <input type="radio" name="q1" value="1">
+            Adatot kér be a felhasználótól.
+        </label>
+
+        <label>
+            <input type="radio" name="q1" value="0">
+            Egy listát hoz létre.
+        </label>
+
+        <label>
+            <input type="radio" name="q1" value="0">
+            Leállítja a programot.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         2. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            2. Mit csinál a print() utasítás? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q2" value="1">
+            Kiír valamit a képernyőre.
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="0">
+            Adatot kér be.
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="0">
+            Megszámolja a lista elemeit.
+        </label>
+
+        <label>
+            <input type="radio" name="q2" value="0">
+            Megszakítja a ciklust.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         3. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            3. Milyen típusú adat a 10? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q3" value="0">
+            str
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="1">
+            int
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="0">
+            bool
+        </label>
+
+        <label>
+            <input type="radio" name="q3" value="0">
+            list
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         4. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            4. Milyen típusú adat a True? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q4" value="0">
+            int
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="0">
+            str
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="1">
+            bool
+        </label>
+
+        <label>
+            <input type="radio" name="q4" value="0">
+            list
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         5. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            5. Mit jelent ez: gyumolcs=[] ? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q5" value="1">
+            Létrehoz egy üres listát.
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="0">
+            Létrehoz egy szöveget.
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="0">
+            Létrehoz egy egész számot.
+        </label>
+
+        <label>
+            <input type="radio" name="q5" value="0">
+            Töröl minden változót.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         6. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            6. Mire használjuk az append() utasítást? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q6" value="0">
+            Lista törlésére.
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="1">
+            Új elem hozzáadására a listához.
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="0">
+            A lista hosszának megállapítására.
+        </label>
+
+        <label>
+            <input type="radio" name="q6" value="0">
+            A program leállítására.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         7. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            7. Mikor áll le az alábbi ciklus?
+        </h3>
+
+        <pre>
+		while True:
+			gyumolcsnev = input(...)
+			if gyumolcsnev == '*':
+				break</pre>
+
+        <label>
+            <input type="radio" name="q7" value="0">
+            Ha a felhasználó almát ír be.
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="1">
+            Ha a felhasználó * jelet ír be.
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="0">
+            Ha a felhasználó 0-t ír be.
+        </label>
+
+        <label>
+            <input type="radio" name="q7" value="0">
+            A ciklus soha nem áll le.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         8. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            8. Mit csinál a break? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q8" value="1">
+            Megszakítja a ciklust.
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="0">
+            Új elemet tesz a listába.
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="0">
+            Megszámolja az elemeket.
+        </label>
+
+        <label>
+            <input type="radio" name="q8" value="0">
+            Kiírja a változót.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         9. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            9. Mit jelent a len(gyumolcsar)? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q9" value="0">
+            A lista elemeinek összege.
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="1">
+            A lista elemeinek száma.
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="0">
+            A lista első eleme.
+        </label>
+
+        <label>
+            <input type="radio" name="q9" value="0">
+            A lista utolsó eleme.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         10. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            10. Mit jelent a gyumolcsar[i]? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q10" value="0">
+            A lista teljes tartalma.
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="1">
+            A lista i indexű eleme.
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="0">
+            A lista hossza.
+        </label>
+
+        <label>
+            <input type="radio" name="q10" value="0">
+            A lista összege.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         11. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            11. Miért használjuk az int(input(...)) formát? (1 pont)
+        </h3>
+
+        <label>
+            <input type="radio" name="q11" value="1">
+            Azért, hogy a bekért adatot egész számmá alakítsuk.
+        </label>
+
+        <label>
+            <input type="radio" name="q11" value="0">
+            Azért, hogy szöveggé alakítsuk.
+        </label>
+
+        <label>
+            <input type="radio" name="q11" value="0">
+            Azért, hogy listát hozzunk létre.
+        </label>
+
+        <label>
+            <input type="radio" name="q11" value="0">
+            Azért, hogy megállítsuk a ciklust.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         12. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            12. Ha bekerem_arat = 500 és szam = 10,
+            mennyi lesz a fizetek értéke?
+        </h3>
+
+        <pre>fizetek = bekerem_arat * szam</pre>
+
+        <label>
+            <input type="radio" name="q12" value="0">
+            50
+        </label>
+
+        <label>
+            <input type="radio" name="q12" value="1">
+            5000
+        </label>
+
+        <label>
+            <input type="radio" name="q12" value="0">
+            510
+        </label>
+
+        <label>
+            <input type="radio" name="q12" value="0">
+            50000
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         13. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            13. Mi lesz a lista tartalma?
+        </h3>
+
+        <pre>gyumolcs = []
+
+gyumolcs.append("alma")
+gyumolcs.append("banán")
+gyumolcs.append("körte")</pre>
+
+        <label>
+            <input type="radio" name="q13" value="0">
+            ["körte"]
+        </label>
+
+        <label>
+            <input type="radio" name="q13" value="1">
+            ["alma", "banán", "körte"]
+        </label>
+
+        <label>
+            <input type="radio" name="q13" value="0">
+            []
+        </label>
+
+        <label>
+            <input type="radio" name="q13" value="0">
+            ["alma"]
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         14. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            14. Miért van az összegzés előtt az osszeg=0?
+        </h3>
+
+        <label>
+            <input type="radio" name="q14" value="1">
+            Mert innen kezdjük az összeadást.
+        </label>
+
+        <label>
+            <input type="radio" name="q14" value="0">
+            Mert a lista üres.
+        </label>
+
+        <label>
+            <input type="radio" name="q14" value="0">
+            Mert a programot le akarjuk állítani.
+        </label>
+
+        <label>
+            <input type="radio" name="q14" value="0">
+            Mert a 0 mindig a legnagyobb szám.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         15. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            15. Mit csinál ez a ciklus?
+        </h3>
+
+        <pre>
+		for i in range(len(gyumolcsar)):
+			osszeg = osszeg + gyumolcsar[i]</pre>
+
+        <label>
+            <input type="radio" name="q15" value="0">
+            Megkeresi a legkisebb árat.
+        </label>
+
+        <label>
+            <input type="radio" name="q15" value="1">
+            Összeadja a lista elemeit.
+        </label>
+
+        <label>
+            <input type="radio" name="q15" value="0">
+            Törli a lista elemeit.
+        </label>
+
+        <label>
+            <input type="radio" name="q15" value="0">
+            Megfordítja a lista sorrendjét.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         16. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            16. Ha a gyumolcsar lista [400, 700, 300],
+            mennyi az összeg?
+        </h3>
+
+        <label>
+            <input type="radio" name="q16" value="0">
+            1000
+        </label>
+
+        <label>
+            <input type="radio" name="q16" value="0">
+            1200
+        </label>
+
+        <label>
+            <input type="radio" name="q16" value="1">
+            1400
+        </label>
+
+        <label>
+            <input type="radio" name="q16" value="0">
+            1500
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         17. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            17. Ha a lista [400, 700, 300],
+            mennyi a darabszám?
+        </h3>
+
+        <label>
+            <input type="radio" name="q17" value="0">
+            2
+        </label>
+
+        <label>
+            <input type="radio" name="q17" value="1">
+            3
+        </label>
+
+        <label>
+            <input type="radio" name="q17" value="0">
+            4
+        </label>
+
+        <label>
+            <input type="radio" name="q17" value="0">
+            1400
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         18. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            18. Ha az összeg 1400 és a darabszám 3,
+            mennyi az átlag?
+        </h3>
+
+        <label>
+            <input type="radio" name="q18" value="0">
+            400
+        </label>
+
+        <label>
+            <input type="radio" name="q18" value="0">
+            450
+        </label>
+
+        <label>
+            <input type="radio" name="q18" value="1">
+            466.67 körül
+        </label>
+
+        <label>
+            <input type="radio" name="q18" value="0">
+            1403
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         19. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            19. Mit csinál a for ciklus ebben a programban?
+        </h3>
+
+        <label>
+            <input type="radio" name="q19" value="0">
+            Bekéri az adatokat a felhasználótól.
+        </label>
+
+        <label>
+            <input type="radio" name="q19" value="1">
+            Végigmegy a lista elemein.
+        </label>
+
+        <label>
+            <input type="radio" name="q19" value="0">
+            Létrehozza a listát.
+        </label>
+
+        <label>
+            <input type="radio" name="q19" value="0">
+            Megállítja a programot.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         20. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            20. Mit fog kiírni a program,
+            ha a felhasználó az alábbi értékeket adja meg?
+        </h3>
+
+        <pre>gyumolcs=[]
+
+while True:
+gyumolcsnev=input('Következő gyümölcs neve: ')
+
+if gyumolcsnev!='*':
+    gyumolcs.append(gyumolcsnev)
+
+if gyumolcsnev=='*':
+    break
+
+print(gyumolcs)</pre>
+
+        <p>
+            <strong>A felhasználó ezt írja be:</strong>
+        </p>
+
+        <pre>alma
+
+körte
+banán
+*</pre>
+
+        <p>
+            <strong>Mi lesz a program kiírása?</strong>
+        </p>
+
+        <label>
+            <input type="radio" name="q20" value="0">
+            ['alma', 'körte', 'banán', '*']
+        </label>
+
+        <label>
+            <input type="radio" name="q20" value="1">
+            ['alma', 'körte', 'banán']
+        </label>
+
+        <label>
+            <input type="radio" name="q20" value="0">
+            ['*', 'alma', 'körte', 'banán']
+        </label>
+
+        <label>
+            <input type="radio" name="q20" value="0">
+            []
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         21. KÉRDÉS
+    ================================================== -->
+
+    <div class="question">
+
+        <h3>
+            21. Mit történik, ha a felhasználó
+            a gyümölcs bekérésekor * jelet ír be?
+        </h3>
+
+        <label>
+            <input type="radio" name="q21" value="0">
+            A * bekerül a listába.
+        </label>
+
+        <label>
+            <input type="radio" name="q21" value="1">
+            A ciklus befejeződik, és a * nem kerül a listába.
+        </label>
+
+        <label>
+            <input type="radio" name="q21" value="0">
+            A program hibát jelez.
+        </label>
+
+        <label>
+            <input type="radio" name="q21" value="0">
+            A * helyett 0 kerül a listába.
+        </label>
+
+    </div>
+
+    <!-- =================================================
+         EREDMÉNY GOMB
+    ================================================== -->
+
+    <button id="ertekelesGomb" onclick="ertekeles()">
+        Eredmény megtekintése
+    </button>
+
+    </div> <!-- /teszt-lap -->
+
+    <!-- =================================================
+         EREDMÉNY
+    ================================================== -->
+
+    <div id="visszajelzes-lap" style="display:none">
+
+    <div id="eredmeny">
+
+        <div>
+            <strong id="eredmenyNev"></strong><br>
+            Az eredményed:
+        </div>
+
+        <div
+            class="score"
+            id="pontszam">
+        </div>
+
+        <div
+            class="percentage"
+            id="szazalek">
+        </div>
+
+        <div
+            class="result-message"
+            id="uzenet">
+        </div>
+
+        <div
+            class="warning"
+            id="figyelmeztetes">
+        </div>
+
+    </div>
+
+
+    <h2 class="lap-cim">📋 Visszajelzés: mit érdemes átnézni?</h2>
+    <div id="visszajelzes"></div>
+
+    </div> <!-- /visszajelzes-lap -->
+
+</div>
+
+<!-- =====================================================
+     JAVASCRIPT – PONTOZÁS
+====================================================== -->
+
+<script>
+
+    /*
+     * GOOGLE TÁBLÁZAT BEÁLLÍTÁSA
+     * A Code.gs (app_script_kodja.gs) tartalmát illeszd be az Apps Scriptbe,
+     * majd Telepítés → Telepítések kezelése → Szerkesztés → Új verzió.
+     * Az /exec URL ugyanaz marad. pl. https://script.google.com/macros/s/AKfycbwCxk4erorbm7ADlKJEVwrIpIePg9oXtO1W2RQE89FXrS5Rpxt9sun4ELG5OTJvyYI/exec
+     */
+    const GOOGLE_SHEETS_URL = "https://script.google.com/macros/s/AKfycbxHW3zsnB-gdkm4-DDmkN1bpVuHwgbZ1IpvkCssxuZEKOfCMYXr-j-SKvv-qOZNy4w/exec";
+    const OSSZES = 21;
+    let elkuldve = false;
+
+    function szoveg(el) {
+        return el.textContent.replace(/\s+/g, " ").trim();
+    }
+
+console.log("ELKÜLDÖTT PONTOK:", pontok);
+console.log("PONTOK SZÁMA:", pontok.length);
+	
+function eredmenyMenteseGoogleSheets(adat) {
+
+    if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL.includes("IDE_MÁSOLANDÓ")) {
+        console.warn("A Google Sheets URL még nincs beállítva.");
+        return;
+    }
+
+    // DIAGNOSZTIKA
+    console.log("KÜLDÖTT ADAT:", adat);
+    console.log("KÜLDÖTT JSON:", JSON.stringify(adat));
+    console.log("KÜLDÖTT PONTOK:", adat.pontok);
+    console.log("PONTOK SZÁMA:", Array.isArray(adat.pontok) ? adat.pontok.length : "NEM TÖMB");
+
+    fetch(GOOGLE_SHEETS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        keepalive: true,
+        headers: {
+            "Content-Type": "text/plain;charset=utf-8"
+        },
+        body: JSON.stringify(adat)
+    })
+    .then(function () {
+        console.log("Az eredmény elküldése megtörtént.");
+    })
+    .catch(function (hiba) {
+        console.error("Nem sikerült az eredményt elküldeni:", hiba);
+    });
+}
+
+    function visszajelzesEpitese(hibak) {
+        const doboz = document.getElementById("visszajelzes");
+        doboz.innerHTML = "";
+
+        if (hibak.length === 0) {
+            const jo = document.createElement("div");
+            jo.className = "minden-jo";
+            jo.textContent = "🎉 Minden válaszod helyes volt, nincs mit javítani!";
+            doboz.appendChild(jo);
+            return;
+        }
+
+        hibak.forEach(function (h) {
+            const elem = document.createElement("div");
+            elem.className = "feedback-item";
+
+            // kérdés szövege és a hozzá tartozó kód/magyarázó rész
+            Array.from(h.kerdes.children).forEach(function (gyerek) {
+                if (["H3", "PRE", "P"].includes(gyerek.tagName)) {
+                    elem.appendChild(gyerek.cloneNode(true));
+                }
+            });
+
+            const sajat = document.createElement("div");
+            sajat.className = "sajat";
+            sajat.textContent = h.sajat === null
+                ? "❌ Nem válaszoltál erre a kérdésre."
+                : "❌ A te válaszod: " + h.sajat;
+            elem.appendChild(sajat);
+
+            const helyes = document.createElement("div");
+            helyes.className = "helyes";
+            helyes.textContent = "✅ Helyes válasz: " + h.helyes;
+            elem.appendChild(helyes);
+
+            doboz.appendChild(elem);
+        });
+    }
+
+    function ertekeles() {
+
+        if (elkuldve) return;
+
+        /* NÉV ÉS CSOPORT ELLENŐRZÉSE */
+        const nevMezo = document.getElementById("nev");
+        const csoportMezo = document.getElementById("csoport");
+        const nev = nevMezo.value.trim();
+        const csoport = csoportMezo.value.trim();
+
+        document.getElementById("nev-hiba").textContent = "";
+        document.getElementById("csoport-hiba").textContent = "";
+
+        if (!nev) {
+            document.getElementById("nev-hiba").textContent = "⚠️ Kérlek, add meg a neved!";
+            nevMezo.focus();
+            return;
+        }
+        if (!csoport) {
+            document.getElementById("csoport-hiba").textContent = "⚠️ Kérlek, add meg az osztályod vagy csoportod azonosítóját!";
+            csoportMezo.focus();
+            return;
+        }
+
+        /* VÁLASZOK ELLENŐRZÉSE – FELADATONKÉNTI PONTOK */
+        const osszes = OSSZES;
+        const pontok = [];
+        const hibak = [];
+        let pont = 0;
+        let megvalaszolatlan = 0;
+
+        for (let i = 1; i <= osszes; i++) {
+            const valasz = document.querySelector('input[name="q' + i + '"]:checked');
+            const helyesInput = document.querySelector('input[name="q' + i + '"][value="1"]');
+            const kerdes = helyesInput.closest(".question");
+            let feladatPont = 0;
+
+            if (valasz) {
+                feladatPont = Number(valasz.value);
+            } else {
+                megvalaszolatlan++;
+            }
+
+            pontok.push(feladatPont);
+            pont += feladatPont;
+
+            if (feladatPont !== 1) {
+                hibak.push({
+                    kerdes: kerdes,
+                    sajat: valasz ? szoveg(valasz.closest("label")) : null,
+                    helyes: szoveg(helyesInput.closest("label"))
+                });
+            }
+        }
+
+        const szazalek = Math.round((pont / osszes) * 100);
+
+        /* EREDMÉNY MEGJELENÍTÉSE */
+        document.getElementById("eredmenyNev").textContent = "👤 " + nev + " (" + csoport + ")";
+        document.getElementById("pontszam").textContent = pont + " / " + osszes + " pont";
+        document.getElementById("szazalek").textContent = szazalek + "%";
+
+        let uzenet;
+        if (szazalek >= 90) uzenet = "🏆 Kiváló! Nagyon jól érted a program működését.";
+        else if (szazalek >= 75) uzenet = "😊 Nagyon jó! Csak néhány részletet érdemes átismételni.";
+        else if (szazalek >= 60) uzenet = "👍 Jó alapok! Egy kis gyakorlással még biztosabb lesz a tudásod.";
+        else if (szazalek >= 40) uzenet = "📚 Érdemes még egyszer átnézni a programot.";
+        else uzenet = "🔄 Javasolt újra átvenni az alapfogalmakat.";
+        document.getElementById("uzenet").textContent = uzenet;
+
+        document.getElementById("figyelmeztetes").textContent = megvalaszolatlan > 0
+            ? "⚠️ " + megvalaszolatlan + " kérdés nem lett megválaszolva."
+            : "✅ Minden kérdés meg lett válaszolva.";
+
+        /* MENTÉS A GOOGLE TÁBLÁZATBA (csak egyszer) */
+        elkuldve = true;
+        document.getElementById("ertekelesGomb").disabled = true;
+
+        eredmenyMenteseGoogleSheets({
+            nev: nev,
+            csoport: csoport,
+            pont: pont,
+            osszes: osszes,
+            szazalek: szazalek,
+            megvalaszolatlan: megvalaszolatlan,
+            pontok: pontok,
+            datum: new Date().toISOString()
+        });
+
+        /* ÁTVÁLTÁS A VISSZAJELZŐ LAPRA */
+        visszajelzesEpitese(hibak);
+        document.getElementById("teszt-lap").style.display = "none";
+        document.getElementById("visszajelzes-lap").style.display = "block";
+        document.getElementById("eredmeny").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+</script>
+
+</body> </html>
