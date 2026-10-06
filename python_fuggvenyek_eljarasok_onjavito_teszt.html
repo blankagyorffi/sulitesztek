@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python – Függvények és eljárások | Önellenőrző teszt</title>
+<style>
+  code{font-family:"Consolas","Courier New",monospace;background:#f1f3f5;padding:2px 5px;border-radius:4px}
+  pre.code{font-family:"Consolas","Courier New",monospace;background:#1e1e1e;color:#f8f8f2;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:15px;line-height:1.5;margin:12px 0}
+  .question .code-label{font-size:.85em;color:#666;margin-bottom:3px}
+
+  body{font-family:Arial,sans-serif;line-height:1.5;background:#f4f6f8;color:#222;margin:0}
+  .container{max-width:900px;margin:30px auto;background:white;padding:28px;border-radius:14px;box-shadow:0 4px 18px #0002}
+  h1{margin-top:0}
+  .intro{background:#eef5ff;padding:15px;border-radius:10px}
+  .question{border:1px solid #ddd;border-radius:10px;padding:18px;margin:18px 0}
+  .question h3{margin-top:0}
+  label{display:block;padding:9px;border-radius:7px;cursor:pointer}
+  label:hover{background:#f3f3f3}
+  button{background:#1769aa;color:white;border:0;padding:12px 18px;border-radius:8px;cursor:pointer;font-size:16px;margin:5px}
+  button:hover{background:#0d4f82}
+  #result{font-size:20px;font-weight:bold;margin:20px 0;padding:15px;border-radius:10px}
+  .correct{background:#d9f5df;border-color:#49a85a!important}
+  .incorrect{background:#ffe0e0;border-color:#d9534f!important}
+  .explanation{margin-top:10px;padding:10px;background:#fff8d8;border-radius:7px;display:none}
+  .hidden{display:none}
+  .progress{font-weight:bold}
+  .small{font-size:.92em;color:#555}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Python – Függvények és eljárások</h1>
+<div class="intro">
+  <p><strong>Önellenőrző teszt – 15 kérdés</strong></p>
+  <p>Jelöld be minden kérdésnél az egyetlen helyes választ, majd kattints az
+  <strong>„Ellenőrzés”</strong> gombra. A teszt automatikusan kijavítja a válaszokat,
+  megmutatja a pontszámot és rövid magyarázatot ad.</p>
+  <p class="small">Javasolt szint: középiskolai Python-alapok.</p>
+</div>
+
+<div id="quiz"></div>
+
+<div>
+  <button onclick="checkAnswers()">Ellenőrzés</button>
+  <button onclick="resetQuiz()">Újrakezdés</button>
+</div>
+<div id="result" class="hidden"></div>
+</div>
+
+<script>
+const questions = [
+{q:`Melyik kulcsszóval definiálunk függvényt Pythonban?`,a:["function","def","func","define"],c:1,e:"A Pythonban a függvény létrehozását a def kulcsszóval kezdjük."},
+{q:`Melyik a helyes függvénydefiníció?`,a:["def koszon():","function koszon():","def koszon[]:","create koszon():"],c:0,e:"A helyes forma: def függvénynév(paraméterek):"},
+{q:`Hogyan hívjuk meg az alábbi függvényt?<pre class="code">def koszon():\n    print("Szia!")</pre>`,a:["call koszon","koszon()","def koszon()","print(koszon)"],c:1,e:"A függvény meghívása a nevével és zárójelekkel történik: koszon()."},
+{q:`Mi a paraméter egy függvényben?`,a:["A függvény neve","A függvénynek átadható bemeneti adat neve","A visszatérési érték","Egy kötelezően kiírandó szöveg"],c:1,e:"A paraméter a függvény definíciójában megadott változó, amelyen keresztül adatot kaphat a függvény."},
+{q:`Mit ad vissza ez a függvény?<pre class="code">def duplaz(x):\n    return x * 2</pre>`,a:["Mindig 2-t","Az x kétszeresét","Semmit","Az x felét"],c:1,e:"A return x * 2 az x értékének kétszeresét adja vissza."},
+{q:`Mi a return utasítás legfontosabb szerepe?`,a:["Ciklust indít","Függvényt definiál","Értéket ad vissza a függvény hívójának","Kiírja az értéket a képernyőre"],c:2,e:"A return a függvény eredményét visszaadja a hívó programrésznek, és lezárja az adott függvényfutást."},
+{q:`Mi történik az alábbi hívásnál?<pre class="code">print(osszeg(3, 5))</pre><div class="code-label">ha a függvény:</div><pre class="code">def osszeg(a, b):\n    return a + b</pre>`,a:["8 jelenik meg","35 jelenik meg","3 jelenik meg","Hiba történik, mert két paraméter nem adható át"],c:0,e:"A függvény 3 + 5 értékét adja vissza, a print pedig ezt kiírja: 8."},
+{q:`Melyik állítás igaz a lokális változóra?`,a:["A program minden részéből automatikusan elérhető","Csak a Python beépített függvényeiben használható","Általában csak azon függvényen belül érhető el, ahol létrehozták","Mindig globális változó"],c:2,e:"A függvényen belül létrehozott lokális változó hatóköre alapvetően az adott függvényre korlátozódik."},
+{q:`Mit jelent, ha egy függvényt csak azért hívunk meg, hogy elvégezzen egy műveletet, például kiírjon valamit?`,a:["Eljárásszerűen használjuk a függvényt","Mindig ciklust indítunk","A függvénynek kötelező paramétere van","A függvény nem fut le"],c:0,e:"Pythonban külön eljárás-típus nincs úgy, mint egyes más nyelvekben; egy értéket nem feltétlenül visszaadó függvényt eljárásszerűen használhatunk."},
+{q:`Mit eredményez ez a függvény?<pre class="code">def uzenet():\n    print("Hello")</pre>`,a:["A 'Hello' szöveget kiírja, amikor meghívjuk","A 'Hello' szöveget automatikusan kiírja a program indulásakor","A 'Hello' értéket return segítségével visszaadja","Szintaktikai hibát okoz"],c:0,e:"A függvény törzsében print szerepel, ezért meghíváskor kiírja a Hello szöveget. A függvény definíciója önmagában még nem hívás."},
+{q:`Melyik hívás adja át helyesen a 10 értéket az <code>x</code> paraméternek?<pre class="code">def negyzet(x):\n    return x * x</pre>`,a:["negyzet = 10","negyzet(10)","def negyzet(10)","return negyzet(10)"],c:1,e:"A negyzet(10) hívás az x paraméternek a 10 értéket adja át."},
+{q:`Mi történik, ha egy return utasítás után ugyanabban a függvényben további kód következik?`,a:["A return utáni kód is biztosan lefut","A függvény kétszer fut le","A return utáni, az adott függvényhívásban el nem érhető kód nem hajtódik végre","A Python automatikusan ciklust indít"],c:2,e:"A return befejezi az aktuális függvény végrehajtását, ezért az utána lévő utasítások nem futnak le abban a hívásban."},
+{q:`Melyik függvényhívás eredménye 25?<pre class="code">def negyzet(x):\n    return x * x</pre>`,a:["negyzet(5)","negyzet(10)","negyzet(20)","negyzet(2)"],c:0,e:"5 * 5 = 25, ezért a negyzet(5) hívás eredménye 25."},
+{q:`Miért hasznos függvényeket készíteni?`,a:["Csak azért, hogy hosszabb legyen a program","Az ismétlődő feladatok újrafelhasználhatók és a program áttekinthetőbb lehet","Mert így nincs szükség változókra","Mert a Python csak függvényekből állhat"],c:1,e:"A függvényekkel a program részei újra felhasználhatók, csökkenthető a kódismétlés és javítható az áttekinthetőség."},
+{q:`Melyik kód számolja ki két szám átlagát és adja vissza az eredményt?`,a:["def atlag(a,b): return (a+b)/2","def atlag(a,b): print(a+b/2)","def atlag(a,b): return a+b*2","def atlag(a,b): average = a+b"],c:0,e:"A két szám összegét 2-vel kell osztani: return (a+b)/2."}
+];
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach((item,i)=>{
+  const div=document.createElement("div");
+  div.className="question";
+  div.id="q"+i;
+  div.innerHTML=`<h3>${i+1}. ${item.q}</h3>`+
+    item.a.map((ans,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}) ${ans}</label>`).join("")+
+    `<div class="explanation" id="e${i}"></div>`;
+  quiz.appendChild(div);
+});
+
+function checkAnswers(){
+  let score=0, answered=0;
+  questions.forEach((item,i)=>{
+    const box=document.getElementById("q"+i);
+    const exp=document.getElementById("e"+i);
+    const selected=document.querySelector(`input[name="q${i}"]:checked`);
+    box.classList.remove("correct","incorrect");
+    if(selected){
+      answered++;
+      if(Number(selected.value)===item.c){score++; box.classList.add("correct");}
+      else box.classList.add("incorrect");
+      exp.innerHTML="<strong>Magyarázat:</strong> "+item.e;
+      exp.style.display="block";
+    } else {
+      box.classList.add("incorrect");
+      exp.innerHTML="<strong>Nem válaszoltál.</strong> Helyes válasz: "+String.fromCharCode(65+item.c)+") "+item.a[item.c]+"<br>"+item.e;
+      exp.style.display="block";
+    }
+  });
+  const percent=Math.round(score/questions.length*100);
+  let grade = percent>=90?"Kiváló":percent>=75?"Jó":percent>=60?"Megfelelő":"Gyakorlás javasolt";
+  const result=document.getElementById("result");
+  result.classList.remove("hidden");
+  result.innerHTML=`Eredmény: ${score}/${questions.length} pont (${percent}%) – <strong>${grade}</strong><br>
+  <span class="small">Megválaszolt kérdések: ${answered}/${questions.length}. A hibás válaszok alatt látható a magyarázat.</span>`;
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+
+function resetQuiz(){
+  document.querySelectorAll("input[type=radio]").forEach(x=>x.checked=false);
+  document.querySelectorAll(".question").forEach(x=>x.classList.remove("correct","incorrect"));
+  document.querySelectorAll(".explanation").forEach(x=>x.style.display="none");
+  document.getElementById("result").classList.add("hidden");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
