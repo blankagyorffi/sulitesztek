@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python – Eljárások | Önellenőrző teszt</title>
+<style>
+  code{font-family:"Consolas","Courier New",monospace;background:#f1f3f5;padding:2px 5px;border-radius:4px}
+  pre.code{font-family:"Consolas","Courier New",monospace;background:#1e1e1e;color:#f8f8f2;padding:14px 16px;border-radius:8px;overflow-x:auto;font-size:15px;line-height:1.5;margin:12px 0}
+  .question .code-label{font-size:.85em;color:#666;margin-bottom:3px}
+
+  body{font-family:Arial,sans-serif;line-height:1.5;background:#f4f6f8;color:#222;margin:0}
+  .container{max-width:900px;margin:30px auto;background:white;padding:28px;border-radius:14px;box-shadow:0 4px 18px #0002}
+  h1{margin-top:0}
+  .intro{background:#eef5ff;padding:15px;border-radius:10px}
+  .question{border:1px solid #ddd;border-radius:10px;padding:18px;margin:18px 0}
+  .question h3{margin-top:0}
+  label{display:block;padding:9px;border-radius:7px;cursor:pointer}
+  label:hover{background:#f3f3f3}
+  button{background:#1769aa;color:white;border:0;padding:12px 18px;border-radius:8px;cursor:pointer;font-size:16px;margin:5px}
+  button:hover{background:#0d4f82}
+  #result{font-size:20px;font-weight:bold;margin:20px 0;padding:15px;border-radius:10px}
+  .correct{background:#d9f5df;border-color:#49a85a!important}
+  .incorrect{background:#ffe0e0;border-color:#d9534f!important}
+  .explanation{margin-top:10px;padding:10px;background:#fff8d8;border-radius:7px;display:none}
+  .hidden{display:none}
+  .progress{font-weight:bold}
+  .small{font-size:.92em;color:#555}
+  .adatok{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 6px}
+  .adatok label{flex:1 1 220px;padding:0;cursor:default;font-weight:bold}
+  .adatok label:hover{background:none}
+  .adatok input{display:block;width:100%;box-sizing:border-box;margin-top:4px;padding:10px;font-size:16px;border:1px solid #bbb;border-radius:7px;font-weight:normal}
+  #kuldesStatus{margin:0 0 10px;padding:10px 14px;border-radius:8px;font-size:15px}
+  .ok-status{background:#d9f5df}
+  .err-status{background:#ffe0e0}
+  .wait-status{background:#eef5ff}
+  .review{font-size:16px;font-weight:normal;margin-top:14px;padding:12px 14px;background:#fff;border:1px solid #ddd;border-radius:10px}
+  .review h4{margin:0 0 8px}
+  .review ul{margin:0;padding-left:20px}
+  .review li{margin:8px 0}
+  .review a{color:#1769aa;cursor:pointer;text-decoration:underline}
+  .review .ok{color:#2e7d32;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Python – Eljárások</h1>
+<div class="intro">
+  <p><strong>Önellenőrző teszt – 17 kérdés</strong></p>
+  <p>Jelöld be minden kérdésnél az egyetlen helyes választ, majd kattints az
+  <strong>„Ellenőrzés”</strong> gombra. A teszt automatikusan kijavítja a válaszokat,
+  megmutatja a pontszámot és rövid magyarázatot ad.</p>
+  <p class="small">Javasolt szint: középiskolai Python-alapok.</p>
+</div>
+
+<div class="adatok">
+  <label>Név<input type="text" id="nev" placeholder="Pl. Kiss Anna" autocomplete="name"></label>
+  <label>Osztály/csoport<input type="text" id="csoport" placeholder="Pl. 10.A" autocomplete="off"></label>
+</div>
+
+<div id="quiz"></div>
+
+<div>
+  <button onclick="checkAnswers()">Ellenőrzés</button>
+  <button onclick="resetQuiz()">Újrakezdés</button>
+</div>
+<div id="result" class="hidden"></div>
+<div id="kuldesStatus" class="hidden"></div>
+</div>
+
+<script>
+/* ===== Beállítások az eredmények Google Sheetbe küldéséhez ===== */
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxHW3zsnB-gdkm4-DDmkN1bpVuHwgbZ1IpvkCssxuZEKOfCMYXr-j-SKvv-qOZNy4w/exec";   // Apps Script webalkalmazás URL (https://script.google.com/macros/s/.../exec)
+const TESZT_NEV  = "Python eljárások";                        // ez lesz a munkalap neve a táblázatban
+let elkuldve = false;                                           // újrakezdésig csak egyszer küldi be
+
+const questions = [
+{q:`Mi jellemzi az eljárást Pythonban (a tanult szemlélet szerint)?`,a:["Végrehajt egy feladatot (pl. kiír valamit), de nincs return utasítása, így nem ad vissza értéket","Mindig return utasítással adja vissza az eredményt","Nem def kulcsszóval készül","Mindig van legalább két paramétere"],c:0,e:"Az eljárás végrehajt egy műveletet (például kiírást), de nem ad vissza értéket, ezért nincs benne return. Pythonban az eljárást is def-fel definiáljuk."},
+{q:`Melyik az eljárás az alábbi három alprogram közül?<pre class="code">def noveld(x):\n    return x + 1\n\ndef kiir(x):\n    print(x + 1)\n\ndef dupla(x):\n    return x * 2</pre>`,a:["noveld","kiir","dupla","Mindhárom"],c:1,e:"A kiir alprogramban nincs return, csak print van, ezért eljárás. A noveld és a dupla return-nel visszaadja az eredményt, ezért függvények."},
+{q:`Melyik definíció eljárás, amely kiírja a köszöntést?`,a:["<code>def koszon(nev): print('Szia, ' + nev)</code>","<code>def koszon(nev): return 'Szia, ' + nev</code>","<code>function koszon(nev): print('Szia, ' + nev)</code>","<code>def koszon(nev) print('Szia, ' + nev)</code>"],c:0,e:"Az első változat helyes eljárás: def, kettőspont, a törzsben print, return nélkül. A második return-nel visszaad, ezért függvény; a harmadik és a negyedik szintaktikailag hibás."},
+{q:`Hogyan hívjuk meg az eljárást, hogy kiírja a vonalat?<pre class="code">def vonal():\n    print("-----")</pre>`,a:["vonal()","print(vonal)","return vonal","def vonal()"],c:0,e:"Az eljárást a nevével és zárójellel hívjuk meg: vonal(). Külön print nem kell, hiszen az eljárás maga írja ki a vonalat."},
+{q:`Mit ír ki a program?<pre class="code">def hello(nev):\n    print("Szia", nev)\n\nhello("Anna")\nhello("Béla")</pre>`,a:["Szia Anna<br>Szia Béla","Szia nev<br>Szia nev","Semmit, mert nincs return","Szia Béla"],c:0,e:"Az eljárást kétszer hívjuk meg, mindkétszer kiírja a kapott nevet: először Szia Anna, majd Szia Béla."},
+{q:`Mit ír ki a program?<pre class="code">def kiir():\n    print("Hello")\n\nx = kiir()\nprint(x)</pre>`,a:["Hello<br>None","Hello<br>Hello","Csak None","Hibát jelez"],c:0,e:"A kiir() hívásakor megjelenik a Hello. Mivel az eljárásnak nincs return-je, nem ad vissza értéket, így az x értéke None lesz, és a második print ezt írja ki."},
+{q:`Mi lesz az <code>y</code> értéke a program lefutása után?<pre class="code">def szamol(a, b):\n    return a + b\n\ndef kiir(a, b):\n    print(a + b)\n\nx = szamol(2, 3)\ny = kiir(2, 3)</pre>`,a:["None","5","0","Hibát jelez"],c:0,e:"A szamol függvény return-nel visszaadja az 5-öt, ezért x értéke 5. A kiir eljárás csak kiírja az 5-öt, de nem ad vissza értéket, ezért y értéke None."},
+{q:`Mit ír ki a program?<pre class="code">def teglalap(a, b):\n    print("Terület:", a * b)\n\nteglalap(4, 5)</pre>`,a:["Terület: 20","Terület: 9","Terület: a * b","Nem ír ki semmit"],c:0,e:"Az eljárás a két paraméter szorzatát írja ki: 4 * 5 = 20, így a kiírás: Terület: 20."},
+{q:`Mit ír ki a program?<pre class="code">def szamol(n):\n    for i in range(1, n + 1):\n        print(i)\n\nszamol(3)</pre>`,a:["1<br>2<br>3","1<br>2<br>3<br>4","3","0<br>1<br>2"],c:0,e:"A range(1, 4) az 1, 2, 3 értékeket adja. Az eljárás mindegyiket külön sorba kiírja. Ciklus tehát eljárásban is használható."},
+{q:`Mit ír ki a program?<pre class="code">def hozzaad(lista):\n    lista.append(10)\n\nszamok = [1, 2]\nhozzaad(szamok)\nprint(szamok)</pre>`,a:["[1, 2, 10]","[1, 2]","None","[10]"],c:0,e:"Az eljárás nem ad vissza értéket, de módosítja a kapott listát, ezért a hívás után a szamok lista már a 10-et is tartalmazza: [1, 2, 10]."},
+{q:`Mi történik az alábbi programmal?<pre class="code">def kiir(x):\n    print(x)\n\neredmeny = kiir(5) + 1</pre>`,a:["Hibát jelez, mert a kiir eljárás None-t ad vissza, és a None + 1 nem értelmezhető","Az eredmeny értéke 6 lesz","Az eredmeny értéke 51 lesz","Az eredmeny értéke 5 lesz"],c:0,e:"A kiir(5) kiírja az 5-öt, de értékként None-t ad vissza. A None + 1 műveletet a Python nem tudja elvégezni (TypeError). Eljárás hívásának az eredményével nem lehet számolni."},
+{q:`Melyik feladatot célszerű <strong>eljárásként</strong> megírni?`,a:["Egy menü kiírása a képernyőre","Két szám összegének kiszámítása, amelyet később felhasználunk","Egy szám négyzetének kiszámítása és továbbadása","Az átlag kiszámítása, amelyet változóba mentünk"],c:0,e:"Ha csak egy műveletet kell végrehajtani (például kiírni a menüt), eljárást írunk. Ha az eredményt tovább akarjuk használni, függvényt írunk return-nel."},
+{q:`Mit ír ki a program?<pre class="code">def keret():\n    print("**********")\n\nkeret()\nprint("Python")\nkeret()</pre>`,a:["**********<br>Python<br>**********","Python","**********<br>**********<br>Python","Hibát jelez, mert a keret eljárásnak nincs paramétere"],c:0,e:"A keret eljárás kétszer fut le, a kettő között a print(\"Python\") sor. Az eljárás a kódismétlés elkerülésére jó: egyszer írjuk meg, többször hívjuk."},
+{q:`Mit ír ki a program?<pre class="code">def udvozol(nev, kor):\n    print(f"{nev} {kor} éves.")\n\nudvozol("Anna", 16)</pre>`,a:["Anna 16 éves.","{nev} {kor} éves.","nev kor éves.","Hibát jelez"],c:0,e:"Az f-stringben a kapcsos zárójelben lévő változók helyére az értékek kerülnek, így a kiírás: Anna 16 éves."},
+{q:`Mit ír ki a program?<pre class="code">def ellenoriz(x):\n    if x &lt; 0:\n        print("Negatív")\n        return\n    print("Nemnegatív")\n\nellenoriz(-3)</pre>`,a:["Negatív","Negatív<br>Nemnegatív","Nemnegatív","Nem ír ki semmit"],c:0,e:"A paraméter nélküli return csak kilép az eljárásból, értéket nem ad vissza. Ezért a Nemnegatív sor már nem fut le. (Az eljárás hívása ettől még None értéket adna.)"},
+{q:`Melyik állítás igaz az alábbi hívásokra?<pre class="code">def kiir(x):\n    print(x * 2)\n\ndef dupla(x):\n    return x * 2\n\nkiir(5)\nertek = dupla(5)</pre>`,a:["A kiir(5) önálló utasítás, az eljárás maga írja ki az eredményt; a dupla(5) értékét változóba menthetjük","Mindkettő értékét változóba lehet menteni, és ugyanazt jelenti","A dupla(5) önálló utasítás, a kiir(5) értékét változóba kell menteni","Egyik hívás sem működik, mert nincs print(kiir(5))"],c:0,e:"Az eljárást önálló utasításként hívjuk, mert a hatása a kiírás. A függvény értéket ad vissza, ezért az eredményét változóba menthetjük, vagy kifejezésben felhasználhatjuk."},
+{q:`Melyik kód ír ki egy 5 hosszú csillagsort úgy, hogy az eljárást kétszer hívjuk meg?`,a:["def sor(): print('*****')<br>sor()<br>sor()","def sor(): return '*****'<br>sor()<br>sor()","def sor(): print('*****')<br>print(sor)","def sor(): print('*****')<br>x = sor<br>x"],c:0,e:"Az első változatban az eljárás kiír, és kétszer meghívjuk: sor() sor(). A másodikban return van (függvény), ezért semmi nem jelenik meg; a harmadik és a negyedik nem hívja meg az eljárást, mert hiányzik a zárójel."}
+];
+
+const quiz = document.getElementById("quiz");
+
+questions.forEach((item,i)=>{
+  const div=document.createElement("div");
+  div.className="question";
+  div.id="q"+i;
+  div.innerHTML=`<h3>${i+1}. ${item.q}</h3>`+
+    item.a.map((ans,j)=>`<label><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}) ${ans}</label>`).join("")+
+    `<div class="explanation" id="e${i}"></div>`;
+  quiz.appendChild(div);
+});
+
+function checkAnswers(){
+  const nev=document.getElementById("nev").value.trim();
+  if(!nev){
+    alert("Kérlek, add meg a neved az ellenőrzés előtt!");
+    document.getElementById("nev").focus();
+    window.scrollTo({top:0,behavior:"smooth"});
+    return;
+  }
+  const pontok=new Array(questions.length).fill(0);
+  let score=0, answered=0;
+  const wrong=[];
+  questions.forEach((item,i)=>{
+    const box=document.getElementById("q"+i);
+    const exp=document.getElementById("e"+i);
+    const selected=document.querySelector(`input[name="q${i}"]:checked`);
+    box.classList.remove("correct","incorrect");
+    if(selected){
+      answered++;
+      if(Number(selected.value)===item.c){score++; pontok[i]=1; box.classList.add("correct");}
+      else {box.classList.add("incorrect"); wrong.push({i:i,given:Number(selected.value)});}
+      exp.innerHTML="<strong>Magyarázat:</strong> "+item.e;
+      exp.style.display="block";
+    } else {
+      box.classList.add("incorrect");
+      wrong.push({i:i,given:null});
+      exp.innerHTML="<strong>Nem válaszoltál.</strong> Helyes válasz: "+String.fromCharCode(65+item.c)+") "+item.a[item.c]+"<br>"+item.e;
+      exp.style.display="block";
+    }
+  });
+  const percent=Math.round(score/questions.length*100);
+  let grade = percent>=90?"Kiváló":percent>=75?"Jó":percent>=60?"Megfelelő":"Gyakorlás javasolt";
+  const result=document.getElementById("result");
+  result.classList.remove("hidden");
+  result.innerHTML=`Eredmény: ${score}/${questions.length} pont (${percent}%) – <strong>${grade}</strong><br>
+  <span class="small">Megválaszolt kérdések: ${answered}/${questions.length}. A hibás válaszok alatt látható a magyarázat.</span>`+buildReview(wrong);
+  kuldes({
+    teszt:TESZT_NEV,
+    nev:nev,
+    csoport:document.getElementById("csoport").value.trim(),
+    pont:score,
+    osszes:questions.length,
+    szazalek:percent,
+    megvalaszolatlan:questions.length-answered,
+    pontok:pontok
+  });
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+
+function allapot(osztaly,szoveg){
+  const el=document.getElementById("kuldesStatus");
+  el.className=osztaly;
+  el.textContent=szoveg;
+}
+
+async function kuldes(adat){
+  if(elkuldve) return;
+  if(!WEBAPP_URL || WEBAPP_URL.indexOf("IDE_ILLESZD")===0){
+    allapot("err-status","Az eredmény nincs elmentve: a tanár még nem állította be a webalkalmazás URL-jét.");
+    return;
+  }
+  allapot("wait-status","Eredmény mentése…");
+  try{
+    const valasz=await fetch(WEBAPP_URL,{
+      method:"POST",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body:JSON.stringify(adat)
+    });
+    const json=await valasz.json();
+    if(json.sikeres){
+      elkuldve=true;
+      allapot("ok-status","Az eredményed el lett mentve.");
+    } else {
+      allapot("err-status","A mentés nem sikerült: "+(json.hiba||"ismeretlen hiba")+" Kattints újra az Ellenőrzés gombra.");
+    }
+  }catch(hiba){
+    allapot("err-status","A mentés nem sikerült (hálózati hiba). Kattints újra az Ellenőrzés gombra.");
+  }
+}
+
+function buildReview(wrong){
+  if(!wrong.length) return `<div class="review"><h4>Hibavisszajelző</h4><span class="ok">Hibátlan! Minden kérdésre jól válaszoltál.</span></div>`;
+  const items=wrong.map(w=>{
+    const it=questions[w.i];
+    const title=it.q.split("<")[0].trim();
+    const given=w.given===null?"<em>nem válaszoltál</em>":String.fromCharCode(65+w.given)+") "+it.a[w.given];
+    const good=String.fromCharCode(65+it.c)+") "+it.a[it.c];
+    return `<li><a onclick="document.getElementById('q${w.i}').scrollIntoView({behavior:'smooth',block:'center'})">${w.i+1}. kérdés</a>: ${title}<br>
+      <span class="small">A te válaszod: ${given}<br>Helyes válasz: ${good}</span></li>`;
+  }).join("");
+  return `<div class="review"><h4>Hibavisszajelző – ${wrong.length} kérdést érdemes átnézni</h4><ul>${items}</ul></div>`;
+}
+
+function resetQuiz(){
+  document.querySelectorAll("input[type=radio]").forEach(x=>x.checked=false);
+  document.querySelectorAll(".question").forEach(x=>x.classList.remove("correct","incorrect"));
+  document.querySelectorAll(".explanation").forEach(x=>x.style.display="none");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("kuldesStatus").className="hidden";
+  elkuldve=false;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
