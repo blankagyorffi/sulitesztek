@@ -18,6 +18,9 @@
   .question-number { color:#64748b; font-weight:bold; margin-bottom:10px; }
   .question { font-size:1.35rem; font-weight:bold; margin-bottom:25px; }
   .code { background:#0f172a; color:#e2e8f0; padding:15px; border-radius:8px; font-family:Consolas,monospace; white-space:pre-wrap; margin:15px 0; overflow-x:auto; }
+  .figure { margin:15px 0 25px; text-align:center; }
+  .figure img { max-width:100%; height:auto; border:1px solid #cbd5e1; border-radius:8px; background:#fff; }
+  .figure .img-error { color:#64748b; font-size:.9rem; }
   .answers { display:grid; gap:12px; }
   .answer { border:2px solid #cbd5e1; border-radius:10px; padding:15px; background:#fff; cursor:pointer; text-align:left; font-size:1rem; font-family:inherit; color:inherit; transition:.2s; }
   .answer:hover:not(:disabled) { border-color:#2563eb; background:#eff6ff; }
@@ -60,6 +63,10 @@
       <div class="question-number" id="questionNumber"></div>
       <div class="question" id="questionText">Kérdések betöltése…</div>
       <pre id="codeBlock" class="code" style="display:none;"></pre>
+      <figure id="figure" class="figure" style="display:none;">
+        <img id="questionImage" alt="">
+        <figcaption id="imageError" class="img-error" style="display:none;"></figcaption>
+      </figure>
       <div class="answers" id="answers"></div>
 
       <div id="feedback" class="feedback" aria-live="polite">
@@ -205,7 +212,8 @@ function rowsToQuestions(rows) {
     .normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
   const idx = name => head.indexOf(name);
   const col = { q: idx("kerdes"), code: idx("kod"), a: idx("a"), b: idx("b"),
-    c: idx("c"), d: idx("d"), ok: idx("helyes"), ex: idx("magyarazat"), oral: idx("szobeli_tipp") };
+    c: idx("c"), d: idx("d"), ok: idx("helyes"), ex: idx("magyarazat"), oral: idx("szobeli_tipp"),
+    img: idx("kep"), imgAlt: idx("kep_alt") };
   if (col.q < 0 || col.a < 0 || col.b < 0 || col.ok < 0)
     throw new Error("Hiányzó oszlop a Sheetben (kerdes, a, b, helyes kötelező).");
 
@@ -222,6 +230,8 @@ function rowsToQuestions(rows) {
     out.push({
       question,
       code: get(r, col.code),
+      image: get(r, col.img),
+      imageAlt: get(r, col.imgAlt),
       answers,
       correct,
       explanation: get(r, col.ex),
@@ -229,6 +239,14 @@ function rowsToQuestions(rows) {
     });
   }
   return out;
+}
+
+/* Képek: relatív útvonal (pl. images/abra.svg), teljes webcím,
+   vagy Google Drive megosztási link (átalakítjuk beágyazható címre). */
+function resolveImageUrl(u) {
+  const m = u.match(/drive\.google\.com\/file\/d\/([\w-]+)/) ||
+            u.match(/drive\.google\.com\/(?:open|uc)\?(?:[^#]*&)?id=([\w-]+)/);
+  return m ? "https://drive.google.com/thumbnail?id=" + m[1] + "&sz=w1200" : u;
 }
 
 /* ---------- Állapot és megjelenítés ---------- */
@@ -266,6 +284,23 @@ function showQuestion() {
   const code = $("codeBlock");
   if (q.code) { code.textContent = q.code; code.style.display = "block"; }
   else code.style.display = "none";
+
+  const fig = $("figure"), img = $("questionImage"), err = $("imageError");
+  err.style.display = "none";
+  if (q.image) {
+    img.style.display = "";
+    img.alt = q.imageAlt || "A kérdéshez tartozó ábra";
+    img.onerror = () => {
+      img.style.display = "none";
+      err.textContent = "Az ábra nem tölthető be. " + (q.imageAlt || "");
+      err.style.display = "block";
+    };
+    img.src = resolveImageUrl(q.image);
+    fig.style.display = "block";
+  } else {
+    fig.style.display = "none";
+    img.removeAttribute("src");
+  }
 
   const box = $("answers");
   box.innerHTML = "";
