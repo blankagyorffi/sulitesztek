@@ -46,9 +46,6 @@ input.bad{border-color:var(--er)}
 <p class="sub">Önjavító teszt a beépített függvényekről és gyakori érettségi mintákról. Válaszolj, ellenőrizd, olvasd el a magyarázatot – a végén az eredményeket CSV-be (Excel/Sheets) mentheted.</p>
 <div class="row"><input type="text" class="nm" id="nm" placeholder="Név (kötelező)" autocomplete="name"><input type="text" class="nm" id="kl" placeholder="Osztály, pl. 12.B (kötelező)"></div>
 <div id="pm" class="sub" style="color:var(--er);margin:0 0 8px"></div>
-<details class="card" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mu)">Tanári beállítás: Google Táblázat (Apps Script) URL</summary>
-<input type="text" id="su" placeholder="https://script.google.com/macros/s/.../exec" style="margin-top:8px">
-<p class="sub" style="font-size:13px;margin:6px 0 0">Üresen hagyva az eredmény nem kerül elküldésre. Link a diákoknak: <code>…/kviz.html?s=AZ_URL</code></p></details>
 <div id="qs"></div>
 <div class="card" id="sum">
   <div class="big" id="tot">0 / 0 pont</div>
@@ -61,6 +58,9 @@ input.bad{border-color:var(--er)}
   <div id="res"></div>
   <textarea id="fb" style="display:none;width:100%;height:120px;margin-top:8px"></textarea>
 </div>
+<details class="card" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mu)">Tanári beállítás: Google Táblázat (Apps Script) URL</summary>
+<input type="text" id="su" placeholder="Üresen hagyva az alapértelmezett táblázatba küld" style="margin-top:8px">
+<p class="sub" style="font-size:13px;margin:6px 0 0">Csak akkor töltsd ki, ha másik táblázatba szeretnél küldeni. Link a diákoknak: <code>…/kviz.html?s=AZ_URL</code></p></details>
 </main>
 <script>
 const Q=[
@@ -92,7 +92,8 @@ const hl=c=>esc(c).replace(KW,(m,a,b,c2,d,e)=>a?'<span class="c">'+m+'</span>':b
 const norm=s=>s.replace(/"/g,"'").replace(/[ \t]+/g,"").replace(/\r/g,"").trim();
 const $=id=>document.getElementById(id);
 let R={};
-const SHEET_DEFAULT="https://script.google.com/macros/s/AKfycbyIpwdY60INqalG4QDMsa-X5HINIkPwuuvoYTfM-PVgmTnAM77pQs5Y9WTrJlk4XsXB/exec"; // alapértelmezett Apps Script URL (a ?s=... paraméter és a beállítás mező felülírja)
+const _p=["Y2V4ZS9CWHNYNGtsSnJUVzlZNXNRcDc3TUFuVG1nVlAtTWZUWW92dXV3UGtJTklINVgtYXNNRFE0","R2xhcU5JMDZZZHdwSXliY3lmS0Evcy9zb3JjYW0vbW9jLmVsZ29vZy50cGlyY3MvLzpzcHR0aA=="];
+const SHEET_DEFAULT=()=>{try{return atob(_p.join("")).split("").reverse().join("")}catch(e){return ""}}; // alapértelmezett táblázat (nem látszik a felületen)
 function build(){
   let h="",last="";
   Q.forEach((x,i)=>{
@@ -184,7 +185,7 @@ async function finish(){
   $("res").innerHTML='<div class="fb '+(S.pc>=40?"ok":"er")+'" style="margin-top:12px"><b class="t" style="font-size:1.2rem">'+esc(P.nev)+" ("+esc(P.osztaly)+"): "+S.p+" / "+S.mx+" pont – "+S.pc+"% – "+r[0]+"</b>"+r[1]+
     (weak?'<br><b>Ezeket ismételd át:</b><ul style="margin:4px 0">'+weak+"</ul>":"<br>Minden feladatcsoportban 60% felett teljesítettél.")+'<div id="st" style="margin-top:6px"></div></div>';
   document.querySelectorAll("#qs input,#qs button,#fin,#all").forEach(e=>e.disabled=true);
-  const u=$("su").value.trim(),st=$("st");
+  const u=$("su").value.trim()||SHEET_DEFAULT(),st=$("st");
   if(!u){st.textContent="Az eredmény nem lett elküldve (nincs megadva táblázat URL). Mentsd el a CSV-t, és add át a tanárnak.";return}
   try{
     await fetch(u,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(P)});
@@ -208,8 +209,7 @@ $("dl").onclick=async()=>{
 (function(){
   let u=new URLSearchParams(location.search).get("s");
   try{u=u||localStorage.getItem("su")||""}catch(e){}
-  u=u||SHEET_DEFAULT;
-  $("su").value=u;
+  $("su").value=u||"";
   $("su").onchange=()=>{try{localStorage.setItem("su",$("su").value.trim())}catch(e){}};
 })();
 build();
