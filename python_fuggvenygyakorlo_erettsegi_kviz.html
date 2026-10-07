@@ -76,12 +76,15 @@ const Q=[
 {t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program?",code:"print(list(\"alma\"))",a:["['a','l','m','a']"],ex:"A <code>list()</code> a szöveget karakterekre bontja: <code>['a', 'l', 'm', 'a']</code>."},
 {t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program?",code:"lista = [1, 2]\nlista.append(3)\nlista.pop()\nprint(lista)",a:["[1,2]"],ex:"Az <code>append(3)</code> hozzáadja a 3-at ([1, 2, 3]), a <code>pop()</code> az utolsó elemet törli, így újra <code>[1, 2]</code> lesz."},
 {t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program? (Gyakori csapda!)",code:"lista = [3, 1, 2]\neredmeny = lista.sort()\nprint(eredmeny)",o:["[1, 2, 3]","[3, 1, 2]","None","Hibaüzenet"],c:2,ex:"A <code>lista.sort()</code> <b>helyben</b> rendez, és <code>None</code>-t ad vissza. Ha az eredményt akarod egy új változóban, használd: <code>eredmeny = sorted(lista)</code>."},
+{t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program? (<code>index()</code>)",code:"nevek = [\"Anna\", \"Béla\", \"Cili\", \"Béla\"]\nprint(nevek.index(\"Béla\"))",a:["1"],ex:"Az <code>index(x)</code> az elem <b>első</b> előfordulásának indexét adja vissza (0-tól számolva), ezért itt 1, nem 3. Ha az elem nincs a listában, <code>ValueError</code> hibával leáll a program, ezért érdemes előtte ellenőrizni: <code>if \"Béla\" in nevek:</code>."},
 {t:"5. enumerate() és zip()",q:"Mit ír ki a program?",code:"nevek = [\"Anna\", \"Béla\"]\nfor i, x in enumerate(nevek):\n    print(i, x)",o:["1 Anna / 2 Béla","0 Anna / 1 Béla","Anna 0 / Béla 1","Anna / Béla"],c:1,ex:"Az <code>enumerate</code> az indexet (0-tól) és az elemet adja egyszerre. Hasznos, ha a feladat az elem <i>sorszámát</i> is kéri."},
 {t:"5. enumerate() és zip()",q:"Mit ír ki a program? (Elemek szóközzel elválasztva.)",code:"a = [1, 2, 3]\nb = [4, 5, 6]\nfor x, y in zip(a, b):\n    print(x * y, end=\" \")",a:["41018"],ex:"A <code>zip</code> párhuzamosan járja be a listákat: (1,4), (2,5), (3,6). A szorzatok: 4, 10, 18 → <code>4 10 18</code>."},
 {t:"6. Érettségi minták",q:"Mennyi lesz a <code>db</code> értéke? (megszámlálás)",code:"szamok = [12, 5, 8, 21, 10]\ndb = 0\nfor x in szamok:\n    if x > 10:\n        db += 1\nprint(db)",a:["2"],ex:"Csak a 12 és a 21 nagyobb 10-nél (a 10 nem, mert a feltétel szigorú <code>&gt;</code>). A számláló kétszer nő → 2."},
 {t:"6. Érettségi minták",q:"Mit ír ki a program? (eldöntés)",code:"szamok = [3, -1, 5]\nprint(all(x > 0 for x in szamok))\nprint(any(x > 4 for x in szamok))",o:["True / True","False / True","False / False","True / False"],c:1,ex:"<code>all</code> akkor igaz, ha <b>minden</b> elem megfelel – a −1 miatt <code>False</code>. <code>any</code> akkor igaz, ha <b>legalább egy</b> megfelel – az 5 nagyobb 4-nél, így <code>True</code>."},
 {t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"a-b-c\"\nprint(\" \".join(szoveg.split(\"-\")))",a:["a b c"],ex:"A <code>split(\"-\")</code> a kötőjelnél darabol: <code>['a', 'b', 'c']</code>. A <code>\" \".join(...)</code> szóközzel fűzi össze: <code>a b c</code>."},
-{t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"Alma\"\nprint(szoveg.lower().find(\"m\"))\nprint(szoveg.count(\"a\"))",a:["2\n1","21"],ex:"A <code>lower()</code> után <code>\"alma\"</code>; az \"m\" indexe 2 (0-tól számolunk). A <code>count(\"a\")</code> az <b>eredeti</b> \"Alma\" szövegben csak 1 kisbetűs \"a\"-t talál (a nagy A nem számít). Írd be a két sort egymás után, szóköz nélkül is elfogadjuk: <code>21</code>."}
+{t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"Alma\"\nprint(szoveg.lower().find(\"m\"))",a:["2"],ex:"A <code>lower()</code> után <code>\"alma\"</code> lesz, a <code>find(\"m\")</code> pedig az első találat <b>indexét</b> adja. Az indexelés 0-tól indul: a=0, l=1, m=2. Ha nincs találat, az eredmény <code>-1</code>."},
+{t:"7. Szövegkezelés",q:"Mi történik a program futtatásakor? (<code>find()</code> és <code>index()</code> különbsége)",code:"szoveg = \"alma\"\nprint(szoveg.find(\"x\"))\nprint(szoveg.index(\"x\"))",o:["-1 és -1 íródik ki","Kiírja: -1, majd ValueError hibával leáll","None és None íródik ki","Már az első sornál ValueError hiba lesz"],c:1,ex:"A <code>find()</code> találat nélkül <code>-1</code>-et ad, a program fut tovább. Az <code>index()</code> ugyanezt a keresést <code>ValueError</code> hibával jelzi, és leállítja a programot. Szövegen és listán is használható, de a <code>find()</code> csak szövegen létezik."},
+{t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"Alma\"\nprint(szoveg.count(\"a\"))",a:["1"],ex:"A <code>count(\"a\")</code> az előfordulások számát adja, és megkülönbözteti a kis- és nagybetűt. Az <b>eredeti</b> \"Alma\" szövegben csak egy kisbetűs \"a\" van (az utolsó betű), a nagy A nem számít. Kisbetűsítés után (<code>szoveg.lower().count(\"a\")</code>) már 2 lenne."}
 ];
 const KW=/(#.*$)|("[^"\n]*"|'[^'\n]*')|\b(for|in|if|else|elif|while|True|False|None|and|or|not)\b|\b(print|input|int|float|str|len|range|sum|min|max|abs|round|sorted|list|enumerate|zip|any|all)\b|\b(\d+\.?\d*)\b/gm;
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -89,7 +92,7 @@ const hl=c=>esc(c).replace(KW,(m,a,b,c2,d,e)=>a?'<span class="c">'+m+'</span>':b
 const norm=s=>s.replace(/"/g,"'").replace(/[ \t]+/g,"").replace(/\r/g,"").trim();
 const $=id=>document.getElementById(id);
 let R={};
-const SHEET_DEFAULT=""; // tanár: ide is beírható az Apps Script webalkalmazás URL-je
+const SHEET_DEFAULT="https://script.google.com/macros/s/AKfycbyIpwdY60INqalG4QDMsa-X5HINIkPwuuvoYTfM-PVgmTnAM77pQs5Y9WTrJlk4XsXB/exec"; // alapértelmezett Apps Script URL (a ?s=... paraméter és a beállítás mező felülírja)
 function build(){
   let h="",last="";
   Q.forEach((x,i)=>{
@@ -203,8 +206,9 @@ $("dl").onclick=async()=>{
   }catch(e){const t=$("fb");t.style.display="block";t.value=data;t.select();m.textContent="A letöltés nem érhető el – másold ki a szöveget."}
 };
 (function(){
-  let u=new URLSearchParams(location.search).get("s")||SHEET_DEFAULT;
+  let u=new URLSearchParams(location.search).get("s");
   try{u=u||localStorage.getItem("su")||""}catch(e){}
+  u=u||SHEET_DEFAULT;
   $("su").value=u;
   $("su").onchange=()=>{try{localStorage.setItem("su",$("su").value.trim())}catch(e){}};
 })();
