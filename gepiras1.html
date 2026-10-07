@@ -1060,6 +1060,7 @@ function updateTimer() {
 }
 
 
+  
 
 /* ------------------------------------------
    STATISZTIKA
@@ -1663,7 +1664,24 @@ function finishTest() {
 
 }
 
+saveResult({
+  studentName: studentName,
+  studentClass: studentClass,
 
+  taskCount: results.length,
+
+  totalScore: totalScore,
+  averagePercent: averagePercent,
+
+  totalCorrect: totalCorrect,
+  totalWrong: totalWrong,
+  totalMistakes: totalMistakes,
+  totalTyped: totalTyped,
+
+  averageSpeed: averageSpeed,
+
+  tasks: results
+});
 
 /* ------------------------------------------
    EREDMÉNYTÁBLÁZAT
