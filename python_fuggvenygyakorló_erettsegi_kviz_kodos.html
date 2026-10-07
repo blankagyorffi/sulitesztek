@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python érettségi kvíz (belépőkóddal)</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2330;--mu:#667085;--bd:#dfe3ec;--ac:#3b6cf6;--ok:#16a34a;--okb:#e7f7ed;--er:#dc2626;--erb:#fdeaea;--cb:#0f172a;--ct:#e2e8f0;--k:#f59e0b;--s:#34d399;--n:#60a5fa;--c:#94a3b8;--f:#c084fc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1118;--card:#171b25;--tx:#e8ebf2;--mu:#98a2b3;--bd:#2a3040;--ac:#7c9cff;--okb:#10281b;--erb:#2e1416}}
+:root[data-theme="dark"]{--bg:#0e1118;--card:#171b25;--tx:#e8ebf2;--mu:#98a2b3;--bd:#2a3040;--ac:#7c9cff;--okb:#10281b;--erb:#2e1416}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.4em 0 .1em}
+p.sub{color:var(--mu);margin:0 0 14px}
+h2{font-size:1.1rem;margin:26px 0 8px;color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:12px}
+.card.ok{border-color:var(--ok)}.card.er{border-color:var(--er)}
+.q{font-weight:600;margin:0 0 8px}
+pre{margin:8px 0;padding:12px;border-radius:8px;background:var(--cb);color:var(--ct);overflow-x:auto;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre .k{color:var(--k)}pre .s{color:var(--s)}pre .n{color:var(--n)}pre .c{color:var(--c);font-style:italic}pre .f{color:var(--f)}
+code{background:var(--bd);padding:1px 5px;border-radius:4px;font:.9em ui-monospace,Menlo,Consolas,monospace}
+label.o{display:block;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;margin:5px 0;cursor:pointer;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}
+label.o input{margin-right:8px}
+input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:14px ui-monospace,Menlo,Consolas,monospace}
+button{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:600 15px system-ui;cursor:pointer;margin:8px 8px 0 0}
+button.g{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:15px}
+.fb.ok{background:var(--okb)}.fb.er{background:var(--erb)}
+.fb b.t{display:block;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:left}
+.wrap{overflow-x:auto}
+.big{font-size:1.6rem;font-weight:700}
+input.nm{flex:1 1 200px;max-width:320px;font-family:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.card.pa{border-color:#f59e0b}.fb.pa{background:rgba(245,158,11,.16)}
+input.bad{border-color:var(--er)}
+</style>
+</head>
+<body>
+<main>
+<h1>🐍 Python érettségi kvíz</h1>
+<p class="sub">Önjavító teszt a beépített függvényekről és gyakori érettségi mintákról. Válaszolj, ellenőrizd, olvasd el a magyarázatot – a végén az eredményeket CSV-be (Excel/Sheets) mentheted.</p>
+<div class="row"><input type="text" class="nm" id="nm" placeholder="Név (kötelező)" autocomplete="name"><input type="text" class="nm" id="kl" placeholder="Osztály, pl. 12.B (kötelező)"><input type="text" class="nm" id="kd" placeholder="Belépőkód (a tanártól, kötelező)" autocomplete="off" autocapitalize="off"></div>
+<div id="pm" class="sub" style="color:var(--er);margin:0 0 8px"></div>
+<div id="qs"></div>
+<div class="card" id="sum">
+  <div class="big" id="tot">0 / 0 pont</div>
+  <div class="wrap"><table><thead><tr><th>Feladat</th><th>Pont</th><th>Megoldott</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <button id="fin">Befejezés és beküldés</button>
+  <button class="g" id="all">Mind ellenőrzése</button>
+  <button class="g" id="dl">Saját CSV mentése</button>
+  <button class="g" id="rs">Újrakezdés</button>
+  <div id="msg" class="sub" style="margin-top:8px"></div>
+  <div id="res"></div>
+  <textarea id="fb" style="display:none;width:100%;height:120px;margin-top:8px"></textarea>
+</div>
+<details class="card" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mu)">Tanári beállítás: Google Táblázat (Apps Script) URL</summary>
+<input type="text" id="su" placeholder="Üresen hagyva az alapértelmezett táblázatba küld" style="margin-top:8px">
+<p class="sub" style="font-size:13px;margin:6px 0 0">Csak akkor töltsd ki, ha másik táblázatba szeretnél küldeni. Link a diákoknak: <code>…/kviz.html?s=AZ_URL</code></p></details>
+</main>
+<script>
+const Q=[
+{t:"1. Alapok: bemenet, típusok, hossz",q:"Mit ír ki a program?",code:"x = int(\"12\")\nprint(x + 1)",a:["13"],ex:"Az <code>int(\"12\")</code> a szöveget egész számmá alakítja, így <code>12 + 1 = 13</code>. Ha nem alakítanád át, a <code>\"12\" + 1</code> hibát (TypeError) adna."},
+{t:"1. Alapok: bemenet, típusok, hossz",q:"Mit ír ki a program?",code:"print(str(123) + \"4\")",a:["1234"],ex:"A <code>str(123)</code> szöveg lesz (<code>\"123\"</code>), a <code>+</code> pedig szövegeknél összefűz: <code>\"123\" + \"4\"</code> → <code>1234</code>."},
+{t:"1. Alapok: bemenet, típusok, hossz",q:"Mit ír ki a program?",code:"szamok = [12, 5, 8, 21]\nprint(len(szamok))",a:["4"],ex:"A <code>len()</code> az elemek számát adja vissza. Szövegnél a karakterek számát: <code>len(\"alma\")</code> → 4."},
+{t:"2. range()",q:"Mely számokat járja be a ciklus?",code:"for i in range(2, 7):\n    print(i)",o:["2, 3, 4, 5, 6, 7","2, 3, 4, 5, 6","3, 4, 5, 6, 7","2, 7"],c:1,ex:"A <code>range(kezdő, vég)</code> a kezdő értéktől a <b>vég előttig</b> megy, a vég már nem szerepel. <code>range(5)</code> → 0, 1, 2, 3, 4."},
+{t:"2. range()",q:"Mit ad a <code>range(2, 10, 2)</code>?",code:"for i in range(2, 10, 2):\n    print(i, end=\" \")",o:["2 4 6 8","2 4 6 8 10","4 6 8 10","2 3 4 5 6 7 8 9"],c:0,ex:"A harmadik paraméter a lépésköz. 2-től indul, 2-esével lép, és 10 előtt megáll: 2, 4, 6, 8."},
+{t:"3. Összegzés, átlag, min/max",q:"Mennyi az átlag? (Figyelj a tizedesekre!)",code:"szamok = [2, 4, 6]\natlag = sum(szamok) / len(szamok)\nprint(atlag)",a:["4.0"],ex:"<code>sum</code> = 12, <code>len</code> = 3. A <code>/</code> osztás mindig valós számot ad, ezért <code>4.0</code> (nem 4). Egész osztás: <code>//</code>."},
+{t:"3. Összegzés, átlag, min/max",q:"Mit ír ki a program?",code:"szamok = [3, 1, 8]\nprint(max(szamok) - min(szamok))",a:["7"],ex:"<code>max</code> = 8, <code>min</code> = 1, a különbség 8 − 1 = 7."},
+{t:"3. Összegzés, átlag, min/max",q:"Mit ír ki a program?",code:"print(abs(-7), round(3.14159, 2))",o:["-7 3.14","7 3.14","7 3.1","7 3"],c:1,ex:"Az <code>abs(-7)</code> az abszolútérték: 7. A <code>round(x, 2)</code> két tizedesre kerekít: 3.14."},
+{t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program? (A lista formátumát is írd pontosan.)",code:"szamok = [5, 2, 8, 1]\nprint(sorted(szamok, reverse=True))",a:["[8,5,2,1]"],ex:"A <code>sorted()</code> új, rendezett listát ad vissza, a <code>reverse=True</code> csökkenő sorrendet jelent. Az eredeti lista nem változik."},
+{t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program?",code:"print(list(\"alma\"))",a:["['a','l','m','a']"],ex:"A <code>list()</code> a szöveget karakterekre bontja: <code>['a', 'l', 'm', 'a']</code>."},
+{t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program?",code:"lista = [1, 2]\nlista.append(3)\nlista.pop()\nprint(lista)",a:["[1,2]"],ex:"Az <code>append(3)</code> hozzáadja a 3-at ([1, 2, 3]), a <code>pop()</code> az utolsó elemet törli, így újra <code>[1, 2]</code> lesz."},
+{t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program? (Gyakori csapda!)",code:"lista = [3, 1, 2]\neredmeny = lista.sort()\nprint(eredmeny)",o:["[1, 2, 3]","[3, 1, 2]","None","Hibaüzenet"],c:2,ex:"A <code>lista.sort()</code> <b>helyben</b> rendez, és <code>None</code>-t ad vissza. Ha az eredményt akarod egy új változóban, használd: <code>eredmeny = sorted(lista)</code>."},
+{t:"4. Listák rendezése, módosítása",q:"Mit ír ki a program? (<code>index()</code>)",code:"nevek = [\"Anna\", \"Béla\", \"Cili\", \"Béla\"]\nprint(nevek.index(\"Béla\"))",a:["1"],ex:"Az <code>index(x)</code> az elem <b>első</b> előfordulásának indexét adja vissza (0-tól számolva), ezért itt 1, nem 3. Ha az elem nincs a listában, <code>ValueError</code> hibával leáll a program, ezért érdemes előtte ellenőrizni: <code>if \"Béla\" in nevek:</code>."},
+{t:"5. enumerate() és zip()",q:"Mit ír ki a program?",code:"nevek = [\"Anna\", \"Béla\"]\nfor i, x in enumerate(nevek):\n    print(i, x)",o:["1 Anna / 2 Béla","0 Anna / 1 Béla","Anna 0 / Béla 1","Anna / Béla"],c:1,ex:"Az <code>enumerate</code> az indexet (0-tól) és az elemet adja egyszerre. Hasznos, ha a feladat az elem <i>sorszámát</i> is kéri."},
+{t:"5. enumerate() és zip()",q:"Mit ír ki a program? (Elemek szóközzel elválasztva.)",code:"a = [1, 2, 3]\nb = [4, 5, 6]\nfor x, y in zip(a, b):\n    print(x * y, end=\" \")",a:["41018"],ex:"A <code>zip</code> párhuzamosan járja be a listákat: (1,4), (2,5), (3,6). A szorzatok: 4, 10, 18 → <code>4 10 18</code>."},
+{t:"6. Érettségi minták",q:"Mennyi lesz a <code>db</code> értéke? (megszámlálás)",code:"szamok = [12, 5, 8, 21, 10]\ndb = 0\nfor x in szamok:\n    if x > 10:\n        db += 1\nprint(db)",a:["2"],ex:"Csak a 12 és a 21 nagyobb 10-nél (a 10 nem, mert a feltétel szigorú <code>&gt;</code>). A számláló kétszer nő → 2."},
+{t:"6. Érettségi minták",q:"Mit ír ki a program? (eldöntés)",code:"szamok = [3, -1, 5]\nprint(all(x > 0 for x in szamok))\nprint(any(x > 4 for x in szamok))",o:["True / True","False / True","False / False","True / False"],c:1,ex:"<code>all</code> akkor igaz, ha <b>minden</b> elem megfelel – a −1 miatt <code>False</code>. <code>any</code> akkor igaz, ha <b>legalább egy</b> megfelel – az 5 nagyobb 4-nél, így <code>True</code>."},
+{t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"a-b-c\"\nprint(\" \".join(szoveg.split(\"-\")))",a:["a b c"],ex:"A <code>split(\"-\")</code> a kötőjelnél darabol: <code>['a', 'b', 'c']</code>. A <code>\" \".join(...)</code> szóközzel fűzi össze: <code>a b c</code>."},
+{t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"Alma\"\nprint(szoveg.lower().find(\"m\"))",a:["2"],ex:"A <code>lower()</code> után <code>\"alma\"</code> lesz, a <code>find(\"m\")</code> pedig az első találat <b>indexét</b> adja. Az indexelés 0-tól indul: a=0, l=1, m=2. Ha nincs találat, az eredmény <code>-1</code>."},
+{t:"7. Szövegkezelés",q:"Mi történik a program futtatásakor? (<code>find()</code> és <code>index()</code> különbsége)",code:"szoveg = \"alma\"\nprint(szoveg.find(\"x\"))\nprint(szoveg.index(\"x\"))",o:["-1 és -1 íródik ki","Kiírja: -1, majd ValueError hibával leáll","None és None íródik ki","Már az első sornál ValueError hiba lesz"],c:1,ex:"A <code>find()</code> találat nélkül <code>-1</code>-et ad, a program fut tovább. Az <code>index()</code> ugyanezt a keresést <code>ValueError</code> hibával jelzi, és leállítja a programot. Szövegen és listán is használható, de a <code>find()</code> csak szövegen létezik."},
+{t:"7. Szövegkezelés",q:"Mit ír ki a program?",code:"szoveg = \"Alma\"\nprint(szoveg.count(\"a\"))",a:["1"],ex:"A <code>count(\"a\")</code> az előfordulások számát adja, és megkülönbözteti a kis- és nagybetűt. Az <b>eredeti</b> \"Alma\" szövegben csak egy kisbetűs \"a\" van (az utolsó betű), a nagy A nem számít. Kisbetűsítés után (<code>szoveg.lower().count(\"a\")</code>) már 2 lenne."}
+];
+const KW=/(#.*$)|("[^"\n]*"|'[^'\n]*')|\b(for|in|if|else|elif|while|True|False|None|and|or|not)\b|\b(print|input|int|float|str|len|range|sum|min|max|abs|round|sorted|list|enumerate|zip|any|all)\b|\b(\d+\.?\d*)\b/gm;
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const hl=c=>esc(c).replace(KW,(m,a,b,c2,d,e)=>a?'<span class="c">'+m+'</span>':b?'<span class="s">'+m+'</span>':c2?'<span class="k">'+m+'</span>':d?'<span class="f">'+m+'</span>':'<span class="n">'+m+'</span>');
+const norm=s=>s.replace(/"/g,"'").replace(/[ \t]+/g,"").replace(/\r/g,"").trim();
+const $=id=>document.getElementById(id);
+let R={};
+const _p=["Y2V4ZS9CWHNYNGtsSnJUVzlZNXNRcDc3TUFuVG1nVlAtTWZUWW92dXV3UGtJTklINVgtYXNNRFE0","R2xhcU5JMDZZZHdwSXliY3lmS0Evcy9zb3JjYW0vbW9jLmVsZ29vZy50cGlyY3MvLzpzcHR0aA=="];
+const SHEET_DEFAULT=()=>{try{return atob(_p.join("")).split("").reverse().join("")}catch(e){return ""}}; // alapértelmezett táblázat (nem látszik a felületen)
+function build(){
+  let h="",last="";
+  Q.forEach((x,i)=>{
+    if(x.t!==last){h+="<h2>"+x.t+"</h2>";last=x.t}
+    h+='<div class="card" id="c'+i+'"><p class="q">'+(i+1)+". "+x.q+'</p><pre>'+hl(x.code)+'</pre>';
+    if(x.o)h+=x.o.map((o,j)=>'<label class="o"><input type="radio" name="q'+i+'" value="'+j+'">'+esc(o)+'</label>').join("");
+    else h+='<input type="text" id="a'+i+'" placeholder="Ide írd a választ" autocomplete="off" autocapitalize="off">';
+    h+='<button data-i="'+i+'" class="chk">Ellenőriz</button><div id="f'+i+'"></div></div>';
+  });
+  $("qs").innerHTML=h;
+  document.querySelectorAll(".chk").forEach(b=>b.onclick=()=>check(+b.dataset.i));
+  summary();
+}
+function getAns(i){
+  const x=Q[i];
+  if(x.o){const r=document.querySelector('input[name="q'+i+'"]:checked');return r?+r.value:null}
+  const v=$("a"+i).value;return v.trim()===""?null:v;
+}
+const tok=s=>s.toLowerCase().split(/[\s,\[\]'"()]+/).filter(Boolean);
+const same=(a,b)=>a===b||(!isNaN(a)&&!isNaN(b)&&+a===+b);
+function grade(x,v){
+  if(x.o)return v===x.c?2:0;
+  if(x.a.some(a=>norm(a)===norm(v)))return 2;
+  const e=tok(x.a[0]),g=tok(v);let m=0;
+  e.forEach((t,i)=>{if(g[i]!==undefined&&same(t,g[i]))m++});
+  return Math.min(1.5,Math.round(m/Math.max(e.length,g.length)*4)/2);
+}
+function profileOk(){
+  const n=$("nm"),k=$("kl"),c=$("kd");
+  [n,k,c].forEach(e=>e.classList.toggle("bad",!e.value.trim()));
+  const miss=[n,k,c].find(e=>!e.value.trim());
+  $("pm").textContent=miss?"Előbb add meg a neved, az osztályodat és a belépőkódot!":"";
+  if(miss){miss.focus();window.scrollTo({top:0,behavior:"smooth"})}
+  return !miss;
+}
+let sent=false;
+function check(i){
+  if(!profileOk())return;
+  const x=Q[i],v=getAns(i);
+  if(v===null){$("f"+i).innerHTML='<div class="fb er">Előbb adj meg egy választ.</div>';return}
+  const pts=grade(x,v),given=x.o?x.o[v]:v,right=x.o?x.o[x.c]:x.a[0];
+  R[i]={pts,given,right,time:new Date().toLocaleString("hu-HU")};
+  const k=pts===2?"ok":pts>0?"pa":"er";
+  $("c"+i).className="card "+k;
+  const hd=pts===2?"✅ Helyes! (2/2 pont)":pts>0?"🟡 Részben helyes ("+pts+"/2 pont)":"❌ Hibás válasz (0/2 pont)";
+  const why=pts>0&&pts<2?"Részpont: a tartalom nagyrészt jó, de a pontos kimenet (formátum, sorrend, tizedes) eltér.<br>":"";
+  $("f"+i).innerHTML='<div class="fb '+k+'"><b class="t">'+hd+'</b>'+why+
+    (pts===2?"":'A te válaszod: <code>'+esc(given).replace(/\n/g," ⏎ ")+'</code><br>Helyes eredmény: <code>'+esc(right).replace(/\n/g," ⏎ ")+'</code><br>')+
+    '<div style="margin-top:6px">'+x.ex+'</div></div>';
+  summary();
+}
+function stats(){
+  const T={};let p=0;
+  Q.forEach((x,i)=>{const t=T[x.t]||(T[x.t]={n:0,p:0,d:0});t.n++;if(R[i]){t.d++;t.p+=R[i].pts;p+=R[i].pts}});
+  const mx=Q.length*2;return{T,p,mx,pc:Math.round(p/mx*1000)/10};
+}
+function rating(pc){
+  if(pc>=80)return["Jeles (5)","Kiváló munka! Az alapfüggvényeket és az érettségi mintákat biztosan kezeled."];
+  if(pc>=60)return["Jó (4)","Szép eredmény, a legtöbb minta megy. Nézd át a hibás feladatok magyarázatait."];
+  if(pc>=40)return["Közepes (3)","Az alapok megvannak, de több mintában bizonytalan vagy. Gyakorold a gyengébb feladatokat."];
+  if(pc>=25)return["Elégséges (2)","Még sok a hiányosság. Ismételd át a függvényeket, és futtasd le a példakódokat magad is."];
+  return["Elégtelen (1)","Ez még kevés. Kezdd az alapoktól (print, input, int, len, range), és kérj segítséget."];
+}
+function summary(){
+  const S=stats();
+  $("tot").textContent=S.p+" / "+S.mx+" pont ("+S.pc+"%)";
+  $("tb").innerHTML=Object.entries(S.T).map(([k,t])=>"<tr><td>"+k+"</td><td>"+t.p+" / "+t.n*2+"</td><td>"+t.d+" / "+t.n+"</td></tr>").join("");
+}
+function payload(){
+  const S=stats(),r=rating(S.pc);
+  return{ido:new Date().toLocaleString("hu-HU"),nev:$("nm").value.trim(),osztaly:$("kl").value.trim(),kod:$("kd").value.trim(),pont:S.p,max:S.mx,szazalek:S.pc,jegy:r[0],ertekeles:r[1],
+    feladatok:Object.entries(S.T).map(([k,t])=>({nev:k,pont:t.p,max:t.n*2})),
+    reszletek:Q.map((x,i)=>({sorszam:i+1,feladat:x.t,valasz:R[i]?R[i].given:"",helyes:x.o?x.o[x.c]:x.a[0],pont:R[i]?R[i].pts:0,max:2}))};
+}
+function csv(){
+  const q=s=>'"'+String(s).replace(/"/g,'""').replace(/\n/g," | ")+'"',P=payload();
+  const rows=[["Név","Osztály","Feladat","Kérdés","Adott válasz","Helyes válasz","Pont","Max","Időpont"]];
+  P.reszletek.forEach(r=>rows.push([P.nev,P.osztaly,r.feladat,r.sorszam,r.valasz,r.helyes,r.pont,r.max,R[r.sorszam-1]?R[r.sorszam-1].time:""]));
+  rows.push([P.nev,P.osztaly,"ÖSSZESEN","","","",P.pont,P.max,P.szazalek+"% – "+P.jegy]);
+  return "\ufeff"+rows.map(r=>r.map(q).join(";")).join("\r\n");
+}
+async function finish(){
+  if(!profileOk())return;
+  Q.forEach((x,i)=>{if(!R[i]&&getAns(i)!==null)check(i)});
+  const un=Q.filter((x,i)=>!R[i]).length;
+  if(un&&!confirm(un+" kérdés megválaszolatlan (0 pont). Mégis befejezed?"))return;
+  const P=payload(),S=stats(),r=rating(S.pc);
+  const weak=Object.entries(S.T).filter(([k,t])=>t.p/(t.n*2)<0.6).map(([k])=>"<li>"+k+"</li>").join("");
+  $("res").innerHTML='<div class="fb '+(S.pc>=40?"ok":"er")+'" style="margin-top:12px"><b class="t" style="font-size:1.2rem">'+esc(P.nev)+" ("+esc(P.osztaly)+"): "+S.p+" / "+S.mx+" pont – "+S.pc+"% – "+r[0]+"</b>"+r[1]+
+    (weak?'<br><b>Ezeket ismételd át:</b><ul style="margin:4px 0">'+weak+"</ul>":"<br>Minden feladatcsoportban 60% felett teljesítettél.")+'<div id="st" style="margin-top:6px"></div></div>';
+  document.querySelectorAll("#qs input,#qs button,#fin,#all").forEach(e=>e.disabled=true);
+  const u=$("su").value.trim()||SHEET_DEFAULT(),st=$("st");
+  if(!u){st.textContent="Az eredmény nem lett elküldve (nincs megadva táblázat URL). Mentsd el a CSV-t, és add át a tanárnak.";return}
+  const body=JSON.stringify(P),hd={"Content-Type":"text/plain;charset=utf-8"};
+  try{
+    const r=await fetch(u,{method:"POST",headers:hd,body});
+    const x=(await r.text()).trim();
+    if(x==="OK")st.textContent="📤 Az eredményt elküldtem a tanári táblázatba.";
+    else if(x==="KOD"){st.innerHTML="🔒 Hibás belépőkód, az eredmény <b>nem</b> lett elküldve. Javítsd a kódot felül, majd nyomd meg újra a Befejezés és beküldés gombot.";$("fin").disabled=false;$("kd").classList.add("bad")}
+    else{st.textContent="⚠️ Váratlan válasz érkezett, ellenőrizd a tanári táblázatot.";$("fin").disabled=false}
+  }catch(e){
+    try{await fetch(u,{method:"POST",mode:"no-cors",headers:hd,body});st.textContent="📤 Elküldtem, de a fogadás nem igazolható. A tanári táblázatban ellenőrizhető (hibás belépőkóddal nem kerül be). Ha nem jelenik meg, próbáld újra.";$("fin").disabled=false}
+    catch(e2){st.textContent="⚠️ A beküldés nem sikerült. Mentsd el a CSV-t, és add át a tanárnak.";$("fin").disabled=false}
+  }
+}
+$("fin").onclick=finish;
+$("all").onclick=()=>{if(profileOk())Q.forEach((x,i)=>{if(getAns(i)!==null)check(i)})};
+$("rs").onclick=()=>{R={};$("msg").textContent="";$("res").innerHTML="";$("fb").style.display="none";build();document.querySelectorAll("#fin,#all").forEach(e=>e.disabled=false)};
+$("dl").onclick=async()=>{
+  if(!profileOk())return;
+  const data=csv(),m=$("msg"),fn="python_kviz_"+$("kl").value.trim().replace(/\W+/g,"")+"_"+$("nm").value.trim().replace(/\s+/g,"_")+".csv";
+  let d=null;
+  try{d=window.claude&&await claude.use("downloads")}catch(e){}
+  try{
+    if(d){await d.save({filename:fn,data})}
+    else{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"text/csv;charset=utf-8"}));a.download=fn;a.click()}
+    m.textContent="CSV mentve.";
+  }catch(e){const t=$("fb");t.style.display="block";t.value=data;t.select();m.textContent="A letöltés nem érhető el – másold ki a szöveget."}
+};
+(function(){
+  let u=new URLSearchParams(location.search).get("s");
+  try{u=u||localStorage.getItem("su")||""}catch(e){}
+  $("su").value=u||"";
+  $("su").onchange=()=>{try{localStorage.setItem("su",$("su").value.trim())}catch(e){}};
+})();
+build();
+</script>
+</body>
+</html>
