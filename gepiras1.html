@@ -344,6 +344,8 @@
 
 <body>
 
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwFUGHRJ4Pn7MSGNgve1GRb8cVUT1ndEKCm5TPlvdlmwJc_B0EeH9JJ_-vNpT4EF2M/exec';
+
 <div class="container">
 
 
@@ -830,39 +832,105 @@ function startTest() {
   show('loadingScreen');
 
 
-  google.script.run
-    .withSuccessHandler(function(data) {
+function loadTasks(count) {
 
-      tasks = data;
+  return new Promise((resolve, reject) => {
 
-      hide('loadingScreen');
+    const callbackName =
+      'tasksCallback_' + Date.now();
 
-      show('testScreen');
+    window[callbackName] = function(data) {
 
-      currentTaskIndex = 0;
+      delete window[callbackName];
+      script.remove();
 
-      testResults = [];
+      if (data.success) {
+        resolve(data.tasks);
+      } else {
+        reject(
+          new Error(data.error || 'Hiba történt.')
+        );
+      }
+    };
 
-      loadTask();
 
-    })
-    .withFailureHandler(function(error) {
+    const script =
+      document.createElement('script');
 
-      hide('loadingScreen');
+    script.src =
+      API_URL +
+      '?action=getTasks' +
+      '&count=' +
+      encodeURIComponent(count) +
+      '&callback=' +
+      callbackName;
 
-      show('startScreen');
+    script.onerror = function() {
 
-      $('startError').textContent =
-        'Hiba a feladatok betöltésekor: '
-        +
-        error.message;
+      delete window[callbackName];
+      script.remove();
 
-      show('startError');
+      reject(
+        new Error(
+          'Nem sikerült kapcsolódni a Google Apps Scripthez.'
+        )
+      );
+    };
 
-    })
-    .getTasks();
 
+    document.body.appendChild(script);
+
+  });
 }
+
+
+
+const tasks = await loadTasks(5);
+
+
+function saveResult(result) {
+
+  const form =
+    document.createElement('form');
+
+  form.method = 'POST';
+  form.action = API_URL;
+  form.target = 'resultFrame';
+  form.style.display = 'none';
+
+
+  const data =
+    document.createElement('input');
+
+  data.type = 'hidden';
+  data.name = 'data';
+  data.value = JSON.stringify(result);
+
+  form.appendChild(data);
+
+
+  const iframe =
+    document.createElement('iframe');
+
+  iframe.name = 'resultFrame';
+  iframe.style.display = 'none';
+
+
+  document.body.appendChild(iframe);
+  document.body.appendChild(form);
+
+  form.submit();
+
+
+  setTimeout(() => {
+    form.remove();
+    iframe.remove();
+  }, 5000);
+}
+
+
+  
+ 
 
 
 
