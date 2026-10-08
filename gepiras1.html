@@ -209,7 +209,17 @@ function showTask(){
     updateTimer();
     updateStats();
 
-    if(remaining<=0) finishCurrentTask(true);
+    if(remaining<=0){
+      finishCurrentTask(true);
+      setTimeout(()=>{
+        if(currentIndex<tasks.length-1){
+          currentIndex++;
+          showTask();
+        }else{
+          finishTest();
+        }
+      },400);
+    }
   },1000);
 
   $("answer").focus();
