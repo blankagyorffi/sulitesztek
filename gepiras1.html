@@ -1,1787 +1,401 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
-
 <head>
-  <base target="_top">
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Gépírás és gyorsírás teszt</title>
-
-  <style>
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-      background:
-        linear-gradient(
-          135deg,
-          #eef2ff,
-          #f8fafc
-        );
-
-      color: #172033;
-    }
-
-    .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 25px;
-    }
-
-    .card {
-      background: white;
-      border-radius: 18px;
-      padding: 25px;
-      margin-bottom: 20px;
-
-      box-shadow:
-        0 8px 30px rgba(0,0,0,.08);
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 30px;
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
-      margin-top: 15px;
-      margin-bottom: 6px;
-    }
-
-    input {
-      width: 100%;
-      padding: 13px;
-
-      border: 1px solid #ccd3df;
-      border-radius: 10px;
-
-      font-size: 16px;
-    }
-
-    button {
-      border: 0;
-      border-radius: 10px;
-
-      padding: 13px 20px;
-
-      font-size: 16px;
-      font-weight: bold;
-
-      cursor: pointer;
-
-      background: #315efb;
-      color: white;
-    }
-
-    button:hover {
-      opacity: .9;
-    }
-
-    button.secondary {
-      background: #64748b;
-    }
-
-    button.success {
-      background: #16803c;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      gap: 15px;
-
-      flex-wrap: wrap;
-    }
-
-    .task-info {
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    .timer {
-      font-size: 36px;
-      font-weight: bold;
-
-      padding: 10px 18px;
-
-      border-radius: 12px;
-
-      background: #111827;
-      color: white;
-    }
-
-    .timer.warning {
-      background: #c2410c;
-    }
-
-    .timer.danger {
-      background: #b91c1c;
-      animation: pulse .7s infinite alternate;
-    }
-
-    @keyframes pulse {
-      from {
-        opacity: 1;
-      }
-
-      to {
-        opacity: .55;
-      }
-    }
-
-    .stats {
-      display: grid;
-
-      grid-template-columns:
-        repeat(6, 1fr);
-
-      gap: 10px;
-
-      margin-top: 20px;
-    }
-
-    .stat {
-      padding: 15px;
-
-      border-radius: 12px;
-
-      background: #f1f5f9;
-
-      text-align: center;
-    }
-
-    .stat-title {
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .stat-value {
-      margin-top: 5px;
-
-      font-size: 25px;
-      font-weight: bold;
-    }
-
-    .task-text {
-      margin: 25px 0;
-
-      padding: 22px;
-
-      border-radius: 12px;
-
-      background: #f8fafc;
-
-      font-size: 21px;
-      line-height: 1.7;
-
-      user-select: none;
-    }
-
-    textarea {
-      width: 100%;
-
-      min-height: 180px;
-
-      resize: vertical;
-
-      padding: 18px;
-
-      border:
-        2px solid #cbd5e1;
-
-      border-radius: 12px;
-
-      font-size: 20px;
-      line-height: 1.6;
-
-      outline: none;
-    }
-
-    textarea:focus {
-      border-color: #315efb;
-    }
-
-    .progress {
-      height: 10px;
-
-      border-radius: 10px;
-
-      background: #e2e8f0;
-
-      overflow: hidden;
-
-      margin-top: 15px;
-    }
-
-    .progress-inner {
-      height: 100%;
-
-      width: 0%;
-
-      background: #315efb;
-
-      transition: width .15s;
-    }
-
-    .result-main {
-      text-align: center;
-
-      padding: 25px;
-    }
-
-    .result-percent {
-      font-size: 70px;
-      font-weight: bold;
-      margin: 15px 0;
-    }
-
-    table {
-      width: 100%;
-
-      border-collapse: collapse;
-
-      margin-top: 20px;
-    }
-
-    th,
-    td {
-      padding: 10px;
-
-      border-bottom:
-        1px solid #e2e8f0;
-
-      text-align: left;
-    }
-
-    th {
-      background: #f1f5f9;
-    }
-
-    .loading {
-      text-align: center;
-
-      padding: 40px;
-
-      font-size: 20px;
-    }
-
-    .error {
-      background: #fee2e2;
-
-      color: #991b1b;
-
-      padding: 15px;
-
-      border-radius: 10px;
-
-      margin-top: 15px;
-    }
-
-    @media(max-width: 800px) {
-
-      .stats {
-        grid-template-columns:
-          repeat(3, 1fr);
-      }
-
-      .timer {
-        font-size: 28px;
-      }
-
-    }
-
-    @media(max-width: 500px) {
-
-      .container {
-        padding: 10px;
-      }
-
-      .stats {
-        grid-template-columns:
-          repeat(2, 1fr);
-      }
-
-      .task-text {
-        font-size: 18px;
-      }
-
-      textarea {
-        font-size: 18px;
-      }
-
-    }
-
-  </style>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gépírás teszt</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f4f6f8;color:#202124;font-family:Arial,sans-serif}
+.wrap{max-width:1000px;margin:auto;padding:24px}
+.card{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+h1,h2{margin-top:0}
+label{display:block;font-weight:700;margin:12px 0 6px}
+input,textarea,button{font:inherit}
+input,textarea{width:100%;border:1px solid #c7cbd1;border-radius:8px;padding:10px}
+textarea{min-height:160px;resize:vertical}
+button{border:0;border-radius:8px;padding:11px 16px;cursor:pointer;background:#1a73e8;color:white;font-weight:700}
+button:disabled{opacity:.5;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.stat{background:#f1f3f4;border-radius:10px;padding:12px}
+.stat b{display:block;font-size:1.35rem;margin-top:4px}
+.bar{height:10px;background:#e0e3e7;border-radius:99px;overflow:hidden;margin:10px 0 16px}
+.bar>div{height:100%;width:0;background:#1a73e8}
+.task-text{white-space:pre-wrap;font-size:1.15rem;line-height:1.55;background:#f8f9fa;border-radius:10px;padding:16px;margin:12px 0}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.muted{color:#5f6368}
+.error{background:#fce8e6;color:#a50e0e;padding:12px;border-radius:8px;margin-bottom:12px}
+.success{background:#e6f4ea;color:#137333;padding:12px;border-radius:8px}
+.hidden{display:none}
+table{width:100%;border-collapse:collapse;margin:16px 0}
+th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
+</style>
 </head>
-
-
 <body>
-
-  const API_URL = 'https://script.google.com/macros/s/AKfycbwFUGHRJ4Pn7MSGNgve1GRb8cVUT1ndEKCm5TPlvdlmwJc_B0EeH9JJ_-vNpT4EF2M/exec';
-
-<div class="container">
-
-
-  <!-- KEZDŐOLDAL -->
-
-  <section id="startScreen" class="card">
-
-    <h1>
-      Gépírás és gyorsírás
-      <br>
-      önjavító teszt
-    </h1>
-
-    <p>
-      A teszt során egymás után több feladatot kell
-      megoldanod időre.
-    </p>
-
-    <label for="studentName">
-      Név
-    </label>
-
-    <input
-      id="studentName"
-      type="text"
-      placeholder="Írd be a neved"
-    >
-
-    <label for="className">
-      Osztály / csoport
-    </label>
-
-    <input
-      id="className"
-      type="text"
-      placeholder="Pl. 10.B"
-    >
-
-    <br><br>
-
-    <button
-      onclick="startTest()"
-    >
-      TESZT INDÍTÁSA
-    </button>
-
-    <div
-      id="startError"
-      class="error hidden"
-    ></div>
-
-  </section>
-
-
-
-  <!-- TESZT -->
-
-  <section
-    id="testScreen"
-    class="card hidden"
-  >
-
-    <div class="header">
-
-      <div>
-
-        <div
-          id="taskCounter"
-          class="task-info"
-        >
-          Feladat 1 / 5
-        </div>
-
-        <div
-          id="taskType"
-          style="margin-top:5px;color:#64748b;"
-        >
-          szó
-        </div>
-
-      </div>
-
-
-      <div
-        id="timer"
-        class="timer"
-      >
-        00:00
-      </div>
-
-    </div>
-
-
-    <div class="progress">
-
-      <div
-        id="progressBar"
-        class="progress-inner"
-      ></div>
-
-    </div>
-
-
-    <div
-      id="taskText"
-      class="task-text"
-    ></div>
-
-
-    <textarea
-      id="answer"
-      spellcheck="false"
-      autocomplete="off"
-      autocorrect="off"
-      autocapitalize="off"
-      placeholder="Ide gépelj..."
-    ></textarea>
-
-
-    <div class="stats">
-
-      <div class="stat">
-
-        <div class="stat-title">
-          Helyes
-        </div>
-
-        <div
-          id="correct"
-          class="stat-value"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-title">
-          Hibás
-        </div>
-
-        <div
-          id="wrong"
-          class="stat-value"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-title">
-          Rontás
-        </div>
-
-        <div
-          id="mistakes"
-          class="stat-value"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-title">
-          Leütés
-        </div>
-
-        <div
-          id="typed"
-          class="stat-value"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-title">
-          Pont
-        </div>
-
-        <div
-          id="score"
-          class="stat-value"
-        >
-          0
-        </div>
-
-      </div>
-
-
-      <div class="stat">
-
-        <div class="stat-title">
-          Eredmény
-        </div>
-
-        <div
-          id="percent"
-          class="stat-value"
-        >
-          0%
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div
-      style="
-        margin-top:15px;
-        color:#64748b;
-        text-align:center;
-      "
-    >
-      Sebesség:
-      <strong>
-        <span id="speed">0</span>
-      </strong>
-      leütés/perc
-    </div>
-
-
-  </section>
-
-
-
-  <!-- EREDMÉNY -->
-
-  <section
-    id="resultScreen"
-    class="card hidden"
-  >
-
-    <div class="result-main">
-
-      <h1>
-        A teszt eredménye
-      </h1>
-
-      <div
-        id="finalPercent"
-        class="result-percent"
-      >
-        0%
-      </div>
-
-      <h2>
-        Összesített eredmény
-      </h2>
-
-    </div>
-
-
-    <div
-      id="finalStats"
-      class="stats"
-    ></div>
-
-
-    <h2 style="margin-top:30px;">
-      Részletes eredmények
-    </h2>
-
-
-    <div style="overflow-x:auto;">
-
-      <table>
-
-        <thead>
-
-          <tr>
-
-            <th>
-              Feladat
-            </th>
-
-            <th>
-              Típus
-            </th>
-
-            <th>
-              Helyes
-            </th>
-
-            <th>
-              Hibás
-            </th>
-
-            <th>
-              Rontás
-            </th>
-
-            <th>
-              Pont
-            </th>
-
-            <th>
-              %
-            </th>
-
-            <th>
-              Sebesség
-            </th>
-
-          </tr>
-
-        </thead>
-
-        <tbody
-          id="resultTable"
-        ></tbody>
-
-      </table>
-
-    </div>
-
-
-    <br><br>
-
-    <button
-      class="success"
-      onclick="location.reload()"
-    >
-      ÚJ TESZT
-    </button>
-
-  </section>
-
-
-
-  <!-- BETÖLTÉS -->
-
-  <section
-    id="loadingScreen"
-    class="card hidden"
-  >
-
-    <div class="loading">
-      Feladatok betöltése...
-    </div>
-
-  </section>
-
+<div class="wrap">
+
+<div class="card">
+<h1>Gépírás teszt</h1>
+<p class="muted">A feladatokat a tanár által kezelt Google Táblázatból tölti be a rendszer.</p>
+<div id="error" class="error hidden"></div>
+
+<div id="startPanel">
+<label for="studentName">Tanuló neve</label>
+<input id="studentName" autocomplete="name">
+
+<label for="studentClass">Osztály</label>
+<input id="studentClass" placeholder="pl. 6.a">
+
+<label for="taskCount">Feladatok száma</label>
+<input id="taskCount" type="number" min="1" max="50" value="5">
+
+<br><br>
+<button id="startBtn">Teszt indítása</button>
+</div>
+</div>
+
+<div id="testPanel" class="hidden">
+<div class="card">
+
+<div class="row">
+<div><b id="progressText">1 / 5</b></div>
+<div>Hátralévő idő: <b id="timer">--:--</b></div>
+</div>
+
+<div class="bar"><div id="progressBar"></div></div>
+
+<div class="task-text" id="taskText"></div>
+
+<textarea id="answer" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+
+<div class="grid" style="margin-top:12px">
+<div class="stat">Helyes<b id="correct">0</b></div>
+<div class="stat">Hibás<b id="wrong">0</b></div>
+<div class="stat">Rontás<b id="mistakes">0</b></div>
+<div class="stat">Leütés<b id="totalTyped">0</b></div>
+<div class="stat">Pont<b id="score">0</b></div>
+<div class="stat">Eredmény<b id="percent">0%</b></div>
+<div class="stat">Sebesség<b id="speed">0</b></div>
+</div>
+
+<br>
+<button id="nextBtn" disabled>Következő</button>
+</div>
+</div>
+
+<div id="resultPanel" class="card hidden">
+<h2>Végeredmény</h2>
+
+<div class="grid">
+<div class="stat">Összpontszám<b id="finalScore">0</b></div>
+<div class="stat">Átlag<b id="finalPercent">0%</b></div>
+<div class="stat">Helyes<b id="finalCorrect">0</b></div>
+<div class="stat">Hibás<b id="finalWrong">0</b></div>
+<div class="stat">Rontás<b id="finalMistakes">0</b></div>
+<div class="stat">Sebesség<b id="finalSpeed">0</b></div>
+</div>
+
+<p id="saveStatus" class="muted">Eredmény mentése...</p>
+<div id="detail"></div>
+<button onclick="location.reload()">Új teszt</button>
+</div>
 
 </div>
 
-
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwFUGHRJ4Pn7MSGNgve1GRb8cVUT1ndEKCm5TPlvdlmwJc_B0EeH9JJ_-vNpT4EF2M/exec";
 
+let tasks=[];
+let results=[];
+let currentIndex=0;
+let timerId=null;
+let startTime=0;
+let remaining=0;
+let mistakes=0;
+let finished=false;
 
-/* ------------------------------------------
-   VÁLTOZÓK
------------------------------------------- */
+const $=id=>document.getElementById(id);
 
-let tasks = [];
-
-let currentTaskIndex = 0;
-
-let currentTask = null;
-
-let startTime = null;
-
-let timerInterval = null;
-
-let taskFinished = false;
-
-let testResults = [];
-
-let testId = null;
-
-let student = '';
-
-let className = '';
-
-
-
-/* ------------------------------------------
-   SEGÉDFÜGGVÉNYEK
------------------------------------------- */
-
-function $(id) {
-  return document.getElementById(id);
+function showError(message){
+  $("error").textContent=message;
+  $("error").classList.remove("hidden");
+}
+function hideError(){
+  $("error").classList.add("hidden");
 }
 
+function loadTasks(count){
+  return new Promise((resolve,reject)=>{
+    const callbackName="tasksCallback_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+    const script=document.createElement("script");
 
-function show(id) {
-
-  $(id).classList.remove('hidden');
-
-}
-
-
-function hide(id) {
-
-  $(id).classList.add('hidden');
-
-}
-
-
-function formatTime(seconds) {
-
-  seconds = Math.max(0, Math.ceil(seconds));
-
-  const min =
-    Math.floor(seconds / 60);
-
-  const sec =
-    seconds % 60;
-
-  return (
-    String(min).padStart(2, '0')
-    + ':'
-    +
-    String(sec).padStart(2, '0')
-  );
-}
-
-
-function generateTestId() {
-
-  const now = new Date();
-
-  return (
-    now.getFullYear()
-    +
-    String(now.getMonth() + 1).padStart(2, '0')
-    +
-    String(now.getDate()).padStart(2, '0')
-    +
-    '-'
-    +
-    Math.random()
-      .toString(36)
-      .substring(2, 8)
-      .toUpperCase()
-  );
-}
-
-
-
-/* ------------------------------------------
-   TESZT INDÍTÁSA
------------------------------------------- */
-
-function startTest() {
-
-  student =
-    $('studentName').value.trim();
-
-  className =
-    $('className').value.trim();
-
-
-  if (!student) {
-
-    $('startError').textContent =
-      'Kérlek, írd be a neved!';
-
-    show('startError');
-
-    return;
-  }
-
-
-  hide('startError');
-
-  testId = generateTestId();
-
-
-  hide('startScreen');
-
-  show('loadingScreen');
-
-
-function loadTasks(count) {
-
-  return new Promise((resolve, reject) => {
-
-    const callbackName =
-      'tasksCallback_' + Date.now();
-
-    window[callbackName] = function(data) {
-
+    window[callbackName]=data=>{
       delete window[callbackName];
       script.remove();
-
-      if (data.success) {
-        resolve(data.tasks);
-      } else {
-        reject(
-          new Error(data.error || 'Hiba történt.')
-        );
-      }
+      if(data&&data.success) resolve(data.tasks||[]);
+      else reject(new Error((data&&data.error)||"A feladatok betöltése sikertelen."));
     };
 
-
-    const script =
-      document.createElement('script');
-
-    script.src =
-      API_URL +
-      '?action=getTasks' +
-      '&count=' +
-      encodeURIComponent(count) +
-      '&callback=' +
-      callbackName;
-
-    script.onerror = function() {
-
+    script.onerror=()=>{
       delete window[callbackName];
       script.remove();
-
-      reject(
-        new Error(
-          'Nem sikerült kapcsolódni a Google Apps Scripthez.'
-        )
-      );
+      reject(new Error("Nem sikerült kapcsolódni a Google Apps Scripthez."));
     };
 
+    script.src=API_URL+
+      "?action=getTasks"+
+      "&count="+encodeURIComponent(count)+
+      "&callback="+encodeURIComponent(callbackName);
 
     document.body.appendChild(script);
-
   });
 }
 
+function startTest(){
+  hideError();
 
+  const name=$("studentName").value.trim();
+  const count=Math.max(1,Math.min(50,Number($("taskCount").value)||5));
 
-const tasks = await loadTasks(5);
+  if(!name){
+    showError("Írd be a tanuló nevét.");
+    return;
+  }
 
+  $("startBtn").disabled=true;
 
-function saveResult(result) {
+  loadTasks(count).then(data=>{
+    if(!data.length) throw new Error("Nincs aktív feladat a Feladatbank munkalapon.");
 
-  const form =
-    document.createElement('form');
+    tasks=data;
+    results=[];
+    currentIndex=0;
 
-  form.method = 'POST';
-  form.action = API_URL;
-  form.target = 'resultFrame';
-  form.style.display = 'none';
+    $("startPanel").classList.add("hidden");
+    $("testPanel").classList.remove("hidden");
 
+    showTask();
+  }).catch(err=>{
+    $("startBtn").disabled=false;
+    showError(err.message);
+  });
+}
 
-  const data =
-    document.createElement('input');
+function showTask(){
+  clearInterval(timerId);
 
-  data.type = 'hidden';
-  data.name = 'data';
-  data.value = JSON.stringify(result);
+  finished=false;
+  mistakes=0;
 
-  form.appendChild(data);
+  $("answer").value="";
+  $("answer").disabled=false;
+  $("nextBtn").disabled=true;
+  $("nextBtn").textContent=currentIndex===tasks.length-1?"Befejezés":"Következő";
 
+  const task=tasks[currentIndex];
 
-  const iframe =
-    document.createElement('iframe');
+  remaining=Number(task.time)||60;
+  $("taskText").textContent=task.text||"";
+  $("progressText").textContent=`${currentIndex+1} / ${tasks.length}`;
+  $("progressBar").style.width=`${(currentIndex/tasks.length)*100}%`;
 
-  iframe.name = 'resultFrame';
-  iframe.style.display = 'none';
+  startTime=performance.now();
 
+  updateTimer();
+  updateStats();
 
+  timerId=setInterval(()=>{
+    remaining--;
+    updateTimer();
+    updateStats();
+
+    if(remaining<=0) finishCurrentTask(true);
+  },1000);
+
+  $("answer").focus();
+}
+
+function updateTimer(){
+  const m=Math.floor(Math.max(0,remaining)/60);
+  const s=Math.max(0,remaining)%60;
+  $("timer").textContent=`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+}
+
+function calculate(){
+  const expected=tasks[currentIndex].text||"";
+  const answer=$("answer").value;
+
+  let correct=0;
+  let wrong=0;
+
+  for(let i=0;i<Math.max(expected.length,answer.length);i++){
+    if(i<answer.length&&i<expected.length&&answer[i]===expected[i]) correct++;
+    else if(i<answer.length) wrong++;
+  }
+
+  const totalTyped=answer.length;
+  const elapsed=Math.max(.001,(performance.now()-startTime)/1000);
+  const speed=Math.round(totalTyped/Math.max(elapsed/60,1/60));
+  const percent=expected.length?Math.max(0,Math.min(100,Math.round(correct/expected.length*100))):0;
+  const pointsMax=Number(tasks[currentIndex].points)||100;
+  const score=Math.round(pointsMax*percent/100);
+
+  return {expected,answer,correct,wrong,totalTyped,elapsed,speed,percent,score,mistakes};
+}
+
+function updateStats(){
+  if(!tasks.length) return;
+
+  const c=calculate();
+
+  $("correct").textContent=c.correct;
+  $("wrong").textContent=c.wrong;
+  $("mistakes").textContent=c.mistakes;
+  $("totalTyped").textContent=c.totalTyped;
+  $("score").textContent=c.score;
+  $("percent").textContent=c.percent+"%";
+  $("speed").textContent=c.speed+" leütés/perc";
+
+  if(c.answer===c.expected&&!finished){
+    finishCurrentTask(false);
+  }
+}
+
+function finishCurrentTask(timedOut){
+  if(finished) return;
+
+  finished=true;
+  clearInterval(timerId);
+
+  const c=calculate();
+  const task=tasks[currentIndex];
+
+  results.push({
+    taskId:task.id||"",
+    type:task.type||"",
+    text:c.expected,
+    answer:c.answer,
+    correct:c.correct,
+    wrong:c.wrong,
+    mistakes:c.mistakes,
+    totalTyped:c.totalTyped,
+    score:c.score,
+    percent:c.percent,
+    speed:c.speed,
+    timeSpent:Math.round(c.elapsed),
+    timedOut:!!timedOut
+  });
+
+  $("answer").disabled=true;
+  $("nextBtn").disabled=false;
+}
+
+function nextTask(){
+  if(!finished) return;
+
+  if(currentIndex<tasks.length-1){
+    currentIndex++;
+    showTask();
+  }else{
+    finishTest();
+  }
+}
+
+function finishTest(){
+  clearInterval(timerId);
+
+  $("testPanel").classList.add("hidden");
+  $("resultPanel").classList.remove("hidden");
+
+  const totalScore=results.reduce((s,r)=>s+r.score,0);
+  const totalCorrect=results.reduce((s,r)=>s+r.correct,0);
+  const totalWrong=results.reduce((s,r)=>s+r.wrong,0);
+  const totalMistakes=results.reduce((s,r)=>s+r.mistakes,0);
+  const totalTyped=results.reduce((s,r)=>s+r.totalTyped,0);
+  const averagePercent=results.length?Math.round(results.reduce((s,r)=>s+r.percent,0)/results.length):0;
+  const averageSpeed=results.length?Math.round(results.reduce((s,r)=>s+r.speed,0)/results.length):0;
+
+  $("finalScore").textContent=totalScore;
+  $("finalPercent").textContent=averagePercent+"%";
+  $("finalCorrect").textContent=totalCorrect;
+  $("finalWrong").textContent=totalWrong;
+  $("finalMistakes").textContent=totalMistakes;
+  $("finalSpeed").textContent=averageSpeed+" leütés/perc";
+
+  $("detail").innerHTML=
+    "<table><thead><tr><th>#</th><th>Típus</th><th>Helyes</th><th>Hibás</th><th>Rontás</th><th>%</th></tr></thead><tbody>"+
+    results.map((r,i)=>
+      `<tr><td>${i+1}</td><td>${escapeHtml(r.type)}</td><td>${r.correct}</td><td>${r.wrong}</td><td>${r.mistakes}</td><td>${r.percent}%</td></tr>`
+    ).join("")+
+    "</tbody></table>";
+
+  saveResult({
+    studentName:$("studentName").value.trim(),
+    studentClass:$("studentClass").value.trim(),
+    taskCount:results.length,
+    totalScore,
+    averagePercent,
+    totalCorrect,
+    totalWrong,
+    totalMistakes,
+    totalTyped,
+    averageSpeed,
+    tasks:results
+  });
+}
+
+function saveResult(result){
+  $("saveStatus").textContent="Eredmény elküldése a Google Táblázatnak...";
+
+  const iframeName="saveFrame_"+Date.now();
+
+  const iframe=document.createElement("iframe");
+  iframe.name=iframeName;
+  iframe.style.display="none";
+
+  const form=document.createElement("form");
+  form.method="POST";
+  form.action=API_URL;
+  form.target=iframeName;
+  form.style.display="none";
+
+  const input=document.createElement("input");
+  input.type="hidden";
+  input.name="data";
+  input.value=JSON.stringify(result);
+
+  form.appendChild(input);
   document.body.appendChild(iframe);
   document.body.appendChild(form);
 
   form.submit();
 
+  $("saveStatus").textContent="Az eredmény elküldve a Google Táblázatnak.";
 
-  setTimeout(() => {
+  setTimeout(()=>{
     form.remove();
     iframe.remove();
-  }, 5000);
+  },8000);
 }
 
-
-  
- 
-
-
-
-/* ------------------------------------------
-   FELADAT BETÖLTÉSE
------------------------------------------- */
-
-function loadTask() {
-
-  clearInterval(timerInterval);
-
-
-  taskFinished = false;
-
-  currentTask =
-    tasks[currentTaskIndex];
-
-
-  $('taskCounter').textContent =
-    'Feladat '
-    +
-    (currentTaskIndex + 1)
-    +
-    ' / '
-    +
-    tasks.length;
-
-
-  $('taskType').textContent =
-    currentTask.type;
-
-
-  $('taskText').textContent =
-    currentTask.text;
-
-
-  $('answer').value = '';
-
-
-  $('answer').disabled = false;
-
-
-  $('answer').focus();
-
-
-  resetStats();
-
-
-  startTime = Date.now();
-
-
-  updateTimer();
-
-
-  timerInterval =
-    setInterval(
-      updateTimer,
-      100
-    );
-
+function escapeHtml(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  }[ch]));
 }
 
-
-
-/* ------------------------------------------
-   IDŐZÍTŐ
------------------------------------------- */
-
-function updateTimer() {
-
-  if (!currentTask || taskFinished) {
-    return;
-  }
-
-
-  const elapsed =
-    (Date.now() - startTime) / 1000;
-
-
-  const remaining =
-    currentTask.time - elapsed;
-
-
-  $('timer').textContent =
-    formatTime(remaining);
-
-
-  $('progressBar').style.width =
-    Math.min(
-      100,
-      (elapsed / currentTask.time) * 100
-    )
-    +
-    '%';
-
-
-  $('timer').classList.remove(
-    'warning',
-    'danger'
-  );
-
-
-  if (remaining <= 10) {
-
-    $('timer').classList.add(
-      'danger'
-    );
-
-  } else if (remaining <= 20) {
-
-    $('timer').classList.add(
-      'warning'
-    );
-
-  }
-
-
-  updateLiveStats();
-
-
-  if (remaining <= 0) {
-
-    finishCurrentTask();
-
-  }
-
-}
-
-
-  
-
-/* ------------------------------------------
-   STATISZTIKA
------------------------------------------- */
-
-function calculateStats() {
-
-  const expected =
-    currentTask.text;
-
-  const typed =
-    $('answer').value;
-
-
-  let correct = 0;
-
-  let wrong = 0;
-
-
-  const compareLength =
-    Math.min(
-      expected.length,
-      typed.length
-    );
-
-
-  for (
-    let i = 0;
-    i < compareLength;
-    i++
-  ) {
-
-    if (
-      typed[i] === expected[i]
-    ) {
-
-      correct++;
-
-    } else {
-
-      wrong++;
-
-    }
-
-  }
-
-
-  // Ha a tanuló túl sok karaktert írt.
-  if (
-    typed.length > expected.length
-  ) {
-
-    wrong +=
-      typed.length -
-      expected.length;
-
-  }
-
-
-  // Ha idő lejárt és nem fejezte be.
-  const skipped =
-    Math.max(
-      0,
-      expected.length -
-      typed.length
-    );
-
-
-  const totalTyped =
-    typed.length;
-
-
-  const maxPoints =
-    Number(currentTask.points) || 1;
-
-
-  /*
-    A pontozás:
-
-    helyes - hibás = nettó karakter
-
-    majd ezt az elérhető karakterekhez
-    viszonyítjuk.
-
-    A pontszám soha nem lehet negatív.
-  */
-
-  const netCorrect =
-    Math.max(
-      0,
-      correct - wrong
-    );
-
-
-  const ratio =
-    expected.length > 0
-      ? Math.min(
-          1,
-          netCorrect /
-          expected.length
-        )
-      : 0;
-
-
-  const score =
-    Math.round(
-      ratio *
-      maxPoints *
-      100
-    ) / 100;
-
-
-  const percent =
-    maxPoints > 0
-      ? Math.round(
-          score /
-          maxPoints *
-          10000
-        ) / 100
-      : 0;
-
-
-  const elapsed =
-    Math.max(
-      0.1,
-      (Date.now() - startTime) / 1000
-    );
-
-
-  const speed =
-    Math.round(
-      totalTyped /
-      elapsed *
-      60 *
-      10
-    ) / 10;
-
-
-  return {
-
-    correct: correct,
-
-    wrong: wrong,
-
-    skipped: skipped,
-
-    totalTyped: totalTyped,
-
-    score: score,
-
-    maxPoints: maxPoints,
-
-    percent: percent,
-
-    speed: speed,
-
-    elapsed: Math.round(
-      elapsed * 10
-    ) / 10,
-
-    mistakes:
-      currentMistakes
-
-  };
-
-}
-
-
-let currentMistakes = 0;
-
-
-
-/* ------------------------------------------
-   VALÓS IDEJŰ STATISZTIKA
------------------------------------------- */
-
-function updateLiveStats() {
-
-  if (!currentTask || taskFinished) {
-    return;
-  }
-
-
-  const stats =
-    calculateStats();
-
-
-  $('correct').textContent =
-    stats.correct;
-
-
-  $('wrong').textContent =
-    stats.wrong;
-
-
-  $('mistakes').textContent =
-    currentMistakes;
-
-
-  $('typed').textContent =
-    stats.totalTyped;
-
-
-  $('score').textContent =
-    stats.score.toFixed(2);
-
-
-  $('percent').textContent =
-    stats.percent.toFixed(1)
-    +
-    '%';
-
-
-  $('speed').textContent =
-    stats.speed.toFixed(1);
-
-}
-
-
-
-/* ------------------------------------------
-   TEXTAREA BILLENTYŰZET
------------------------------------------- */
-
-$('answer').addEventListener(
-  'keydown',
-  function(event) {
-
-    if (taskFinished) {
-      return;
-    }
-
-
-    /*
-      A Backspace / Delete / Escape jellegű
-      javításokat rontásként számoljuk.
-
-      Az Entert nem engedjük,
-      mert új sort nem szeretnénk.
-    */
-
-    if (
-      event.key === 'Backspace'
-      ||
-      event.key === 'Delete'
-    ) {
-
-      currentMistakes++;
-
-    }
-
-
-    if (event.key === 'Enter') {
-
-      event.preventDefault();
-
-    }
-
-  }
-);
-
-
-
-$('answer').addEventListener(
-  'input',
-  function() {
-
-    if (taskFinished) {
-      return;
-    }
-
-
-    updateLiveStats();
-
-
-    /*
-      Ha a tanuló pontosan beírta
-      az egész szöveget, automatikusan
-      továbbléphetünk.
-
-      Ez kikapcsolható, ha minden
-      feladatnál kötelezően ki akarjuk
-      várni az időt.
-    */
-
-    if (
-      $('answer').value ===
-      currentTask.text
-    ) {
-
-      finishCurrentTask();
-
-    }
-
-  }
-);
-
-
-
-/* ------------------------------------------
-   FELADAT LEZÁRÁSA
------------------------------------------- */
-
-function finishCurrentTask() {
-
-  if (taskFinished) {
-    return;
-  }
-
-
-  taskFinished = true;
-
-
-  clearInterval(timerInterval);
-
-
-  const stats =
-    calculateStats();
-
-
-  const result = {
-
-    id:
-      currentTask.id,
-
-    type:
-      currentTask.type,
-
-    text:
-      currentTask.text,
-
-    timeLimit:
-      currentTask.time,
-
-    elapsed:
-      stats.elapsed,
-
-    correct:
-      stats.correct,
-
-    wrong:
-      stats.wrong,
-
-    mistakes:
-      currentMistakes,
-
-    skipped:
-      stats.skipped,
-
-    totalTyped:
-      stats.totalTyped,
-
-    score:
-      stats.score,
-
-    maxPoints:
-      stats.maxPoints,
-
-    percent:
-      stats.percent,
-
-    speed:
-      stats.speed
-
-  };
-
-
-  testResults.push(result);
-
-
-  $('answer').disabled = true;
-
-
-  /*
-    Rövid szünet, majd következő feladat.
-  */
-
-  setTimeout(
-    function() {
-
-      currentTaskIndex++;
-
-
-      if (
-        currentTaskIndex <
-        tasks.length
-      ) {
-
-        loadTask();
-
-      } else {
-
-        finishTest();
-
-      }
-
-    },
-    700
-  );
-
-}
-
-
-
-/* ------------------------------------------
-   STATISZTIKA RESET
------------------------------------------- */
-
-function resetStats() {
-
-  currentMistakes = 0;
-
-
-  $('correct').textContent = '0';
-
-  $('wrong').textContent = '0';
-
-  $('mistakes').textContent = '0';
-
-  $('typed').textContent = '0';
-
-  $('score').textContent = '0';
-
-  $('percent').textContent = '0%';
-
-  $('speed').textContent = '0';
-
-
-  $('timer').classList.remove(
-    'warning',
-    'danger'
-  );
-
-}
-
-
-
-/* ------------------------------------------
-   TESZT BEFEJEZÉSE
------------------------------------------- */
-
-function finishTest() {
-
-  clearInterval(timerInterval);
-
-
-  hide('testScreen');
-
-  show('resultScreen');
-
-
-  let totalCorrect = 0;
-
-  let totalWrong = 0;
-
-  let totalMistakes = 0;
-
-  let totalPoints = 0;
-
-  let totalMaxPoints = 0;
-
-
-  testResults.forEach(
-    function(task) {
-
-      totalCorrect +=
-        task.correct;
-
-      totalWrong +=
-        task.wrong;
-
-      totalMistakes +=
-        task.mistakes;
-
-      totalPoints +=
-        task.score;
-
-      totalMaxPoints +=
-        task.maxPoints;
-
-    }
-  );
-
-
-  const overallPercent =
-    totalMaxPoints > 0
-      ? Math.round(
-          totalPoints /
-          totalMaxPoints *
-          10000
-        ) / 100
-      : 0;
-
-
-  $('finalPercent').textContent =
-    overallPercent.toFixed(1)
-    +
-    '%';
-
-
-  $('finalStats').innerHTML = `
-
-    <div class="stat">
-      <div class="stat-title">
-        Helyes leütés
-      </div>
-
-      <div class="stat-value">
-        ${totalCorrect}
-      </div>
-    </div>
-
-
-    <div class="stat">
-      <div class="stat-title">
-        Hibás leütés
-      </div>
-
-      <div class="stat-value">
-        ${totalWrong}
-      </div>
-    </div>
-
-
-    <div class="stat">
-      <div class="stat-title">
-        Rontás
-      </div>
-
-      <div class="stat-value">
-        ${totalMistakes}
-      </div>
-    </div>
-
-
-    <div class="stat">
-      <div class="stat-title">
-        Pont
-      </div>
-
-      <div class="stat-value">
-        ${totalPoints.toFixed(2)}
-      </div>
-    </div>
-
-  `;
-
-
-  buildResultTable();
-
-
-  /*
-    Az eredmény elküldése
-    a Google Sheetbe.
-  */
-
-  google.script.run
-    .withFailureHandler(
-      function(error) {
-
-        console.error(
-          'Mentési hiba:',
-          error
-        );
-
-        alert(
-          'A teszt elkészült, de az eredmény '
-          +
-          'mentése közben hiba történt: '
-          +
-          error.message
-        );
-
-      }
-    )
-    .withSuccessHandler(
-      function(response) {
-
-        console.log(
-          'Eredmény mentve:',
-          response
-        );
-
-      }
-    )
-    .saveTestResult({
-
-      testId:
-        testId,
-
-      student:
-        student,
-
-      className:
-        className,
-
-      tasks:
-        testResults
-
-    });
-
-}
-
-saveResult({
-  studentName: studentName,
-  studentClass: studentClass,
-
-  taskCount: results.length,
-
-  totalScore: totalScore,
-  averagePercent: averagePercent,
-
-  totalCorrect: totalCorrect,
-  totalWrong: totalWrong,
-  totalMistakes: totalMistakes,
-  totalTyped: totalTyped,
-
-  averageSpeed: averageSpeed,
-
-  tasks: results
+$("startBtn").addEventListener("click",startTest);
+$("nextBtn").addEventListener("click",nextTask);
+
+$("answer").addEventListener("keydown",e=>{
+  if(e.key==="Backspace"||e.key==="Delete") mistakes++;
 });
 
-/* ------------------------------------------
-   EREDMÉNYTÁBLÁZAT
------------------------------------------- */
-
-function buildResultTable() {
-
-  const tbody =
-    $('resultTable');
-
-
-  tbody.innerHTML = '';
-
-
-  testResults.forEach(
-    function(task, index) {
-
-      const tr =
-        document.createElement('tr');
-
-
-      tr.innerHTML = `
-
-        <td>
-          ${index + 1}
-        </td>
-
-        <td>
-          ${escapeHtml(task.type)}
-        </td>
-
-        <td>
-          ${task.correct}
-        </td>
-
-        <td>
-          ${task.wrong}
-        </td>
-
-        <td>
-          ${task.mistakes}
-        </td>
-
-        <td>
-          ${task.score.toFixed(2)}
-          /
-          ${task.maxPoints}
-        </td>
-
-        <td>
-          ${task.percent.toFixed(1)}%
-        </td>
-
-        <td>
-          ${task.speed.toFixed(1)}
-        </td>
-
-      `;
-
-
-      tbody.appendChild(tr);
-
-    }
-  );
-
-}
-
-
-
-/* ------------------------------------------
-   BIZTONSÁGOS HTML
------------------------------------------- */
-
-function escapeHtml(text) {
-
-  return String(text)
-    .replace(
-      /&/g,
-      '&amp;'
-    )
-    .replace(
-      /</g,
-      '&lt;'
-    )
-    .replace(
-      />/g,
-      '&gt;'
-    )
-    .replace(
-      /"/g,
-      '&quot;'
-    )
-    .replace(
-      /'/g,
-      '&#039;'
-    );
-
-}
-
+$("answer").addEventListener("input",updateStats);
 </script>
-
 </body>
 </html>
