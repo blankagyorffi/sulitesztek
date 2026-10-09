@@ -46,8 +46,8 @@ pre.ps{background:transparent;color:var(--tx);border:1px dashed var(--bd);font-f
 </head>
 <body>
 <main>
-<h1>🐍 Python érettségi kvíz – kezdő és középhaladóknak gyakorlás</h1>
-<p class="sub">Kezdő és középhaladó gyakorló: beolvasás, kiírás, elágazás, számlálós ciklus, programozási tételek, és a végén pszeudokód átírása Pythonba. Az <code>input()</code> kérdésszövege a képernyőn jelenik meg, de a „Mit ír ki” feladatoknál csak a <code>print</code> kiírásait kell megadni. Válaszolj, ellenőrizd, olvasd el a magyarázatot, a végén beküldheted az eredményed.</p>
+<h1>🐍 Python érettségi kvíz – kezdő és középhaladó gyakorló</h1>
+<p class="sub">Középhaladó gyakorló: beolvasás, kiírás, elágazás, számlálós ciklus, programozási tételek, és a végén pszeudokód átírása Pythonba. Az <code>input()</code> kérdésszövege a képernyőn jelenik meg, de a „Mit ír ki” feladatoknál csak a <code>print</code> kiírásait kell megadni. Válaszolj, ellenőrizd, olvasd el a magyarázatot, a végén beküldheted az eredményed.</p>
 <div class="row"><input type="text" class="nm" id="nm" placeholder="Név (kötelező)" autocomplete="name"><input type="text" class="nm" id="kl" placeholder="Osztály, pl. 12.B (kötelező)"><input type="text" class="nm" id="kd" placeholder="Belépőkód (a tanártól, kötelező)" autocomplete="off" autocapitalize="off"></div>
 <div id="pm" class="sub" style="color:var(--er);margin:0 0 8px"></div>
 <div id="qs"></div>
@@ -187,7 +187,7 @@ function payload(){
   const S=stats(),r=rating(S.pc);
   return{ido:new Date().toLocaleString("hu-HU"),nev:$("nm").value.trim(),osztaly:$("kl").value.trim(),kviz:"kezdő-közép haladó",kod:$("kd").value.trim(),pont:S.p,max:S.mx,szazalek:S.pc,jegy:r[0],ertekeles:r[1],
     feladatok:Object.entries(S.T).map(([k,t])=>({nev:k,pont:t.p,max:t.n*2})),
-    reszletek:Q.map((x,i)=>({sorszam:i+1,feladat:x.t,valasz:R[i]?R[i].given:"",helyes:x.o?x.o[x.c]:x.a[0],pont:R[i]?R[i].pts:0,max:2}))};
+    reszletek:Q.map((x,i)=>({sorszam:i+1,feladat:x.t,valasz:R[i]?R[i].given:"",helyes:x.o?x.o[x.c]:x.b?x.b.map(z=>z[0]).join(" | "):x.a[0],pont:R[i]?R[i].pts:0,max:2}))};
 }
 function csv(){
   const q=s=>'"'+String(s).replace(/"/g,'""').replace(/\n/g," | ")+'"',P=payload();
