@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Python érettségi kvíz (belépőkóddal)</title>
+<title>Python érettségi kvíz – alapok (belépőkóddal)</title>
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--tx:#1d2330;--mu:#667085;--bd:#dfe3ec;--ac:#3b6cf6;--ok:#16a34a;--okb:#e7f7ed;--er:#dc2626;--erb:#fdeaea;--cb:#0f172a;--ct:#e2e8f0;--k:#f59e0b;--s:#34d399;--n:#60a5fa;--c:#94a3b8;--f:#c084fc;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -63,6 +63,12 @@ input.bad{border-color:var(--er)}
 <p class="sub" style="font-size:13px;margin:6px 0 0">Csak akkor töltsd ki, ha másik táblázatba szeretnél küldeni. Link a diákoknak: <code>…/kviz.html?s=AZ_URL</code></p></details>
 </main>
 <script>
+// =====================================================================
+// MUNKALAP NEVE: ezt írd át, ha másik nevű lapra szeretnéd az eredményt.
+// A táblázatban így lesz: "Összesítő – NÉV" és "Részletek – NÉV".
+// Üresen hagyva ("") a régi, név nélküli "Összesítő" és "Részletek" lap lesz.
+// =====================================================================
+const MUNKALAP_NEV="Alapok, függvények";
 const Q=[
 {t:"1. Alapok: bemenet, típusok, hossz",q:"Mit ír ki a program?",code:"x = int(\"12\")\nprint(x + 1)",a:["13"],ex:"Az <code>int(\"12\")</code> a szöveget egész számmá alakítja, így <code>12 + 1 = 13</code>. Ha nem alakítanád át, a <code>\"12\" + 1</code> hibát (TypeError) adna."},
 {t:"1. Alapok: bemenet, típusok, hossz",q:"Mit ír ki a program?",code:"print(str(123) + \"4\")",a:["1234"],ex:"A <code>str(123)</code> szöveg lesz (<code>\"123\"</code>), a <code>+</code> pedig szövegeknél összefűz: <code>\"123\" + \"4\"</code> → <code>1234</code>."},
@@ -164,7 +170,7 @@ function summary(){
 }
 function payload(){
   const S=stats(),r=rating(S.pc);
-  return{ido:new Date().toLocaleString("hu-HU"),nev:$("nm").value.trim(),osztaly:$("kl").value.trim(),kod:$("kd").value.trim(),pont:S.p,max:S.mx,szazalek:S.pc,jegy:r[0],ertekeles:r[1],
+  return{ido:new Date().toLocaleString("hu-HU"),nev:$("nm").value.trim(),osztaly:$("kl").value.trim(),kviz:MUNKALAP_NEV,kod:$("kd").value.trim(),pont:S.p,max:S.mx,szazalek:S.pc,jegy:r[0],ertekeles:r[1],
     feladatok:Object.entries(S.T).map(([k,t])=>({nev:k,pont:t.p,max:t.n*2})),
     reszletek:Q.map((x,i)=>({sorszam:i+1,feladat:x.t,valasz:R[i]?R[i].given:"",helyes:x.o?x.o[x.c]:x.a[0],pont:R[i]?R[i].pts:0,max:2}))};
 }
