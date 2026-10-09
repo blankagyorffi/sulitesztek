@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python érettségi kvíz – középhaladó</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2330;--mu:#667085;--bd:#dfe3ec;--ac:#3b6cf6;--ok:#16a34a;--okb:#e7f7ed;--er:#dc2626;--erb:#fdeaea;--cb:#0f172a;--ct:#e2e8f0;--k:#f59e0b;--s:#34d399;--n:#60a5fa;--c:#94a3b8;--f:#c084fc;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1118;--card:#171b25;--tx:#e8ebf2;--mu:#98a2b3;--bd:#2a3040;--ac:#7c9cff;--okb:#10281b;--erb:#2e1416}}
+:root[data-theme="dark"]{--bg:#0e1118;--card:#171b25;--tx:#e8ebf2;--mu:#98a2b3;--bd:#2a3040;--ac:#7c9cff;--okb:#10281b;--erb:#2e1416}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.5rem;margin:.4em 0 .1em}
+p.sub{color:var(--mu);margin:0 0 14px}
+h2{font-size:1.1rem;margin:26px 0 8px;color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:12px}
+.card.ok{border-color:var(--ok)}.card.er{border-color:var(--er)}
+.q{font-weight:600;margin:0 0 8px}
+pre{margin:8px 0;padding:12px;border-radius:8px;background:var(--cb);color:var(--ct);overflow-x:auto;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+pre .k{color:var(--k)}pre .s{color:var(--s)}pre .n{color:var(--n)}pre .c{color:var(--c);font-style:italic}pre .f{color:var(--f)}
+code{background:var(--bd);padding:1px 5px;border-radius:4px;font:.9em ui-monospace,Menlo,Consolas,monospace}
+label.o{display:block;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;margin:5px 0;cursor:pointer;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px}
+label.o input{margin-right:8px}
+input[type=text]{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font:14px ui-monospace,Menlo,Consolas,monospace}
+button{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:600 15px system-ui;cursor:pointer;margin:8px 8px 0 0}
+button.g{background:transparent;color:var(--ac);border:1px solid var(--ac)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:15px}
+.fb.ok{background:var(--okb)}.fb.er{background:var(--erb)}
+.fb b.t{display:block;margin-bottom:4px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:6px 8px;border-bottom:1px solid var(--bd);text-align:left}
+.wrap{overflow-x:auto}
+.big{font-size:1.6rem;font-weight:700}
+input.nm{flex:1 1 200px;max-width:320px;font-family:inherit}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.card.pa{border-color:#f59e0b}.fb.pa{background:rgba(245,158,11,.16)}
+input.bad{border-color:var(--er)}
+.lbl{font-size:13px;color:var(--mu);margin:8px 0 2px}
+pre.ps{background:transparent;color:var(--tx);border:1px dashed var(--bd);font-family:inherit;font-size:14px}
+.bl{background:rgba(245,158,11,.25);color:#fbbf24;border-radius:4px;padding:0 4px;font-weight:700}
+.bi{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.bi input{flex:1 1 150px;width:auto}
+</style>
+</head>
+<body>
+<main>
+<h1>🐍 Python érettségi kvíz – középhaladó</h1>
+<p class="sub">Középhaladó gyakorló: beolvasás, kiírás, elágazás, számlálós ciklus, programozási tételek, és a végén pszeudokód átírása Pythonba. Az <code>input()</code> kérdésszövege a képernyőn jelenik meg, de a „Mit ír ki” feladatoknál csak a <code>print</code> kiírásait kell megadni. Válaszolj, ellenőrizd, olvasd el a magyarázatot, a végén beküldheted az eredményed.</p>
+<div class="row"><input type="text" class="nm" id="nm" placeholder="Név (kötelező)" autocomplete="name"><input type="text" class="nm" id="kl" placeholder="Osztály, pl. 12.B (kötelező)"><input type="text" class="nm" id="kd" placeholder="Belépőkód (a tanártól, kötelező)" autocomplete="off" autocapitalize="off"></div>
+<div id="pm" class="sub" style="color:var(--er);margin:0 0 8px"></div>
+<div id="qs"></div>
+<div class="card" id="sum">
+  <div class="big" id="tot">0 / 0 pont</div>
+  <div class="wrap"><table><thead><tr><th>Feladat</th><th>Pont</th><th>Megoldott</th></tr></thead><tbody id="tb"></tbody></table></div>
+  <button id="fin">Befejezés és beküldés</button>
+  <button class="g" id="all">Mind ellenőrzése</button>
+  <button class="g" id="dl">Saját CSV mentése</button>
+  <button class="g" id="rs">Újrakezdés</button>
+  <div id="msg" class="sub" style="margin-top:8px"></div>
+  <div id="res"></div>
+  <textarea id="fb" style="display:none;width:100%;height:120px;margin-top:8px"></textarea>
+</div>
+<details class="card" style="padding:10px 14px"><summary style="cursor:pointer;color:var(--mu)">Tanári beállítás: Google Táblázat (Apps Script) URL</summary>
+<input type="text" id="su" placeholder="Üresen hagyva az alapértelmezett táblázatba küld" style="margin-top:8px">
+<p class="sub" style="font-size:13px;margin:6px 0 0">Csak akkor töltsd ki, ha másik táblázatba szeretnél küldeni. Link a diákoknak: <code>…/kviz.html?s=AZ_URL</code></p>
+<button class="g" id="tt" style="margin-top:8px">Kapcsolat tesztelése</button><div id="tr" class="sub" style="margin:6px 0 0;font-size:14px"></div></details>
+</main>
+<script>
+const Q=[
+{"t": "1. Beolvasás és kiírás", "q": "Mit ír ki a program, ha a felhasználó az <code>Anna</code> szót írja be?", "code": "nev = input('Hogy hívnak? ')\nprint('Szia', nev + '!')", "a": ["Szia Anna!"], "ex": "Az <code>input('Hogy hívnak? ')</code> kiírja a kérdést, majd beolvassa a begépelt szöveget. A <code>print</code> vesszővel elválasztott részei közé szóközt tesz, a <code>+</code> viszont szóköz nélkül fűz össze: ezért <code>Anna!</code>, de <code>Szia Anna!</code>."},
+{"t": "1. Beolvasás és kiírás", "q": "Mit ír ki a program, ha a felhasználó egymás után a <code>4</code>, majd a <code>7</code> számot írja be? (A két kiírt sort szóközzel elválasztva írd be.)", "code": "a = input('Első szám: ')\nb = input('Második szám: ')\nprint(a + b)\nprint(int(a) + int(b))", "a": ["47 11"], "ex": "Az <code>input()</code> mindig <b>szöveget</b> ad vissza. Az <code>a + b</code> szövegek összefűzése: <code>'4' + '7'</code> → <code>47</code>. Az <code>int()</code> után már számként adódnak össze: 4 + 7 = 11."},
+{"t": "1. Beolvasás és kiírás", "q": "Mit ír ki a program, ha a felhasználó a <code>7</code>-et írja be? (A kiírt értékeket szóközzel elválasztva írd be.)", "code": "n = int(input('Adj meg egy számot: '))\nprint(n * 2, n ** 2, n + 10)", "a": ["14 49 17"], "ex": "Az <code>n * 2</code> = 14, az <code>n ** 2</code> a négyzet (hatványozás) = 49, az <code>n + 10</code> = 17. A <code>print</code> a három értéket szóközzel elválasztva írja ki."},
+{"t": "1. Beolvasás és kiírás", "q": "Melyik függvény hiányzik, hogy a program a sorba beírt két szám (pl. <code>3 5</code>) összegét írja ki? (Csak a függvény nevét írd be.)", "code": "a, b = ____(int, input('Két szám szóközzel elválasztva: ').split())\nprint(a + b)", "b": [["map"]], "ex": "Az <code>input(...).split()</code> szövegek listáját adja (<code>['3', '5']</code>). A <code>map(int, ...)</code> mindegyik elemre alkalmazza az <code>int()</code>-et, így <code>a</code> és <code>b</code> már szám lesz. Ez a gyakori érettségi beolvasási minta."},
+{"t": "2. Elágazás (if / elif / else)", "q": "Mit ír ki a program, ha a felhasználó a <code>75</code>-öt írja be?", "code": "pont = int(input('Hány pontot értél el? '))\nif pont >= 90:\n    print('jeles')\nelif pont >= 75:\n    print('jó')\nelse:\n    print('elégséges')", "a": ["jó"], "ex": "Az elágazás fentről lefelé értékeli a feltételeket, és az <b>első</b> igaznál megáll. A 75 nem éri el a 90-et (az <code>if</code> hamis), de a <code>&gt;=</code> miatt a 75 még igaz az <code>elif</code>-ben → <code>jó</code>."},
+{"t": "2. Elágazás (if / elif / else)", "q": "Melyik feltétel igaz akkor, ha <code>x</code> pozitív <b>és</b> 10-nél kisebb?", "code": "x = int(input('Adj meg egy számot: '))\nif ...:\n    print('igen')", "o": ["x > 0 and x < 10", "x > 0 or x < 10", "x = 0 and x < 10", "x > 0 and x > 10"], "c": 0, "ex": "Az <code>and</code> mindkét feltételt megköveteli, az <code>or</code> már akkor igaz, ha az egyik teljesül (pl. a −5 is kisebb 10-nél). Az <code>=</code> értékadás, összehasonlításhoz <code>==</code> kell."},
+{"t": "2. Elágazás (if / elif / else)", "q": "Melyik kulcsszó hiányzik a <code>____</code> helyén? (Csak a kulcsszót írd be.)", "code": "x = int(input('Adj meg egy számot: '))\nif x > 0:\n    print('pozitív')\n____ x < 0:\n    print('negatív')\nelse:\n    print('nulla')", "b": [["elif"]], "ex": "Az <code>elif</code> a „különben ha”: csak akkor vizsgálja a feltételt, ha az előző ág nem teljesült. Három eset (pozitív, negatív, nulla) szétválasztásához <code>if</code> – <code>elif</code> – <code>else</code> kell."},
+{"t": "3. Számlálós ciklus (for, range)", "q": "Mit ír ki a program?", "code": "for i in range(1, 6):\n    print(i * i, end=' ')", "a": ["1 4 9 16 25"], "ex": "A <code>range(1, 6)</code> az 1, 2, 3, 4, 5 értékeket járja be (a 6 már nem). Minden körben az <code>i</code> négyzetét írja ki, az <code>end=' '</code> pedig szóközt tesz sortörés helyett."},
+{"t": "3. Számlálós ciklus (for, range)", "q": "Mit ír ki a program?", "code": "s = 0\nfor i in range(3, 8):\n    s = s + i\nprint(s)", "a": ["25"], "ex": "Az <code>i</code> értékei: 3, 4, 5, 6, 7. Az <code>s = s + i</code> mindegyiket hozzáadja az összeghez: 3 + 4 + 5 + 6 + 7 = 25. (Rövidebben: <code>s += i</code>.)"},
+{"t": "3. Számlálós ciklus (for, range)", "q": "Mit ír ki a program, ha a felhasználó a <code>4</code>-et írja be?", "code": "n = int(input('Hány csillagot írjak ki? '))\nfor i in range(n):\n    print('*', end='')", "a": ["****"], "ex": "A <code>range(4)</code> négyszer fut le (0, 1, 2, 3), minden körben egy csillagot ír ki sortörés nélkül (<code>end=''</code>). Így lesz <code>****</code>."},
+{"t": "4. Sorozatszámítás és megszámlálás", "q": "Mit ír ki a program? (A kiírt értékeket szóközzel elválasztva írd be.)", "code": "szamok = [4, 7, 1, 8]\nosszeg = 0\nfor x in szamok:\n    osszeg = osszeg + x\nprint(osszeg, osszeg / len(szamok))", "a": ["20 5.0"], "ex": "<b>Összegzés tétele:</b> 0-ról indulunk, és minden elemet hozzáadunk az eddigi összeghez. Összeg: 4 + 7 + 1 + 8 = 20. Az átlag: 20 / 4 = <code>5.0</code> (az <code>/</code> mindig valós számot ad)."},
+{"t": "4. Sorozatszámítás és megszámlálás", "q": "Mit ír ki a program?", "code": "jegyek = [5, 2, 4, 5, 3, 5, 1]\ndb = 0\nfor j in jegyek:\n    if j == 5:\n        db = db + 1\nprint(db)", "a": ["3"], "ex": "<b>Megszámlálás tétele:</b> a számláló 0-ról indul, és minden megfelelő elemnél eggyel nő (<code>db = db + 1</code>, rövidebben <code>db += 1</code>). Az 5-ös jegy háromszor szerepel."},
+{"t": "4. Sorozatszámítás és megszámlálás", "q": "Mit ír ki a program, ha a felhasználó egymás után ezeket írja be: <code>3</code>, <code>10</code>, <code>20</code>, <code>5</code>?", "code": "n = int(input('Hány számot adsz meg? '))\ns = 0\nfor i in range(n):\n    s = s + int(input('Következő szám: '))\nprint(s)", "a": ["35"], "ex": "Az első szám (3) azt adja meg, hány számot kell még beolvasni. A ciklus háromszor olvas és összead: 10 + 20 + 5 = 35. A 3-at a program nem adja hozzá az összeghez."},
+{"t": "4. Sorozatszámítás és megszámlálás", "q": "Mit ír ki a program?", "code": "h = [12, 7, 20, 3, 15]\ns = 0\nfor x in h:\n    if x > 10:\n        s = s + x\nprint(s)", "a": ["47"], "ex": "<b>Feltételes összegzés:</b> csak a 10-nél nagyobb elemeket adjuk össze: 12 + 20 + 15 = 47. A 7 és a 3 kimarad."},
+{"t": "5. Eldöntés és keresés", "q": "Mit ír ki a program?", "code": "h = [3, 8, 12, 5]\nvan = False\nfor x in h:\n    if x > 10:\n        van = True\nprint(van)", "a": ["True"], "ex": "<b>Eldöntés tétele:</b> a kérdés az, hogy <i>van-e</i> a feltételnek megfelelő elem. A 12 nagyobb 10-nél, ezért a <code>van</code> igaz lesz. Fontos, hogy a kezdőérték <code>False</code>, és a ciklus csak igazra állíthatja."},
+{"t": "5. Eldöntés és keresés", "q": "Mit ír ki a program? (Keresés tétele)", "code": "h = [4, 9, 7, 2]\nkeres = 7\ni = 0\nwhile i < len(h) and h[i] != keres:\n    i = i + 1\nprint(i)", "a": ["2"], "ex": "<b>Keresés tétele:</b> az <code>i</code> addig nő, amíg nem találjuk meg a keresett elemet. A 4 és a 9 nem egyezik a 7-tel (i: 0 → 1 → 2), a <code>h[2]</code> viszont igen, ezért a ciklus megáll. Az eredmény a találat <b>indexe</b>: 2."},
+{"t": "5. Eldöntés és keresés", "q": "Mit ír ki a program? (Keresés tétele, most nincs találat)", "code": "h = [4, 9, 7, 2]\nkeres = 6\ni = 0\nwhile i < len(h) and h[i] != keres:\n    i = i + 1\nprint(i)", "a": ["4"], "ex": "A 6 nincs a listában, ezért az <code>i</code> végigmegy az elemeken, és <code>len(h)</code>-nál = 4-nél áll meg (ekkor az első feltétel hamis). Ha az <code>i</code> a lista hosszával egyenlő, nincs találat. Ezt ellenőrizni szokás: <code>if i &lt; len(h):</code>."},
+{"t": "5. Eldöntés és keresés", "q": "Melyik programozási tételt valósítja meg a kód?", "code": "db = 0\nfor x in lista:\n    if x < 0:\n        db = db + 1\nprint(db)", "o": ["Összegzés", "Megszámlálás", "Eldöntés", "Maximumkiválasztás"], "c": 1, "ex": "A számláló (<code>db</code>) csak akkor nő, ha az elem megfelel a feltételnek, ez a <b>megszámlálás</b>. Összegzésnél az elem értékét adnánk hozzá, eldöntésnél logikai értéket állítanánk, maximumkiválasztásnál pedig elemeket hasonlítanánk össze."},
+{"t": "6. Kiválasztás és kiválogatás", "q": "Mit ír ki a program? (Maximumkiválasztás)", "code": "h = [14, 3, 27, 9]\nm = h[0]\nfor x in h:\n    if x > m:\n        m = x\nprint(m)", "a": ["27"], "ex": "Az első elemet tekintjük legnagyobbnak, majd minden elemnél frissítjük, ha találunk nagyobbat. A végén <code>m</code> = 27. Ugyanez a beépített függvénnyel: <code>max(h)</code>."},
+{"t": "6. Kiválasztás és kiválogatás", "q": "Mit ír ki a program? (A lista formátumát is pontosan írd!)", "code": "h = [5, 12, 8, 20, 3]\nki = []\nfor x in h:\n    if x > 7:\n        ki.append(x)\nprint(ki)", "a": ["[12, 8, 20]"], "ex": "<b>Kiválogatás tétele:</b> a feltételnek megfelelő elemeket új listába gyűjtjük, az eredeti sorrendben. A 7-nél nagyobbak: 12, 8, 20."},
+{"t": "6. Kiválasztás és kiválogatás", "q": "Mi a hiba ebben a maximumkiválasztásban?", "code": "h = [-5, -2, -9]\nm = 0\nfor x in h:\n    if x > m:\n        m = x\nprint(m)", "o": ["A kezdőérték 0, ezért negatív számoknál nem a legnagyobb elemet adja", "A ciklus rossz tartományon fut", "A > helyett < kell", "Nincs hiba, a program helyes"], "c": 0, "ex": "A program <code>0</code>-t ír ki, pedig a legnagyobb elem a −2. A kezdőérték 0 nagyobb minden negatív számnál, ezért az <code>if</code> soha nem teljesül. Biztonságos kezdőérték az <b>első elem</b>: <code>m = h[0]</code>."},
+{"t": "7. Szétválogatás, másolás, vegyes feladatok", "q": "Mit ír ki a program? (A két darabszámot szóközzel elválasztva írd be.)", "code": "szamok = [3, 8, 5, 10, 7]\nparos = []\nparatlan = []\nfor x in szamok:\n    if x % 2 == 0:\n        paros.append(x)\n    else:\n        paratlan.append(x)\nprint(len(paros), len(paratlan))", "a": ["2 3"], "ex": "<b>Szétválogatás tétele:</b> minden elem pontosan az egyik listába kerül. Az <code>x % 2</code> a 2-vel osztás maradéka: páros számnál 0. Párosak: 8, 10 (2 db), páratlanok: 3, 5, 7 (3 db)."},
+{"t": "7. Szétválogatás, másolás, vegyes feladatok", "q": "Mit ír ki a program? (A lista formátumát is pontosan írd!)", "code": "a = [1, 2, 3]\nb = []\nfor x in a:\n    b.append(x * 10)\nprint(b)", "a": ["[10, 20, 30]"], "ex": "<b>Másolás (leképezés) tétele:</b> minden elemből új értéket számolunk, és az új listába tesszük. Az <code>a</code> lista változatlan marad."},
+{"t": "7. Szétválogatás, másolás, vegyes feladatok", "q": "Mit ír ki a program, ha a felhasználó egymás után ezeket írja be: <code>4</code>, <code>5</code>, <code>-2</code>, <code>-7</code>, <code>0</code>?", "code": "n = int(input('Hány számot adsz meg? '))\ndb = 0\nfor i in range(n):\n    x = int(input('Szám: '))\n    if x < 0:\n        db = db + 1\nprint(db)", "a": ["2"], "ex": "Az első szám (4) a további beolvasások száma. A 4 beolvasott szám: 5, −2, −7, 0. Negatív közülük kettő van, ezért a kiírt érték 2. A 0 nem negatív."},
+{"t": "8. Pszeudokód átírása Pythonba (kiegészítés)", "q": "<b>Összegzés.</b> Írd át a pszeudokódot Pythonba: töltsd ki a hiányzó részeket! (1-től 5-ig összeadjuk a számokat.)", "code": "osszeg = 0\nfor i in range(1, ____):\n    osszeg = ____ + i\nprint(osszeg)", "b": [["6"], ["osszeg"]], "ex": "(1) A <code>range(1, 6)</code> az 1…5 számokat adja, a végérték már nincs benne, ezért 6 kell (a pszeudokód „5-ig” zárt intervallum). (2) Az új összeg a régi összeg és <code>i</code> összege: <code>osszeg = osszeg + i</code>. Az eredmény 15.", "p": "Összeg := 0\nCiklus i := 1-től 5-ig\n    Összeg := Összeg + i\nCiklus vége\nKiír: Összeg"},
+{"t": "8. Pszeudokód átírása Pythonba (kiegészítés)", "q": "<b>Megszámlálás.</b> Írd át a pszeudokódot Pythonba: töltsd ki a hiányzó részeket!", "code": "lista = [4, 12, 9, 15]\ndb = 0\nfor x in ____:\n    if x ____ 10:\n        db = db + 1\nprint(db)", "b": [["lista"], [">"]], "ex": "(1) A ciklus a <code>lista</code> elemein megy végig: <code>for x in lista</code>. (2) A „nagyobb, mint” jele <code>&gt;</code>. A 12 és a 15 nagyobb 10-nél, így a kiírt érték 2.", "p": "db := 0\nMinden x elemre a lista elemei közül\n    Ha x > 10 akkor\n        db := db + 1\nKiír: db"},
+{"t": "8. Pszeudokód átírása Pythonba (kiegészítés)", "q": "<b>Elágazás.</b> Írd át a pszeudokódot Pythonba: töltsd ki a hiányzó kulcsszavakat!", "code": "pont = int(input('Hány pontot értél el? '))\n____ pont >= 50:\n    print('Sikeres')\n____:\n    print('Sikertelen')", "b": [["if"], ["else"]], "ex": "(1) A „Ha … akkor” Pythonban <code>if feltétel:</code>. (2) A „Különben” ág <code>else:</code>, ennek nincs feltétele. Mindkét sor végén kettőspont áll, és a következő sor be van húzva.", "p": "Be: pont\nHa pont >= 50 akkor\n    Kiír: 'Sikeres'\nKülönben\n    Kiír: 'Sikertelen'\nElágazás vége"},
+{"t": "8. Pszeudokód átírása Pythonba (kiegészítés)", "q": "<b>Maximumkiválasztás.</b> Írd át a pszeudokódot Pythonba: töltsd ki a hiányzó részeket! (A Python 0-tól indexel, a pszeudokód 1-től.)", "code": "lista = [8, 3, 15, 6]\nmax_ertek = lista[____]\nfor x in lista:\n    if x ____ max_ertek:\n        max_ertek = ____\nprint(max_ertek)", "b": [["0"], [">"], ["x"]], "ex": "(1) A lista első eleme Pythonban a <code>lista[0]</code> (a pszeudokód 1. eleme). (2) Nagyobbat keresünk: <code>x &gt; max_ertek</code>. (3) Ha találtunk nagyobbat, az lesz az új maximum: <code>max_ertek = x</code>. Az eredmény 15. (A változó neve nem <code>max</code>, mert az beépített függvény.)", "p": "Max := a lista első eleme\nMinden x elemre a listából\n    Ha x > Max akkor\n        Max := x\nKiír: Max"},
+{"t": "8. Pszeudokód átírása Pythonba (kiegészítés)", "q": "<b>Keresés.</b> Írd át a pszeudokódot Pythonba: töltsd ki a hiányzó részeket! (A Python 0-tól indexel, ezért a határ is más.)", "code": "lista = [4, 9, 7, 2]\nkeresett = 7\ni = 0\nwhile i < len(lista) and lista[i] ____ keresett:\n    i = i + 1\nif i < ____:\n    print('van')\nelse:\n    print('nincs')", "b": [["!="], ["len(lista)"]], "ex": "(1) Addig lépünk tovább, amíg az elem <b>nem egyenlő</b> a keresettel: <code>!=</code>. (2) 0-tól indexelve az utolsó index <code>len(lista) - 1</code>, ezért a „találtunk” feltétel <code>i &lt; len(lista)</code> (a pszeudokódban ez <code>i &lt;= N</code>).", "p": "i := 1\nAmíg i <= N és lista[i] != keresett\n    i := i + 1\nCiklus vége\nHa i <= N akkor Kiír: 'van'\nKülönben Kiír: 'nincs'"},
+{"t": "8. Pszeudokód átírása Pythonba (kiegészítés)", "q": "<b>Beolvasás és összegzés.</b> Írd át a pszeudokódot Pythonba: töltsd ki a hiányzó részeket!", "code": "n = int(input('Hány számot adsz meg? '))\nosszeg = 0\nfor i in range(____):\n    szam = int(input('Add meg a számot: '))\n    osszeg = osszeg + ____\nprint(osszeg)", "b": [["n", "1,n+1", "0,n"], ["szam"]], "ex": "(1) A ciklus <code>n</code>-szer fut: <code>range(n)</code> (vagy <code>range(1, n + 1)</code>). (2) Az éppen beolvasott számot adjuk az összeghez: <code>osszeg = osszeg + szam</code>.", "p": "Be: n\nÖsszeg := 0\nCiklus i := 1-től n-ig\n    Be: szám\n    Összeg := Összeg + szám\nCiklus vége\nKiír: Összeg"}
+];
+const KW=/(#.*$)|("[^"\n]*"|'[^'\n]*')|\b(for|in|if|else|elif|while|True|False|None|and|or|not)\b|\b(print|input|int|float|str|len|range|sum|min|max|abs|round|sorted|list|enumerate|zip|any|all)\b|\b(\d+\.?\d*)\b/gm;
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const hl=c=>esc(c).replace(KW,(m,a,b,c2,d,e)=>a?'<span class="c">'+m+'</span>':b?'<span class="s">'+m+'</span>':c2?'<span class="k">'+m+'</span>':d?'<span class="f">'+m+'</span>':'<span class="n">'+m+'</span>');
+const norm=s=>s.replace(/"/g,"'").replace(/[ \t]+/g,"").replace(/\r/g,"").trim();
+const $=id=>document.getElementById(id);
+let R={};
+const _p=["Y2V4ZS9JNnh0cmVrRUtfN3lXUEFYdEY2LVRsUlRfbDRubDNsRXUtTDZDMUpOSDFrZVVXbktaRE","ktNFd4OEpfckU3d21pd2JjeWZLQS9zL3NvcmNhbS9tb2MuZWxnb29nLnRwaXJjcy8vOnNwdHRo"];
+const SHEET_DEFAULT=()=>{try{return atob(_p.join("")).split("").reverse().join("")}catch(e){return ""}}; // alapértelmezett táblázat (nem látszik a felületen)
+function build(){
+  let h="",last="";
+  Q.forEach((x,i)=>{
+    if(x.t!==last){h+="<h2>"+x.t+"</h2>";last=x.t}
+    const n=x.b?x.b.length:0;let k=0,code=hl(x.code);
+    if(x.b)code=code.replace(/____/g,()=>'<span class="bl">'+(n>1?"("+(++k)+")":"____")+"</span>");
+    h+='<div class="card" id="c'+i+'"><p class="q">'+(i+1)+". "+x.q+"</p>"+(x.p?'<div class="lbl">Pszeudokód:</div><pre class="ps">'+esc(x.p)+'</pre><div class="lbl">Python:</div>':"")+"<pre>"+code+"</pre>";
+    if(x.o)h+=x.o.map((o,j)=>'<label class="o"><input type="radio" name="q'+i+'" value="'+j+'">'+esc(o)+'</label>').join("");
+    else if(x.b)h+='<div class="bi">'+x.b.map((_,j)=>'<input type="text" id="a'+i+'_'+j+'" placeholder="'+(n>1?"("+(j+1)+") hiányzó rész":"Ide írd a választ")+'" autocomplete="off" autocapitalize="off">').join("")+"</div>";
+    else h+='<input type="text" id="a'+i+'" placeholder="Ide írd a választ" autocomplete="off" autocapitalize="off">';
+    h+='<button data-i="'+i+'" class="chk">Ellenőriz</button><div id="f'+i+'"></div></div>';
+  });
+  $("qs").innerHTML=h;
+  document.querySelectorAll(".chk").forEach(b=>b.onclick=()=>check(+b.dataset.i));
+  summary();
+}
+function getAns(i){
+  const x=Q[i];
+  if(x.o){const r=document.querySelector('input[name="q'+i+'"]:checked');return r?+r.value:null}
+  if(x.b){const vs=x.b.map((_,j)=>$("a"+i+"_"+j).value);return vs.every(s=>s.trim()==="")?null:vs}
+  const v=$("a"+i).value;return v.trim()===""?null:v;
+}
+const tok=s=>s.toLowerCase().split(/[\s,\[\]'"()]+/).filter(Boolean);
+const same=(a,b)=>a===b||(!isNaN(a)&&!isNaN(b)&&+a===+b);
+function grade(x,v){
+  if(x.o)return v===x.c?2:0;
+  if(x.b){let ok=0;x.b.forEach((acc,j)=>{if(acc.some(a=>norm(a)===norm(v[j]||"")))ok++});return Math.min(2,Math.round(ok/x.b.length*4)/2)}
+  if(x.a.some(a=>norm(a)===norm(v)))return 2;
+  if(x.f)return 0;
+  const e=tok(x.a[0]),g=tok(v);let m=0;
+  e.forEach((t,i)=>{if(g[i]!==undefined&&same(t,g[i]))m++});
+  return Math.min(1.5,Math.round(m/Math.max(e.length,g.length)*4)/2);
+}
+function profileOk(){
+  const n=$("nm"),k=$("kl"),c=$("kd");
+  [n,k,c].forEach(e=>e.classList.toggle("bad",!e.value.trim()));
+  const miss=[n,k,c].find(e=>!e.value.trim());
+  $("pm").textContent=miss?"Előbb add meg a neved, az osztályodat és a belépőkódot!":"";
+  if(miss){miss.focus();window.scrollTo({top:0,behavior:"smooth"})}
+  return !miss;
+}
+let sent=false;
+function check(i){
+  if(!profileOk())return;
+  const x=Q[i],v=getAns(i);
+  if(v===null){$("f"+i).innerHTML='<div class="fb er">Előbb adj meg egy választ.</div>';return}
+  const pts=grade(x,v),given=x.o?x.o[v]:x.b?v.map(s=>s.trim()||"–").join(" | "):v,right=x.o?x.o[x.c]:x.b?x.b.map(a=>a[0]).join(" | "):x.a[0];
+  R[i]={pts,given,right,time:new Date().toLocaleString("hu-HU")};
+  const k=pts===2?"ok":pts>0?"pa":"er";
+  $("c"+i).className="card "+k;
+  const hd=pts===2?"✅ Helyes! (2/2 pont)":pts>0?"🟡 Részben helyes ("+pts+"/2 pont)":"❌ Hibás válasz (0/2 pont)";
+  const wr=x.b?x.b.map((acc,j)=>acc.some(a=>norm(a)===norm(v[j]||""))?0:j+1).filter(Boolean):[];
+  const why=x.b&&pts>0&&pts<2?"Részpont: a hibás hiányzó rész(ek): ("+wr.join("), (")+").<br>":pts>0&&pts<2?"Részpont: a tartalom nagyrészt jó, de a pontos kimenet (formátum, sorrend, tizedes) eltér.<br>":"";
+  $("f"+i).innerHTML='<div class="fb '+k+'"><b class="t">'+hd+'</b>'+why+
+    (pts===2?"":'A te válaszod: <code>'+esc(given).replace(/\n/g," ⏎ ")+'</code><br>Helyes eredmény: <code>'+esc(right).replace(/\n/g," ⏎ ")+'</code><br>')+
+    '<div style="margin-top:6px">'+x.ex+'</div></div>';
+  summary();
+}
+function stats(){
+  const T={};let p=0;
+  Q.forEach((x,i)=>{const t=T[x.t]||(T[x.t]={n:0,p:0,d:0});t.n++;if(R[i]){t.d++;t.p+=R[i].pts;p+=R[i].pts}});
+  const mx=Q.length*2;return{T,p,mx,pc:Math.round(p/mx*1000)/10};
+}
+function rating(pc){
+  if(pc>=80)return["Jeles (5)","Kiváló munka! Az alapfüggvényeket és az érettségi mintákat biztosan kezeled."];
+  if(pc>=60)return["Jó (4)","Szép eredmény, a legtöbb minta megy. Nézd át a hibás feladatok magyarázatait."];
+  if(pc>=40)return["Közepes (3)","Az alapok megvannak, de több mintában bizonytalan vagy. Gyakorold a gyengébb feladatokat."];
+  if(pc>=25)return["Elégséges (2)","Még sok a hiányosság. Ismételd át a függvényeket, és futtasd le a példakódokat magad is."];
+  return["Elégtelen (1)","Ez még kevés. Kezdd az alapoktól (print, input, int, len, range), és kérj segítséget."];
+}
+function summary(){
+  const S=stats();
+  $("tot").textContent=S.p+" / "+S.mx+" pont ("+S.pc+"%)";
+  $("tb").innerHTML=Object.entries(S.T).map(([k,t])=>"<tr><td>"+k+"</td><td>"+t.p+" / "+t.n*2+"</td><td>"+t.d+" / "+t.n+"</td></tr>").join("");
+}
+function payload(){
+  const S=stats(),r=rating(S.pc);
+  return{ido:new Date().toLocaleString("hu-HU"),nev:$("nm").value.trim(),osztaly:$("kl").value.trim(),kviz:"kezdő-közép haladó",kod:$("kd").value.trim(),pont:S.p,max:S.mx,szazalek:S.pc,jegy:r[0],ertekeles:r[1],
+    feladatok:Object.entries(S.T).map(([k,t])=>({nev:k,pont:t.p,max:t.n*2})),
+    reszletek:Q.map((x,i)=>({sorszam:i+1,feladat:x.t,valasz:R[i]?R[i].given:"",helyes:x.o?x.o[x.c]:x.a[0],pont:R[i]?R[i].pts:0,max:2}))};
+}
+function csv(){
+  const q=s=>'"'+String(s).replace(/"/g,'""').replace(/\n/g," | ")+'"',P=payload();
+  const rows=[["Név","Osztály","Feladat","Kérdés","Adott válasz","Helyes válasz","Pont","Max","Időpont"]];
+  P.reszletek.forEach(r=>rows.push([P.nev,P.osztaly,r.feladat,r.sorszam,r.valasz,r.helyes,r.pont,r.max,R[r.sorszam-1]?R[r.sorszam-1].time:""]));
+  rows.push([P.nev,P.osztaly,"ÖSSZESEN","","","",P.pont,P.max,P.szazalek+"% – "+P.jegy]);
+  return "\ufeff"+rows.map(r=>r.map(q).join(";")).join("\r\n");
+}
+async function finish(){
+  if(!profileOk())return;
+  Q.forEach((x,i)=>{if(!R[i]&&getAns(i)!==null)check(i)});
+  const un=Q.filter((x,i)=>!R[i]).length;
+  if(un&&!confirm(un+" kérdés megválaszolatlan (0 pont). Mégis befejezed?"))return;
+  const P=payload(),S=stats(),r=rating(S.pc);
+  const weak=Object.entries(S.T).filter(([k,t])=>t.p/(t.n*2)<0.6).map(([k])=>"<li>"+k+"</li>").join("");
+  $("res").innerHTML='<div class="fb '+(S.pc>=40?"ok":"er")+'" style="margin-top:12px"><b class="t" style="font-size:1.2rem">'+esc(P.nev)+" ("+esc(P.osztaly)+"): "+S.p+" / "+S.mx+" pont – "+S.pc+"% – "+r[0]+"</b>"+r[1]+
+    (weak?'<br><b>Ezeket ismételd át:</b><ul style="margin:4px 0">'+weak+"</ul>":"<br>Minden feladatcsoportban 60% felett teljesítettél.")+'<div id="st" style="margin-top:6px"></div></div>';
+  document.querySelectorAll("#qs input,#qs button,#fin,#all").forEach(e=>e.disabled=true);
+  const u=$("su").value.trim()||SHEET_DEFAULT(),st=$("st");
+  if(!u){st.textContent="Az eredmény nem lett elküldve (nincs megadva táblázat URL). Mentsd el a CSV-t, és add át a tanárnak.";return}
+  const body=JSON.stringify(P),hd={"Content-Type":"text/plain;charset=utf-8"};
+  try{
+    const r=await fetch(u,{method:"POST",headers:hd,body});
+    const x=(await r.text()).trim();
+    if(x==="OK")st.textContent="📤 Az eredményt elküldtem a tanári táblázatba.";
+    else if(x==="KOD"){st.innerHTML="🔒 Hibás belépőkód, az eredmény <b>nem</b> lett elküldve. Javítsd a kódot felül, majd nyomd meg újra a Befejezés és beküldés gombot.";$("fin").disabled=false;$("kd").classList.add("bad")}
+    else{st.textContent="⚠️ Váratlan válasz (valószínűleg a Google bejelentkezést kér: az üzembe helyezés hozzáférése nem 'Bárki'): "+x.replace(/\s+/g," ").slice(0,100);$("fin").disabled=false}
+  }catch(e){
+    try{await fetch(u,{method:"POST",mode:"no-cors",headers:hd,body});st.textContent="📤 Elküldtem, de a fogadás nem igazolható ("+e.message+"). A tanári táblázatban ellenőrizhető (hibás belépőkóddal nem kerül be). Ha nem jelenik meg, próbáld újra.";$("fin").disabled=false}
+    catch(e2){st.textContent="⚠️ A beküldés nem sikerült. Mentsd el a CSV-t, és add át a tanárnak.";$("fin").disabled=false}
+  }
+}
+$("fin").onclick=finish;
+$("all").onclick=()=>{if(profileOk())Q.forEach((x,i)=>{if(getAns(i)!==null)check(i)})};
+$("rs").onclick=()=>{R={};$("msg").textContent="";$("res").innerHTML="";$("fb").style.display="none";build();document.querySelectorAll("#fin,#all").forEach(e=>e.disabled=false)};
+$("dl").onclick=async()=>{
+  if(!profileOk())return;
+  const data=csv(),m=$("msg"),fn="python_kozephalado_"+$("kl").value.trim().replace(/\W+/g,"")+"_"+$("nm").value.trim().replace(/\s+/g,"_")+".csv";
+  let d=null;
+  try{d=window.claude&&await claude.use("downloads")}catch(e){}
+  try{
+    if(d){await d.save({filename:fn,data})}
+    else{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([data],{type:"text/csv;charset=utf-8"}));a.download=fn;a.click()}
+    m.textContent="CSV mentve.";
+  }catch(e){const t=$("fb");t.style.display="block";t.value=data;t.select();m.textContent="A letöltés nem érhető el – másold ki a szöveget."}
+};
+(function(){
+  let u=new URLSearchParams(location.search).get("s");
+  try{u=u||localStorage.getItem("su")||""}catch(e){}
+  $("su").value=u||"";
+  $("su").onchange=()=>{try{localStorage.setItem("su",$("su").value.trim())}catch(e){}};
+})();
+$("tt").onclick=async()=>{
+  const u=$("su").value.trim()||SHEET_DEFAULT(),o=$("tr");o.textContent="Tesztelés…";
+  try{const r=await fetch(u),t=(await r.text()).trim();
+    o.textContent=t.startsWith("A kvíz fogadó")?"✅ A fogadó él, és a böngésző eléri.":"⚠️ Válaszolt, de nem a várt szöveggel (valószínűleg bejelentkezést kér: a hozzáférés nem 'Bárki'): "+t.replace(/\s+/g," ").slice(0,100)}
+  catch(e){o.textContent="❌ Nem érhető el, vagy a böngésző blokkolja ("+e.message+"). Ellenőrizd: hozzáférés = Bárki, pontos URL, friss üzembe helyezés."}
+};
+build();
+</script>
+</body>
+</html>
