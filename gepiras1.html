@@ -118,6 +118,8 @@ p{margin:.4em 0}
 .stats-row .stat b{font-size:clamp(.8rem,2.6vw,1.15rem);margin-top:2px;white-space:nowrap}
 .stats-row .u{font-size:.6em;font-weight:400;font-style:normal;color:#5f6368}
 @media(max-width:480px){.stats-row{gap:3px}.stats-row .stat{padding:4px 1px}.stats-row .u{display:none}}
+.class-row{display:flex;gap:8px}
+.class-row select{flex:1;min-width:0}
 </style>
 </head>
 <body>
@@ -138,12 +140,14 @@ p{margin:.4em 0}
 <label for="studentName">Tanuló neve</label>
 <input id="studentName" autocomplete="name">
 
-<label for="studentClassSel">Osztály</label>
-<select id="studentClassSel"></select>
-<input id="studentClassOther" class="hidden" placeholder="pl. 6.a" style="margin-top:8px">
+<label for="studentGrade">Osztály</label>
+<div class="class-row">
+<select id="studentGrade" aria-label="Évfolyam"></select>
+<select id="studentLetter" aria-label="Betűjel"></select>
+</div>
 
 <label for="taskCount">Feladatok száma</label>
-<input id="taskCount" type="number" min="1" max="50" value="5">
+<input id="taskCount" type="number" min="1" max="50" value="15">
 <p class="muted small">A feladatok minden típusból egyenlően kerülnek kiválasztásra. A teszt legfeljebb <span id="capMinutes">35</span> percig tart.</p>
 
 <br>
@@ -276,7 +280,12 @@ p{margin:.4em 0}
 const API_URL = "https://script.google.com/macros/s/AKfycbwFUGHRJ4Pn7MSGNgve1GRb8cVUT1ndEKCm5TPlvdlmwJc_B0EeH9JJ_-vNpT4EF2M/exec";
 
 /* ---- Beállítások (a tanár módosíthatja) ---- */
-const CLASSES = ["5.a","5.b","6.a","6.b","7.a","7.b","8.a","8.b"]; // az osztály-lista
+const GRADES = [5,6,7,8,9,10,11,12];            // választható évfolyamok
+const DEFAULT_GRADE = 9;                         // alapértelmezett évfolyam
+const LETTERS = ["ny","a","b","c","n","bn","g"]; // választható betűjelek
+const DEFAULT_LETTER = "ny";                     // alapértelmezett betűjel
+const NAME_KEY = "gepiras_last_name";
+const NAME_TTL_MS = 60*60*1000;                  // ennyi ideig marad alapértelmezett a név (1 óra)
 const MAX_TOTAL_SEC = 35*60;   // egy teszt alapértelmezett legnagyobb hossza
 const TEACHER_PIN = "2468";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
 const PENDING_KEY = "gepiras_pending_result";
@@ -328,27 +337,27 @@ function fmtClock(sec){
 /* ---------- Osztály kiválasztása ---------- */
 
 function initClassSelect(){
-  const sel=$("studentClassSel");
-  sel.innerHTML=
-    `<option value="">– válassz –</option>`+
-    CLASSES.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("")+
-    `<option value="__other">Egyéb (beírom)</option>`;
-  sel.addEventListener("change",()=>{
-    $("studentClassOther").classList.toggle("hidden",sel.value!=="__other");
-    if(sel.value==="__other") $("studentClassOther").focus();
-  });
-}
-
-function normalizeClass(s){
-  s=String(s||"").trim();
-  const m=s.match(/^(\d{1,2})\s*\.?\s*([A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]*)$/);
-  return m?`${m[1]}.${m[2].toLowerCase()}`:s;
+  $("studentGrade").innerHTML=GRADES.map(g=>
+    `<option value="${g}"${g===DEFAULT_GRADE?" selected":""}>${g}.</option>`).join("");
+  $("studentLetter").innerHTML=LETTERS.map(l=>
+    `<option value="${esc(l)}"${l===DEFAULT_LETTER?" selected":""}>${esc(l)}</option>`).join("");
 }
 
 function getClass(){
-  const v=$("studentClassSel").value;
-  if(v==="__other") return normalizeClass($("studentClassOther").value);
-  return v;
+  return `${$("studentGrade").value}.${$("studentLetter").value}`;
+}
+
+/* ---------- Név megjegyzése (1 óráig) ---------- */
+
+function restoreName(){
+  try{
+    const o=JSON.parse(localStorage.getItem(NAME_KEY)||"null");
+    if(o&&o.name&&Date.now()-o.ts<NAME_TTL_MS) $("studentName").value=o.name;
+  }catch(e){}
+}
+
+function rememberName(name){
+  try{ localStorage.setItem(NAME_KEY,JSON.stringify({name,ts:Date.now()})); }catch(e){}
 }
 
 /* ---------- Feladatok betöltése és kiválasztása ---------- */
@@ -489,6 +498,7 @@ function startTest(){
     return;
   }
 
+  rememberName(name);
   $("startBtn").disabled=true;
 
   // Az egész feladatbankot lekérjük, és itt választunk típusonként egyenlően.
@@ -976,6 +986,7 @@ function finishTest(){
   clearInterval(cdTimer);
   clearTimeout(advanceTimer);
   testActive=false;
+  rememberName(studentNameVal);
 
   $("testPanel").classList.add("hidden");
   $("resultPanel").classList.remove("hidden");
@@ -1222,6 +1233,8 @@ window.addEventListener("beforeunload",e=>{
 
 $("capMinutes").textContent=Math.round(MAX_TOTAL_SEC/60);
 initClassSelect();
+restoreName();
+$("studentName").addEventListener("focus",e=>e.target.select());
 checkPendingOnLoad();
 </script>
 </body>
