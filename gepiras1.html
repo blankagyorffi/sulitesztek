@@ -9,7 +9,7 @@
 body{margin:0;background:#f4f6f8;color:#202124;font-family:Arial,sans-serif}
 .wrap{max-width:1000px;margin:auto;padding:24px}
 .card{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
-h1,h2{margin-top:0}
+h1,h2,h3{margin-top:0}
 label{display:block;font-weight:700;margin:12px 0 6px}
 input,textarea,button{font:inherit}
 input,textarea{width:100%;border:1px solid #c7cbd1;border-radius:8px;padding:10px}
@@ -29,6 +29,39 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .hidden{display:none}
 table{width:100%;border-collapse:collapse;margin:16px 0}
 th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
+
+/* --- eredmény-elemzés --- */
+.auto-msg{min-height:1.4em;margin-top:10px;font-weight:700;color:#137333}
+.fb-box{background:#e8f0fe;border-left:5px solid #1a73e8;border-radius:8px;padding:14px 16px;margin:16px 0;line-height:1.55}
+.fb-box p{margin:0 0 8px}
+.fb-box p:last-child{margin-bottom:0}
+details.explain{background:#f8f9fa;border:1px solid #e0e3e7;border-radius:10px;padding:12px 16px;margin:16px 0}
+details.explain summary{cursor:pointer;font-weight:700}
+details.explain dl{margin:12px 0 0}
+details.explain dt{font-weight:700;margin-top:10px}
+details.explain dd{margin:2px 0 0 0;color:#3c4043;line-height:1.5}
+.task-res{border:1px solid #e0e3e7;border-radius:12px;padding:16px;margin:16px 0}
+.pill{background:#1a73e8;color:#fff;border-radius:99px;padding:4px 12px;font-weight:700;font-size:.9rem}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(95px,1fr));gap:8px;margin:12px 0}
+.mini div{background:#f1f3f4;border-radius:8px;padding:8px;font-size:.85rem}
+.mini b{display:block;font-size:1.05rem}
+.fb{line-height:1.55;margin:10px 0}
+.fb p{margin:0 0 6px}
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;font-size:.85rem;margin:10px 0}
+.mono{font-family:Consolas,"Courier New",monospace}
+.diff-block{border:1px solid #e0e3e7;border-radius:8px;padding:10px 12px;margin:8px 0;background:#fcfcfd}
+.diff-row{display:grid;grid-template-columns:62px 1fr;gap:8px;align-items:start;margin:3px 0}
+.diff-row .lbl{font-weight:700;font-size:.8rem;color:#5f6368;padding-top:2px}
+.diff-row .txt{font-family:Consolas,"Courier New",monospace;font-size:1.02rem;line-height:1.7;white-space:pre-wrap;word-break:break-all}
+.gap{color:#9aa0a6;text-align:center;margin:2px 0;font-size:.9rem}
+.e-sub{background:#ffd8a8;border-radius:3px;font-weight:700}
+.e-del{background:#ffb3b3;border-radius:3px;font-weight:700}
+.t-sub{background:#ff8a80;color:#fff;border-radius:3px;font-weight:700}
+.t-ins{background:#d1a3ff;border-radius:3px;font-weight:700}
+.ph{color:#bdc1c6}
+.ph-red{background:#ffe0e0;color:#c5221f;border-radius:3px}
+.rest-note{font-size:.9rem;color:#5f6368;margin-top:6px}
+.ok-line{color:#137333;font-weight:700}
 </style>
 </head>
 <body>
@@ -78,6 +111,7 @@ th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
 <div class="stat">Sebesség<b id="speed">0</b></div>
 </div>
 
+<div id="autoMsg" class="auto-msg"></div>
 <br>
 <button id="nextBtn" disabled>Következő</button>
 </div>
@@ -95,8 +129,44 @@ th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
 <div class="stat">Sebesség<b id="finalSpeed">0</b></div>
 </div>
 
-<p id="saveStatus" class="muted">Eredmény mentése...</p>
+<div id="overallFeedback" class="fb-box"></div>
+
+<details class="explain" open>
+<summary>Mit jelentenek ezek a számok?</summary>
+<dl>
+<dt>Helyes</dt>
+<dd>Azoknak a beírt karaktereknek a száma, amelyek pontosan ugyanazon a helyen állnak, mint az írandó szövegben. A kis- és nagybetű, az ékezet, a szóköz és az írásjel is számít.</dd>
+<dt>Hibás</dt>
+<dd>Azoknak a beírt karaktereknek a száma, amelyek nem egyeznek az írandó szöveg ugyanazon helyén álló karakterével (elütés, hiányzó ékezet, felesleges karakter).</dd>
+<dt>Rontás</dt>
+<dd>Hányszor nyomtad meg a törlő billentyűt (Backspace vagy Delete). Azt mutatja, hányszor javítottál, nem a végén megmaradt hibákat.</dd>
+<dt>Leütés</dt>
+<dd>A beírt karakterek száma a feladat végén.</dd>
+<dt>Eredmény (százalék)</dt>
+<dd>Helyes karakterek száma ÷ az írandó szöveg hossza × 100. Ha nem írtad be a teljes szöveget, a hiányzó rész is a százalék rovására megy.</dd>
+<dt>Pont</dt>
+<dd>A feladat maximális pontszáma × a százalék ÷ 100, egészre kerekítve. Az összpontszám a feladatok pontjainak összege.</dd>
+<dt>Sebesség</dt>
+<dd>Leütés ÷ a feladatra fordított idő (percben). A gondolkodással, javítással töltött idő is beleszámít.</dd>
+<dt>Átlag</dt>
+<dd>A feladatok százalékos eredményeinek átlaga.</dd>
+<dt>Fontos: a pontozás hely szerint történik</dt>
+<dd>A program karakterről karakterre, ugyanazon sorszámú helyeket hasonlít össze. Ha egy karaktert kihagysz vagy többet írsz be, az utána következő karakterek elcsúsznak, és hibásnak számítanak, pedig te jól írtad őket. Az alábbi színes összehasonlítás ilyenkor megmutatja, hogy valójában hol történt az első tévesztés.</dd>
+</dl>
+</details>
+
+<h3>Feladatonkénti részletek</h3>
+<div class="legend">
+<span><span class="mono e-sub">a</span> írandó karakter, amit másra cseréltél</span>
+<span><span class="mono e-del">a</span> kihagyott karakter</span>
+<span><span class="mono t-sub">a</span> hibásan beírt karakter</span>
+<span><span class="mono t-ins">a</span> felesleges karakter</span>
+<span><span class="mono ph-red">-</span> itt hiányzik valami</span>
+<span><span class="mono ph">␣</span> szóköz, ↵ sortörés a kiemelt helyeken</span>
+</div>
 <div id="detail"></div>
+
+<p id="saveStatus" class="muted">Eredmény mentése...</p>
 <button onclick="location.reload()">Új teszt</button>
 </div>
 
@@ -109,6 +179,8 @@ let tasks=[];
 let results=[];
 let currentIndex=0;
 let timerId=null;
+let advanceTimer=null;
+let advanced=false;
 let startTime=0;
 let remaining=0;
 let mistakes=0;
@@ -183,13 +255,16 @@ function startTest(){
 
 function showTask(){
   clearInterval(timerId);
+  clearTimeout(advanceTimer);
 
   finished=false;
+  advanced=false;
   mistakes=0;
 
   $("answer").value="";
   $("answer").disabled=false;
   $("nextBtn").disabled=true;
+  $("autoMsg").textContent="";
   $("nextBtn").textContent=currentIndex===tasks.length-1?"Befejezés":"Következő";
 
   const task=tasks[currentIndex];
@@ -210,15 +285,8 @@ function showTask(){
     updateStats();
 
     if(remaining<=0){
-      finishCurrentTask(true);
-      setTimeout(()=>{
-        if(currentIndex<tasks.length-1){
-          currentIndex++;
-          showTask();
-        }else{
-          finishTest();
-        }
-      },400);
+      if(!finished) finishCurrentTask(true);
+      scheduleAdvance(500);
     }
   },1000);
 
@@ -266,8 +334,13 @@ function updateStats(){
   $("percent").textContent=c.percent+"%";
   $("speed").textContent=c.speed+" leütés/perc";
 
-  if(c.answer===c.expected&&!finished){
+  // Ha elkezdett gépelni, a "Következő" gombbal bármikor tovább lehet lépni.
+  if(!finished&&c.answer.length>0) $("nextBtn").disabled=false;
+
+  // Hibátlanul beírt szöveg: lezárjuk, és automatikusan lépünk tovább.
+  if(!finished&&c.expected.length>0&&c.answer===c.expected){
     finishCurrentTask(false);
+    scheduleAdvance(700);
   }
 }
 
@@ -298,10 +371,20 @@ function finishCurrentTask(timedOut){
 
   $("answer").disabled=true;
   $("nextBtn").disabled=false;
+  $("autoMsg").textContent=timedOut
+    ?"Lejárt az idő, lépünk tovább..."
+    :(currentIndex<tasks.length-1?"Kész! Lépünk a következő feladatra...":"Kész! Az eredmény betöltése...");
 }
 
-function nextTask(){
-  if(!finished) return;
+function scheduleAdvance(delay){
+  clearTimeout(advanceTimer);
+  advanceTimer=setTimeout(goNext,delay);
+}
+
+function goNext(){
+  if(advanced) return;      // csak egyszer léphessen tovább feladatonként
+  advanced=true;
+  clearTimeout(advanceTimer);
 
   if(currentIndex<tasks.length-1){
     currentIndex++;
@@ -311,8 +394,229 @@ function nextTask(){
   }
 }
 
+function nextTask(){
+  if(!finished) finishCurrentTask(false);
+  goNext();
+}
+
+/* ---------- Összehasonlítás és elemzés ---------- */
+
+function esc(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+
+// a = írandó, b = beírt. Szerkesztési távolság alapú igazítás.
+function diffOps(a,b){
+  const n=a.length,m=b.length;
+  let ops=[];
+
+  if(n*m>6000000||n+m>60000){
+    // nagyon hosszú szövegnél egyszerű, hely szerinti összevetés
+    for(let i=0;i<Math.max(n,m);i++){
+      if(i<n&&i<m) ops.push(a[i]===b[i]?{t:"eq",e:a[i],c:b[i]}:{t:"sub",e:a[i],c:b[i]});
+      else if(i<n) ops.push({t:"del",e:a[i]});
+      else ops.push({t:"ins",c:b[i]});
+    }
+  }else{
+    const w=m+1;
+    const d=new Uint16Array((n+1)*w);
+    for(let i=0;i<=n;i++) d[i*w]=i;
+    for(let j=0;j<=m;j++) d[j]=j;
+    for(let i=1;i<=n;i++){
+      for(let j=1;j<=m;j++){
+        const cost=a[i-1]===b[j-1]?0:1;
+        d[i*w+j]=Math.min(d[(i-1)*w+j]+1,d[i*w+j-1]+1,d[(i-1)*w+j-1]+cost);
+      }
+    }
+    let i=n,j=m;
+    while(i>0||j>0){
+      if(i>0&&j>0&&d[i*w+j]===d[(i-1)*w+j-1]+(a[i-1]===b[j-1]?0:1)){
+        ops.push(a[i-1]===b[j-1]?{t:"eq",e:a[i-1],c:b[j-1]}:{t:"sub",e:a[i-1],c:b[j-1]});
+        i--;j--;
+      }else if(i>0&&d[i*w+j]===d[(i-1)*w+j]+1){
+        ops.push({t:"del",e:a[i-1]});
+        i--;
+      }else{
+        ops.push({t:"ins",c:b[j-1]});
+        j--;
+      }
+    }
+    ops.reverse();
+  }
+
+  // A szöveg végén lévő, még be nem írt rész nem hiba, hanem "hátralévő rész".
+  let rest=0;
+  while(ops.length&&ops[ops.length-1].t==="del"){ops.pop();rest++;}
+
+  return {ops,rest};
+}
+
+function dispChar(c,highlighted){
+  if(c==="\n") return "↵";
+  if(c===" "&&highlighted) return "␣";
+  return c;
+}
+function span(c,cls){
+  return `<span class="${cls}">${esc(dispChar(c,true))}</span>`;
+}
+function plain(c){
+  return esc(dispChar(c,false));
+}
+
+function renderOpsRange(ops,from,to){
+  let eh="",th="";
+  for(let i=from;i<to;i++){
+    const o=ops[i];
+    if(o.t==="eq"){ eh+=plain(o.e); th+=plain(o.c); }
+    else if(o.t==="sub"){ eh+=span(o.e,"e-sub"); th+=span(o.c,"t-sub"); }
+    else if(o.t==="del"){ eh+=span(o.e,"e-del"); th+=`<span class="ph-red">-</span>`; }
+    else { eh+=`<span class="ph">-</span>`; th+=span(o.c,"t-ins"); }
+  }
+  return `<div class="diff-block">
+    <div class="diff-row"><div class="lbl">Írandó</div><div class="txt">${eh}</div></div>
+    <div class="diff-row"><div class="lbl">Beírt</div><div class="txt">${th}</div></div>
+  </div>`;
+}
+
+function renderDiff(ops){
+  const errIdx=[];
+  ops.forEach((o,i)=>{ if(o.t!=="eq") errIdx.push(i); });
+  if(!errIdx.length) return "";
+
+  const CTX=18;
+  let ranges=[];
+
+  if(ops.length<=140){
+    ranges=[[0,ops.length]];
+  }else{
+    for(const i of errIdx){
+      const s=Math.max(0,i-CTX);
+      const e=Math.min(ops.length,i+CTX+1);
+      if(ranges.length&&s<=ranges[ranges.length-1][1]){
+        ranges[ranges.length-1][1]=Math.max(ranges[ranges.length-1][1],e);
+      }else{
+        ranges.push([s,e]);
+      }
+    }
+  }
+
+  let html="";
+  ranges.forEach((r,k)=>{
+    if(r[0]>0&&k===0) html+=`<div class="gap">… (az előző rész hibátlan)</div>`;
+    if(k>0) html+=`<div class="gap">… (közben nincs eltérés)</div>`;
+    html+=renderOpsRange(ops,r[0],r[1]);
+  });
+  const last=ranges[ranges.length-1];
+  if(last[1]<ops.length) html+=`<div class="gap">… (a folytatás hibátlan)</div>`;
+  return html;
+}
+
+function analyze(r){
+  const {ops,rest}=diffOps(r.text,r.answer);
+  const cnt={sub:0,del:0,ins:0};
+  ops.forEach(o=>{ if(o.t!=="eq") cnt[o.t]++; });
+  return {ops,rest,cnt};
+}
+
+function speedWord(s){
+  if(s<100) return "kezdő tempó";
+  if(s<200) return "közepes tempó";
+  if(s<300) return "jó tempó";
+  return "nagyon gyors tempó";
+}
+
+function taskFeedback(r,a,maxPoints){
+  const L=r.text.length;
+  const p=[];
+  const errTotal=a.cnt.sub+a.cnt.del+a.cnt.ins;
+  const completed=a.rest===0;
+
+  // Pontosság
+  if(r.percent===100&&r.wrong===0){
+    p.push(`<span class="ok-line">Hibátlanul beírtad a szöveget.</span> Minden karakter a helyén volt, ezért ${r.percent}% és a teljes ${maxPoints} pont jár.`);
+  }else if(completed&&errTotal===0){
+    p.push(`A szöveget hibátlanul beírtad, de a pontozás szerint ${r.percent}% jött ki (${r.correct} helyes a ${L} karakterből).`);
+  }else{
+    let acc;
+    if(r.percent>=95) acc="Nagyon pontos munka.";
+    else if(r.percent>=85) acc="Jó eredmény, néhány hibával.";
+    else if(r.percent>=70) acc="Közepes pontosság, érdemes lassabban, figyelmesebben gépelni.";
+    else acc="Sok hiba maradt a szövegben, a pontosság most fontosabb a gyorsaságnál.";
+    p.push(`${acc} ${r.correct} karakter volt helyes a ${L}-ből, ez ${r.percent}%. A ${maxPoints} pontból ${r.score} pontot kaptál (${maxPoints} × ${r.percent}% ).`);
+  }
+
+  // Hiányzó rész
+  if(a.rest>0){
+    const typedPct=Math.round(r.totalTyped/Math.max(1,L)*100);
+    if(r.timedOut) p.push(`Lejárt az idő, mielőtt a szöveg végére értél: ${r.totalTyped} karaktert írtál be a ${L}-ből (kb. ${Math.min(100,typedPct)}%). A hiányzó ${a.rest} karakter nem számít helyesnek, ezért esett a százalék és a pont.`);
+    else p.push(`Nem írtad be a szöveg végét: ${a.rest} karakter hiányzik, ezért esett a százalék és a pont.`);
+  }
+
+  // Hibatípusok
+  if(errTotal>0){
+    const parts=[];
+    if(a.cnt.sub) parts.push(`${a.cnt.sub} karaktert másra cseréltél (elütés, hiányzó ékezet vagy kis-nagybetű)`);
+    if(a.cnt.del) parts.push(`${a.cnt.del} karaktert kihagytál`);
+    if(a.cnt.ins) parts.push(`${a.cnt.ins} felesleges karaktert írtál be`);
+    p.push(`A tényleges tévesztések: ${parts.join(", ")}.`);
+    if(r.wrong-errTotal>=5&&(a.cnt.del+a.cnt.ins)>0){
+      p.push(`A hibás karakterek száma (${r.wrong}) azért nagyobb a tényleges tévesztéseknél, mert egy kihagyott vagy beszúrt karakter után minden további karakter elcsúszik, és hely szerint hibásnak számít.`);
+    }
+  }
+
+  // Javítás
+  if(r.mistakes===0&&errTotal>0) p.push("Egyszer sem használtad a törlést, ezért maradtak benne hibák. Ha észreveszed az elütést, javítsd rögtön.");
+  else if(r.mistakes>0&&errTotal===0&&a.rest===0) p.push(`${r.mistakes} törlést használtál, a hibákat sikerült kijavítani, a végeredmény tiszta.`);
+  else if(r.mistakes>0) p.push(`${r.mistakes} törlő billentyű-leütésed volt (rontás), ez a javítási próbálkozásaidat mutatja.`);
+
+  // Sebesség
+  p.push(`Sebességed ${r.speed} leütés/perc, ez ${speedWord(r.speed)} (kb. ${Math.round(r.speed/5)} szó/perc). A számításba a javítással és gondolkodással töltött idő is beleszámít.`);
+
+  return p.map(x=>`<p>${x}</p>`).join("");
+}
+
+function overallFeedback(analyses){
+  const n=results.length;
+  if(!n) return "";
+  const avgP=Math.round(results.reduce((s,r)=>s+r.percent,0)/n);
+  const avgS=Math.round(results.reduce((s,r)=>s+r.speed,0)/n);
+  const perfect=results.filter(r=>r.percent===100&&r.wrong===0).length;
+  const timedOut=results.filter(r=>r.timedOut).length;
+  const sub=analyses.reduce((s,a)=>s+a.cnt.sub,0);
+  const del=analyses.reduce((s,a)=>s+a.cnt.del,0);
+  const ins=analyses.reduce((s,a)=>s+a.cnt.ins,0);
+  const corrections=results.reduce((s,r)=>s+r.mistakes,0);
+
+  const p=[];
+  let level;
+  if(avgP>=95) level="Kiváló eredmény!";
+  else if(avgP>=85) level="Szép, megbízható eredmény.";
+  else if(avgP>=70) level="Közepes eredmény, van még mit gyakorolni.";
+  else level="Ez még gyakorlást igényel, de jó úton vagy.";
+  p.push(`<b>${level}</b> Átlagosan ${avgP}%-os pontossággal és ${avgS} leütés/perc sebességgel dolgoztál (${speedWord(avgS)}).`);
+  p.push(`${n} feladatból ${perfect} lett hibátlan${timedOut?`, ${timedOut} feladatnál lejárt az idő`:""}.`);
+
+  const tot=sub+del+ins;
+  if(tot>0){
+    const main=[["karakter-csere/elütés",sub],["kihagyott karakter",del],["felesleges karakter",ins]].sort((x,y)=>y[1]-x[1])[0];
+    p.push(`A legtöbb hibád a(z) <b>${main[0]}</b> típusú volt (${main[1]} db az összesen ${tot} tévesztésből).`);
+  }
+
+  const worst=results.map((r,i)=>({r,i})).sort((x,y)=>x.r.percent-y.r.percent)[0];
+  if(n>1&&worst.r.percent<100) p.push(`A leggyengébb feladat a ${worst.i+1}. volt${worst.r.type?` (${esc(worst.r.type)})`:""}, ${worst.r.percent}%-kal.`);
+
+  if(avgP<90&&avgS>=200) p.push("Tipp: túl gyorsan gépelsz a pontossághoz. Lassíts egy kicsit, a pontosság nagyobb érték.");
+  else if(avgP>=95&&avgS<150) p.push("Tipp: nagyon pontos vagy, ezért bátran gyorsíthatsz.");
+  if(corrections===0&&tot>0) p.push("Tipp: a törlést is használd: ha elütöd, azonnal javítsd, és akkor nem marad hiba a szövegben.");
+
+  return p.map(x=>`<p>${x}</p>`).join("");
+}
+
 function finishTest(){
   clearInterval(timerId);
+  clearTimeout(advanceTimer);
 
   $("testPanel").classList.add("hidden");
   $("resultPanel").classList.remove("hidden");
@@ -332,12 +636,37 @@ function finishTest(){
   $("finalMistakes").textContent=totalMistakes;
   $("finalSpeed").textContent=averageSpeed+" leütés/perc";
 
-  $("detail").innerHTML=
-    "<table><thead><tr><th>#</th><th>Típus</th><th>Helyes</th><th>Hibás</th><th>Rontás</th><th>%</th></tr></thead><tbody>"+
-    results.map((r,i)=>
-      `<tr><td>${i+1}</td><td>${escapeHtml(r.type)}</td><td>${r.correct}</td><td>${r.wrong}</td><td>${r.mistakes}</td><td>${r.percent}%</td></tr>`
-    ).join("")+
-    "</tbody></table>";
+  const analyses=results.map(analyze);
+  $("overallFeedback").innerHTML=overallFeedback(analyses);
+
+  $("detail").innerHTML=results.map((r,i)=>{
+    const a=analyses[i];
+    const maxPoints=Number(tasks[i]&&tasks[i].points)||100;
+    const diffHtml=renderDiff(a.ops);
+    let restHtml="";
+    if(a.rest>0){
+      const restText=r.text.slice(r.text.length-a.rest);
+      const shown=restText.length>60?restText.slice(0,60)+"…":restText;
+      restHtml=`<div class="rest-note">Nem lett beírva a szöveg utolsó ${a.rest} karaktere: <span class="mono">${esc(shown)}</span></div>`;
+    }
+    return `<div class="task-res">
+      <div class="row">
+        <b>${i+1}. feladat${r.type?` · ${esc(r.type)}`:""}</b>
+        <span class="pill">${r.percent}% · ${r.score} / ${maxPoints} pont</span>
+      </div>
+      <div class="mini">
+        <div>Helyes<b>${r.correct}</b></div>
+        <div>Hibás<b>${r.wrong}</b></div>
+        <div>Rontás<b>${r.mistakes}</b></div>
+        <div>Leütés<b>${r.totalTyped}</b></div>
+        <div>Sebesség<b>${r.speed}</b></div>
+        <div>Idő<b>${r.timeSpent} mp</b></div>
+      </div>
+      <div class="fb">${taskFeedback(r,a,maxPoints)}</div>
+      ${diffHtml||(a.rest===0?`<div class="ok-line">Nincs eltérés az írandó és a beírt szöveg között.</div>`:"")}
+      ${restHtml}
+    </div>`;
+  }).join("");
 
   saveResult({
     studentName:$("studentName").value.trim(),
@@ -386,16 +715,6 @@ function saveResult(result){
     form.remove();
     iframe.remove();
   },8000);
-}
-
-function escapeHtml(value){
-  return String(value??"").replace(/[&<>"']/g,ch=>({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#039;"
-  }[ch]));
 }
 
 $("startBtn").addEventListener("click",startTest);
