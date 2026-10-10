@@ -28,6 +28,15 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .error{background:#fce8e6;color:#a50e0e;padding:12px;border-radius:8px;margin-bottom:12px}
 .success{background:#e6f4ea;color:#137333;padding:12px;border-radius:8px}
 .hidden{display:none !important}
+.lock-row{display:flex;gap:8px;align-items:center}.lock-row input{flex:1}.lock-row button{white-space:nowrap}
+.conn{margin:8px 0 2px;padding:6px 10px;border-radius:8px;background:#f1f3f4;cursor:pointer}
+.conn.ok{background:#e6f4ea;color:#137333}.conn.bad{background:#fce8e6;color:#a50e0e}
+.weak-box{margin:10px 0;padding:10px;border-radius:10px;background:#fff4e5;border:1px solid #f0c27b}
+.weak-box button{margin-top:6px}
+.save-banner{position:fixed;top:0;left:0;right:0;z-index:150;background:#fce8e6;color:#7a0b0b;border-bottom:4px solid #c5221f;padding:10px 14px;box-shadow:0 4px 14px rgba(0,0,0,.25);font-size:.95rem;line-height:1.35}
+.save-banner b{display:block;font-size:1.05rem;margin-bottom:3px}
+.save-banner .actions{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px}
+.save-banner button{padding:8px 12px}
 table{width:100%;border-collapse:collapse;margin:16px 0}
 th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
 
@@ -175,7 +184,7 @@ p{margin:.4em 0}
 .back-to-top{position:fixed;right:16px;bottom:16px;z-index:120;box-shadow:0 4px 14px rgba(0,0,0,.22);border:1px solid #fff;border-radius:999px;padding:10px 14px;opacity:.96}
 @media(max-width:560px){.back-to-top{right:10px;bottom:10px;padding:8px 11px;font-size:.82rem}.result-top-actions{align-items:flex-start}}
 /* --- fejlődési grafikon és hozzáférhetőség --- */
-.result-summary{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.result-summary{grid-template-columns:repeat(5,minmax(0,1fr));gap:5px}
 .result-summary .stat{min-width:0;text-align:center;padding:7px 3px}
 .result-summary .stat b{white-space:nowrap;font-size:clamp(.7rem,2.3vw,1.12rem);overflow:visible}
 .result-summary .stat:first-child{font-variant-numeric:tabular-nums}
@@ -210,7 +219,7 @@ body.high-contrast .progress-chart svg text{fill:#fff}
 @media(prefers-reduced-motion:reduce){.achievement,.achievement .mascot{animation:none}}
 @media print{
   body{background:#fff!important;color:#000!important}.wrap{max-width:none;padding:0}.card{box-shadow:none;border:0;padding:0;margin:0 0 12px}
-  #startPanel,#testPanel,#error,#pendingBox,#saveActions,.export-actions,#newTestBtn,#newTestBtnTop,#backToTop,#stopModal,#approveModal,.size-row{display:none!important}
+  #startPanel,#testPanel,#error,#pendingBox,#saveBanner,#saveActions,.export-actions,#newTestBtn,#newTestBtnTop,#backToTop,#stopModal,#approveModal,.size-row{display:none!important}
   #resultPanel{display:block!important}.result-highlight .hero-stat{break-inside:avoid;border:1px solid #999!important;background:#fff!important;color:#000!important}
   details.explain{break-inside:avoid}details.explain>summary{display:none}details.explain:not([open])>*:not(summary){display:block!important}
   .task-res{break-inside:avoid-page;border:1px solid #aaa}.diff-block{break-inside:avoid}.fb-box{background:#fff;border:1px solid #aaa}
@@ -291,9 +300,16 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 <p class="muted">A feladatokat a tanár által kezelt Google Táblázatból tölti be a rendszer. Billentyűzet: a Tab billentyűvel lépkedhetsz, a fókuszban lévő gomb az Enterrel aktiválható; a gépelőmezőben a Ctrl+Enter a következő feladatot indítja, ha elérhető.</p>
 <div id="error" class="error hidden"></div>
 
+<div id="saveBanner" class="save-banner hidden" role="alert">
+<b>⚠️ Az eredményt nem sikerült elküldeni a tanárnak!</b>
+<span>Ne zárd be az oldalt. Nyomd meg az <u>Újrapróbálom</u> gombot. Ha ez sem megy, töltsd le az eredményt (CSV), és add át a tanárnak.</span>
+<div class="actions"><button type="button" id="bannerRetry">🔄 Újrapróbálom</button><button type="button" id="bannerCsv" class="btn-grey">⬇ Letöltés CSV-ben</button><button type="button" id="bannerClose" class="btn-grey">Bezárás</button></div>
+<span id="bannerStatus"></span>
+</div>
+
 <div id="pendingBox" class="error hidden">
 <span id="pendingText"></span>
-<span class="actions"><button type="button" id="pendingSend">Elküldés most</button></span>
+<span class="actions"><button type="button" id="pendingSend">Elküldés most</button> <button type="button" id="pendingDismiss" class="btn-grey">Elvetem</button></span>
 <span id="pendingStatus"></span>
 </div>
 
@@ -309,9 +325,12 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 <input id="studentClassOther" class="hidden" placeholder="Írd be az osztályt, pl. 6.a vagy 11.ny" style="margin-top:8px">
 
 <label for="taskCount">Feladatok száma</label>
-<input id="taskCount" type="number" min="1" max="50" value="15">
+<div class="lock-row"><input id="taskCount" type="number" min="1" max="50" value="15" readonly><button type="button" id="unlockBtn" class="btn-grey">🔒 Tanári feloldás</button></div>
+<div id="teacherOpts" class="hidden"><label for="capInput">Időkeret (perc) – tanári beállítás</label><input id="capInput" type="number" min="5" max="120" value="35"></div>
 <p class="muted small">A feladatok minden típusból egyenlően kerülnek kiválasztásra. A teszt legfeljebb <span id="capMinutes">35</span> percig tart.</p>
 <label class="chk"><input type="checkbox" id="practiceMode"> Gyakorló mód (az eredmény nem kerül a táblázatba)</label>
+<label class="chk"><input type="checkbox" id="soundOn"> 🔊 Hangjelzés (lejárt idő, kész feladat)</label>
+<div id="connChip" class="conn small" role="status" title="Kattints az újraellenőrzéshez">Kapcsolat ellenőrzése…</div>
 
 <br>
 <button id="startBtn">Teszt indítása</button>
@@ -350,7 +369,7 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 <div class="next-row"><button id="nextBtn" disabled>Következő</button></div>
 
 <div class="stats-row">
-<div class="stat"><span class="lbl">Helyes</span><b id="correct">0</b></div>
+<div class="stat"><span class="lbl">Pontos</span><b id="correct">0</b></div>
 <div class="stat"><span class="lbl">Hibás</span><b id="wrong">0</b></div>
 <div class="stat"><span class="lbl">Rontás</span><b id="mistakes">0</b></div>
 <div class="stat"><span class="lbl">Leütés</span><b id="totalTyped">0</b></div>
@@ -377,8 +396,7 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 </div>
 <div class="grid result-summary">
 <div class="stat"><span class="summary-label">Összpontszám</span><b id="finalScore">0</b></div>
-<div class="stat"><span class="summary-label">Átlag</span><b id="finalPercent">0%</b></div>
-<div class="stat"><span class="summary-label">Helyes</span><b id="finalCorrect">0</b></div>
+<div class="stat"><span class="summary-label">Pontos</span><b id="finalCorrect">0</b></div>
 <div class="stat"><span class="summary-label">Hibás</span><b id="finalWrong">0</b></div>
 <div class="stat"><span class="summary-label">Rontás</span><b id="finalMistakes">0</b></div>
 <div class="stat"><span class="summary-label">Sebesség</span><b id="finalSpeed">0</b><small class="summary-unit">leütés/perc</small></div>
@@ -399,7 +417,7 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 <details class="explain" open>
 <summary>Mit jelentenek ezek a számok?</summary>
 <dl>
-<dt>Helyes</dt>
+<dt>Pontos</dt>
 <dd>Azok a karakterek, amelyeket jól írtál be. A program az írandó és a beírt szöveget egymáshoz igazítja, ezért ha kihagysz vagy beszúrsz egy betűt, az utána következő, jól beírt karakterek továbbra is helyesnek számítanak. A kis- és nagybetű, az ékezet, a szóköz és az írásjel is számít.</dd>
 <dt>Hibás</dt>
 <dd>A tévesztések száma: másik karaktert írtál (elütés, hiányzó ékezet vagy nagybetű), kihagytál egy karaktert, vagy feleslegesen beírtál egyet. A szöveg végéből még be nem írt rész nem hibának, hanem hiányzó résznek számít.</dd>
@@ -410,7 +428,7 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 <dt>Leütés</dt>
 <dd>A beírt karakterek száma a feladat végén.</dd>
 <dt>Eredmény (százalék)</dt>
-<dd>Helyes karakterek ÷ (az írandó szöveg hossza + a felesleges karakterek) × 100. Ha nem írtad be a teljes szöveget, a hiányzó rész is csökkenti a százalékot.</dd>
+<dd>Pontos karakterek ÷ (az írandó szöveg hossza + a felesleges karakterek) × 100. Ha nem írtad be a teljes szöveget, a hiányzó rész is csökkenti a százalékot.</dd>
 <dt>Pont</dt>
 <dd>A feladat maximális pontszáma × a százalék ÷ 100, egészre kerekítve. Az összpontszám a feladatok pontjainak összege.</dd>
 <dt>Sebesség</dt>
@@ -444,6 +462,7 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 <button type="button" id="retrySave">Mentés újra</button>
 <button type="button" id="dlSave" class="btn-grey">Eredmény letöltése (.json)</button>
 </div>
+<div id="weakBox" class="weak-box hidden"><b>🎯 Gyakorold a hibás szavaidat!</b><br><span id="weakText"></span><br><button type="button" id="practiceWeak">Gyakorlás indítása (nem kerül mentésre)</button></div>
 <button type="button" id="newTestBtn">Új teszt</button>
 </div>
 
@@ -498,8 +517,9 @@ const NAME_KEY = "gepiras_last_name";
 const FONT_KEY = "gepiras_font_prefs";
 const FONT_TTL_MS = 60*60*1000;                  // a betűméret-beállítás 1 óráig marad meg
 const NAME_TTL_MS = 60*60*1000;                  // ennyi ideig marad alapértelmezett a név (1 óra)
-const MAX_TOTAL_SEC = 35*60;   // egy teszt alapértelmezett legnagyobb hossza
-const TEACHER_PIN = "2468";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
+let MAX_TOTAL_SEC = 35*60;   // egy teszt alapértelmezett legnagyobb hossza
+const LOCK_SETTINGS = true;   // true: a feladatszám és az időkeret csak tanári kóddal módosítható
+const TEACHER_PIN = "";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
 const PENDING_KEY = "gepiras_pending_result";
 
 let tasks=[];
@@ -756,6 +776,18 @@ function shuffle(arr){
   return a;
 }
 
+// Ha a feladatbankban van "Nehézség" oszlop, a könnyű/közepes/nehéz feladatok egyenlően keverednek.
+function interleaveDiff(arr){
+  const g=new Map();
+  arr.forEach(t=>{const k=t.difficulty||"";if(!g.has(k))g.set(k,[]);g.get(k).push(t);});
+  if(g.size<2) return arr;
+  const lists=shuffle([...g.values()]);
+  const out=[];
+  let more=true;
+  while(more){more=false;lists.forEach(l=>{if(l.length){out.push(l.shift());more=true;}});}
+  return out;
+}
+
 // Minden típusból (szó, mondat, bekezdés stb.) ugyanannyi feladatot választ,
 // véletlenszerűen, majd az egész sorozatot is összekeveri.
 function balanceTasks(all,count){
@@ -769,7 +801,7 @@ function balanceTasks(all,count){
   const types=[...groups.keys()].map(k=>{
     const arr=groups.get(k);
     const avg=arr.reduce((s,t)=>s+String(t.text||"").length,0)/arr.length;
-    return {k,avg,pool:shuffle(arr)};
+    return {k,avg,pool:interleaveDiff(shuffle(arr))};
   }).sort((x,y)=>x.avg-y.avg||x.k.localeCompare(y.k,"hu"));
 
   const T=types.length;
@@ -835,6 +867,11 @@ function askApproval(count,total){
 
 function startTest(){
   hideError();
+  initAudio();
+  // Új teszt indulásakor a korábbi mentési figyelmeztetések végleg eltűnnek.
+  clearPending();
+  $("pendingBox").classList.add("hidden");
+  showSaveBanner(false);
 
   const practice=$("practiceMode").checked;
   const name=$("studentName").value.trim().replace(/\s+/g," ")||(practice?"Gyakorló":"");
@@ -1104,6 +1141,7 @@ function finishCurrentTask(timedOut){
 
   $("answer").disabled=true;
   $("nextBtn").disabled=false;
+  playSound(timedOut?"timeout":"done");
   $("autoMsg").className="auto-msg"+(timedOut?" warn":"");
   $("autoMsg").textContent=timedOut
     ?"⏰ Lejárt az idő!"
@@ -1470,7 +1508,6 @@ function finishTest(){
   $("gradeHero").classList.toggle("grade-low",grade<=2);
   $("gradeExplain").textContent="Az átlagos százalékból számolva: "+GRADE_LIMITS.map(([m,g])=>`${g}: ${m}%-tól`).join(", ")+".";
   $("finalScore").textContent=totalScore;
-  $("finalPercent").textContent=averagePercent+"%";
   $("finalCorrect").textContent=totalCorrect;
   $("finalWrong").textContent=totalWrong;
   $("finalMistakes").textContent=totalMistakes;
@@ -1509,7 +1546,7 @@ function finishTest(){
         <span class="pill">${r.percent}% · ${r.score} / ${maxPoints} pont${r.interrupted?" · megszakítva":""}</span>
       </div>
       <div class="mini">
-        <div>Helyes<b>${r.correct}</b></div>
+        <div>Pontos<b>${r.correct}</b></div>
         <div>Hibás<b>${r.wrong}</b></div>
         <div>Rontás<b>${r.mistakes}</b></div>
         <div>Ékezethiba<b>${a.cnt.accent}</b></div>
@@ -1574,6 +1611,8 @@ function finishTest(){
   };
   exportResult=pendingResult;
   renderProgress(pendingResult);
+  playSound("end");
+  updateWeakBox();
   if(practiceMode){
     // Gyakorló módban nem megy semmi a táblázatba, de helyben exportálható.
     pendingResult=null;
@@ -1646,7 +1685,10 @@ async function verifySaved(id){
 // Elküldi az eredményt, majd ellenőrzi a táblázatban. Ha nem találja, újraküldi
 // (a script az azonos azonosítójú teszteket nem rögzíti kétszer).
 async function sendResult(result,statusEl){
+  // Visszatérés: "yes" = igazoltan megérkezett, "unverified" = elküldve, de az ellenőrzés
+  // nem lehetséges (pl. mobilon a JSONP le van tiltva), false = tényleg nem sikerült.
   statusEl.textContent="Eredmény mentése a Google Táblázatba...";
+  let lastVerdict="none";
   for(let attempt=1;attempt<=3;attempt++){
     let posted=false;
     try{
@@ -1655,11 +1697,15 @@ async function sendResult(result,statusEl){
     }catch(e){}
 
     if(posted){
-      if(!result.testId) return true;
+      if(!result.testId) return "unverified";
+      let errors=0;
       for(let v=0;v<4;v++){
         await sleep(v===0?1200:2000);
-        const s=await verifySaved(result.testId);
-        if(s==="yes"||s==="unknown") return true;
+        const sv=await verifySaved(result.testId);
+        lastVerdict=sv;
+        if(sv==="yes") return "yes";
+        if(sv==="unknown"||sv==="error") errors++;
+        if(errors>=2) return "unverified";   // az ellenőrzés nem működik, de a küldés lezajlott
       }
     }
 
@@ -1671,19 +1717,43 @@ async function sendResult(result,statusEl){
   return false;
 }
 
+function showSaveBanner(show){
+  $("saveBanner").classList.toggle("hidden",!show);
+  if(show) $("bannerStatus").textContent="";
+}
+
+let saving=false, autoRetryN=0, autoRetryTimer=null;
+function scheduleAutoRetry(){
+  clearTimeout(autoRetryTimer);
+  if(autoRetryN>=6) return;
+  autoRetryTimer=setTimeout(()=>{ autoRetryN++; if(pendingResult&&!savedOk) saveResult(); },20000);
+}
 async function saveResult(){
+  if(saving) return;
+  saving=true;
+  try{ await saveResultInner(); } finally{ saving=false; }
+}
+async function saveResultInner(){
+  clearTimeout(autoRetryTimer);
   $("saveActions").classList.add("hidden");
+  showSaveBanner(false);
   backupPending(pendingResult);
   const ok=await sendResult(pendingResult,$("saveStatus"));
   if(ok){
     savedOk=true;
     clearPending();
-    $("saveStatus").textContent="✅ Az eredmény el lett mentve a Google Táblázatba.";
+    showSaveBanner(false);
+    $("saveStatus").textContent=ok==="yes"
+      ?"✅ Az eredmény el lett mentve a Google Táblázatba."
+      :"✅ Az eredmény el lett küldve. (Az automatikus ellenőrzés ezen az eszközön nem működött; ha kétséges, szólj a tanárnak, vagy töltsd le az eredményt.)";
   }else{
-    $("saveStatus").innerHTML="⚠️ <b>Az eredményt nem sikerült elküldeni.</b> Ne zárd be az oldalt! Próbáld újra, vagy töltsd le az eredményt, és add át a tanárnak.";
+    $("saveStatus").innerHTML="⚠️ <b>Az eredményt nem sikerült elküldeni.</b> Próbáld újra, vagy töltsd le az eredményt, és add át a tanárnak.";
     $("saveActions").classList.remove("hidden");
+    showSaveBanner(true);
+    scheduleAutoRetry();   // a háttérben magától is újrapróbálja
   }
 }
+window.addEventListener("online",()=>{ if(pendingResult&&!savedOk&&!testActive) saveResult(); });
 
 function getExportData(){ return exportResult||pendingResult; }
 function safeFilename(value){ return String(value||"eredmeny").replace(/[^\p{L}\p{N}]+/gu,"_").replace(/^_+|_+$/g,"")||"eredmeny"; }
@@ -1713,9 +1783,9 @@ function downloadCsv(){
     ["Teszt kezdete (ISO időbélyeg)",data.testStartedAt], ["Teszt befejezése (ISO időbélyeg)",data.testFinishedAt],
     ["Másik lapra/ablakra váltás észlelve",data.awayDetected?"igen":"nem"], ["Lap-/ablakváltások száma",data.awayCount||0],
     ["Összpontszám",data.totalScore], ["Átlag (%)",data.averagePercent], ["Érdemjegy",data.grade],
-    ["Helyes karakter",data.totalCorrect], ["Hibás karakter",data.totalWrong], ["Rontás",data.totalMistakes],
+    ["Pontos karakter",data.totalCorrect], ["Hibás karakter",data.totalWrong], ["Rontás",data.totalMistakes],
     ["Leütés",data.totalTyped], ["Átlagsebesség (leütés/perc)",data.averageSpeed], [],
-    ["Feladat","Típus","Eredmény (%)","Pont","Helyes","Hibás","Rontás","Ékezethiba","Kis-/nagybetű hiba","Elütés","Kihagyott karakter","Felesleges karakter","Sebesség (leütés/perc)","Idő (mp)","Idő lejárt","Megszakítva","Írandó szöveg","Beírt szöveg"]
+    ["Feladat","Típus","Eredmény (%)","Pont","Pontos karakter","Hibás","Rontás","Ékezethiba","Kis-/nagybetű hiba","Elütés","Kihagyott karakter","Felesleges karakter","Sebesség (leütés/perc)","Idő (mp)","Idő lejárt","Megszakítva","Írandó szöveg","Beírt szöveg"]
   ];
   (data.tasks||[]).forEach((r,i)=>rows.push([i+1,r.type,r.percent,r.score,r.correct,r.wrong,r.mistakes,r.accentErrors,r.caseErrors,r.typoErrors,r.missingChars,r.extraChars,r.speed,r.timeSpent,r.timedOut?"igen":"nem",r.interrupted?"igen":"nem",r.text,r.answer]));
   const csv='\ufeff'+rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
@@ -1726,10 +1796,22 @@ function downloadPdf(){
   window.print();
 }
 
-function checkPendingOnLoad(){
+async function checkPendingOnLoad(){
   let stored=null;
   try{ stored=JSON.parse(localStorage.getItem(PENDING_KEY)||"null"); }catch(e){}
   if(!stored||!stored.studentName) return;
+  // Túl régi (több mint 24 órás) mentetlen eredményt nem kínálunk fel.
+  const ts=Date.parse(stored.testFinishedAt||"");
+  if(Number.isFinite(ts)&&Date.now()-ts>24*3600*1000){ clearPending(); return; }
+  // Ha közben mégis megérkezett a táblázatba, a figyelmeztetés felesleges.
+  if(stored.testId){
+    const sv=await verifySaved(stored.testId);
+    if(sv==="yes"){ clearPending(); return; }
+  }
+  if(testActive) return;
+  // Csendes automatikus újraküldés, mielőtt bármit mutatnánk a diáknak.
+  const silent=await sendResult(stored,{textContent:""});
+  if(silent){ clearPending(); return; }
   $("pendingText").textContent=`⚠️ Van egy korábbi, el nem küldött eredmény: ${stored.studentName} (${stored.studentClass||"-"}). `;
   $("pendingBox").classList.remove("hidden");
   $("pendingSend").onclick=async()=>{
@@ -1743,6 +1825,7 @@ function checkPendingOnLoad(){
       $("pendingSend").disabled=false;
     }
   };
+  $("pendingDismiss").onclick=()=>{ clearPending(); $("pendingBox").classList.add("hidden"); };
 }
 
 /* ---------- Vészleállítás ---------- */
@@ -1787,13 +1870,24 @@ $("stopCancel").addEventListener("click",()=>{
 $("stopConfirm").addEventListener("click",emergencyStop);
 
 $("retrySave").addEventListener("click",saveResult);
+$("bannerRetry").addEventListener("click",async()=>{
+  $("bannerRetry").disabled=true;
+  $("bannerStatus").textContent="Küldés...";
+  await saveResult();
+  $("bannerRetry").disabled=false;
+  if(!$("saveBanner").classList.contains("hidden")) $("bannerStatus").textContent="Még mindig nem sikerült. Töltsd le CSV-ben, és add át a tanárnak.";
+});
+$("bannerCsv").addEventListener("click",downloadCsv);
+$("bannerClose").addEventListener("click",()=>showSaveBanner(false));
 $("exportCsv").addEventListener("click",downloadCsv);
 $("exportPdf").addEventListener("click",downloadPdf);
 $("progressExportCsv").addEventListener("click",downloadCsv);
 $("progressExportPdf").addEventListener("click",downloadPdf);
 $("dlSave").addEventListener("click",downloadResult);
 function beginNewTest(){
-  if(pendingResult&&!savedOk&&!confirm("Az eredmény még nincs elküldve. Biztosan új tesztet kezdesz?")) return;
+  if(pendingResult&&!savedOk&&!confirm("Az eredmény még nincs elküldve. Biztosan új tesztet kezdesz? (Az el nem küldött eredmény elvész, ha előtte nem töltöd le.)")) return;
+  clearPending();
+  savedOk=true;
   testActive=false;
   location.reload();
 }
@@ -1840,6 +1934,117 @@ function noteAway(){
 }
 window.addEventListener("blur",noteAway);
 document.addEventListener("visibilitychange",()=>{ if(document.hidden) noteAway(); });
+
+/* ---------- Tanári zár ---------- */
+function applyLock(){
+  if(!LOCK_SETTINGS){ $("taskCount").readOnly=false; $("unlockBtn").classList.add("hidden"); return; }
+  $("taskCount").readOnly=true;
+}
+$("unlockBtn").addEventListener("click",()=>{
+  const code=TEACHER_PIN?prompt("Tanári kód:"):"";
+  if(code===null) return;
+  if(TEACHER_PIN&&String(code).trim()!==TEACHER_PIN){ alert("Hibás kód."); return; }
+  $("taskCount").readOnly=false;
+  $("teacherOpts").classList.remove("hidden");
+  $("unlockBtn").classList.add("hidden");
+  $("taskCount").focus();
+});
+$("capInput").addEventListener("input",()=>{
+  const m=Math.max(5,Math.min(120,Number($("capInput").value)||35));
+  MAX_TOTAL_SEC=m*60;
+  $("capMinutes").textContent=m;
+});
+applyLock();
+
+/* ---------- Hangjelzés ---------- */
+const SOUND_KEY="gepiras_sound";
+let audioCtx=null;
+try{ $("soundOn").checked=localStorage.getItem(SOUND_KEY)==="1"; }catch(e){}
+$("soundOn").addEventListener("change",()=>{ try{localStorage.setItem(SOUND_KEY,$("soundOn").checked?"1":"0");}catch(e){} initAudio(); playSound("done"); });
+function initAudio(){
+  if(!$("soundOn").checked) return;
+  try{
+    audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==="suspended") audioCtx.resume();
+  }catch(e){}
+}
+function beep(freq,start,dur,vol){
+  const o=audioCtx.createOscillator(), g=audioCtx.createGain();
+  o.type="sine"; o.frequency.value=freq;
+  g.gain.setValueAtTime(0,audioCtx.currentTime+start);
+  g.gain.linearRampToValueAtTime(vol,audioCtx.currentTime+start+0.02);
+  g.gain.linearRampToValueAtTime(0,audioCtx.currentTime+start+dur);
+  o.connect(g); g.connect(audioCtx.destination);
+  o.start(audioCtx.currentTime+start); o.stop(audioCtx.currentTime+start+dur+0.05);
+}
+function playSound(kind){
+  if(!$("soundOn").checked||!audioCtx) return;
+  try{
+    if(kind==="done") beep(880,0,0.12,0.12);
+    else if(kind==="timeout"){ beep(330,0,0.2,0.15); beep(250,0.25,0.3,0.15); }
+    else if(kind==="end"){ beep(660,0,0.15,0.12); beep(880,0.18,0.15,0.12); beep(1100,0.36,0.25,0.12); }
+  }catch(e){}
+}
+
+/* ---------- Kapcsolat jelzése ---------- */
+async function checkConn(){
+  const el=$("connChip");
+  el.className="conn small"; el.textContent="Kapcsolat ellenőrzése…";
+  try{
+    const r=await jsonp({action:"hasResult",id:"ping"},8000);
+    if(r&&r.success!==false){ el.className="conn small ok"; el.textContent="🟢 A feladatbank elérhető erről az eszközről."; return; }
+    throw new Error("bad");
+  }catch(e){
+    let cached=false; try{ cached=!!localStorage.getItem(TASK_CACHE_KEY); }catch(x){}
+    el.className="conn small bad";
+    el.textContent="🔴 A Google Táblázat most nem érhető el erről az eszközről"+(cached?" (a korábban letöltött feladatok használhatók)":"")+". Kattints ide az újraellenőrzéshez; ha nem sikerül, szólj a tanárnak.";
+  }
+}
+$("connChip").addEventListener("click",checkConn);
+checkConn();
+
+/* ---------- Hibás szavak gyakorlása ---------- */
+let weakList=[];
+function computeWeakWords(){
+  const found=new Map();
+  results.forEach((r,i)=>{
+    if(skippedIdx.has(i)||!r.answer) return;
+    const a=analyze(r);
+    const exp=r.text.slice(0,Math.max(0,r.text.length-a.rest));
+    const typed=new Set(String(r.answer).split(/\s+/).filter(Boolean));
+    exp.split(/\s+/).filter(Boolean).forEach(w=>{ if(!typed.has(w)&&w.length>1) found.set(w,true); });
+  });
+  return [...found.keys()];
+}
+function updateWeakBox(){
+  weakList=practiceMode?[]:computeWeakWords();
+  if(!weakList.length){ $("weakBox").classList.add("hidden"); return; }
+  $("weakText").textContent=`${weakList.length} szót írtál hibásan: `+weakList.slice(0,8).join(", ")+(weakList.length>8?"…":"")+". Gyakorold őket külön!";
+  $("weakBox").classList.remove("hidden");
+}
+$("practiceWeak").addEventListener("click",()=>{
+  const words=shuffle(weakList).slice(0,16);
+  const list=[];
+  for(let i=0;i<words.length;i+=4){
+    const chunk=words.slice(i,i+4);
+    list.push({id:"gyak"+(i/4+1),type:"hibás szavak",text:chunk.join(" "),time:Math.max(20,chunk.join(" ").length*3),points:100});
+  }
+  if(!list.length) return;
+  // Új, mentés nélküli gyakorlókör (az eredeti teszt eredményét nem érinti).
+  tasks=list; results=[]; currentIndex=0; skippedIdx.clear();
+  stopped=false; savedOk=true; pendingResult=null; practiceMode=true;
+  $("practiceTag").classList.remove("hidden");
+  testId=Date.now().toString(36);
+  testStartedAt=new Date(); testFinishedAt=null; testActive=true;
+  showSaveBanner(false);
+  $("totalLen").textContent=fmtDur(totalTime(tasks));
+  $("capNote").classList.add("hidden");
+  $("resultPanel").classList.add("hidden");
+  $("testPanel").classList.remove("hidden");
+  initAudio();
+  window.scrollTo(0,0);
+  showTask(GRACE_FIRST_MS);
+});
 
 $("capMinutes").textContent=Math.round(MAX_TOTAL_SEC/60);
 initClassSelect();
