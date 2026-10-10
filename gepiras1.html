@@ -145,6 +145,7 @@ p{margin:.4em 0}
 <select id="studentGrade" aria-label="Évfolyam"></select>
 <select id="studentLetter" aria-label="Betűjel"></select>
 </div>
+<input id="studentClassOther" class="hidden" placeholder="Írd be az osztályt, pl. 6.a vagy 11.ny" style="margin-top:8px">
 
 <label for="taskCount">Feladatok száma</label>
 <input id="taskCount" type="number" min="1" max="50" value="15">
@@ -280,19 +281,17 @@ p{margin:.4em 0}
 const API_URL = "https://script.google.com/macros/s/AKfycbwFUGHRJ4Pn7MSGNgve1GRb8cVUT1ndEKCm5TPlvdlmwJc_B0EeH9JJ_-vNpT4EF2M/exec";
 
 /* ---- Beállítások (a tanár módosíthatja) ---- */
-const GRADES = [5,6,7,8,9,10,11,12,13];            // választható évfolyamok
+const GRADES = [5,6,7,8,9,10,11,12];            // választható évfolyamok
 const DEFAULT_GRADE = 9;                         // alapértelmezett évfolyam
-const LETTERS = ["ny","a","b","c","n","bn","g","egyéb"]; // választható betűjelek
+const LETTERS = ["ny","a","b","c","n","bn","g"]; // választható betűjelek
 const DEFAULT_LETTER = "ny";                     // alapértelmezett betűjel
+const GRACE_FIRST_MS = 3000;  // az első feladat előtt ennyit vár az időmérés
+const GRACE_NEXT_MS = 2000;   // feladatváltás után ennyit vár az időmérés
 const NAME_KEY = "gepiras_last_name";
 const NAME_TTL_MS = 60*60*1000;                  // ennyi ideig marad alapértelmezett a név (1 óra)
 const MAX_TOTAL_SEC = 35*60;   // egy teszt alapértelmezett legnagyobb hossza
-  
-const TEACHER_PIN = "";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
-  
+const TEACHER_PIN = "2468";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
 const PENDING_KEY = "gepiras_pending_result";
-
-  
 
 let tasks=[];
 let results=[];
@@ -305,6 +304,7 @@ let startTime=0;
 let remaining=0;
 let mistakes=0;
 let finished=false;
+let graceActive=false;
 let stopped=false;
 let testActive=false;
 let studentNameVal="";
@@ -317,8 +317,9 @@ const skippedIdx=new Set();
 const $=id=>document.getElementById(id);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-function showError(message){
-  $("error").textContent=message;
+function showError(message,detail){
+  $("error").innerHTML=esc(message)+(detail
+    ?`<div class="small" style="margin-top:6px;opacity:.85;word-break:break-word">Részletek (a tanárnak): ${esc(detail)}</div>`:"");
   $("error").classList.remove("hidden");
 }
 function hideError(){
@@ -342,12 +343,27 @@ function fmtClock(sec){
 
 function initClassSelect(){
   $("studentGrade").innerHTML=GRADES.map(g=>
-    `<option value="${g}"${g===DEFAULT_GRADE?" selected":""}>${g}.</option>`).join("");
+    `<option value="${g}"${g===DEFAULT_GRADE?" selected":""}>${g}.</option>`).join("")+
+    `<option value="__other">Egyéb (beírom)</option>`;
   $("studentLetter").innerHTML=LETTERS.map(l=>
     `<option value="${esc(l)}"${l===DEFAULT_LETTER?" selected":""}>${esc(l)}</option>`).join("");
+
+  $("studentGrade").addEventListener("change",()=>{
+    const other=$("studentGrade").value==="__other";
+    $("studentLetter").classList.toggle("hidden",other);
+    $("studentClassOther").classList.toggle("hidden",!other);
+    if(other) $("studentClassOther").focus();
+  });
+}
+
+function normalizeClass(s){
+  s=String(s||"").trim();
+  const m=s.match(/^(\d{1,2})\s*\.?\s*([A-Za-zÁÉÍÓÖŐÚÜŰáéíóöőúüű]*)$/);
+  return m?`${m[1]}.${m[2].toLowerCase()}`:s;
 }
 
 function getClass(){
+  if($("studentGrade").value==="__other") return normalizeClass($("studentClassOther").value);
   return `${$("studentGrade").value}.${$("studentLetter").value}`;
 }
 
@@ -366,7 +382,7 @@ function rememberName(name){
 
 /* ---------- Feladatok betöltése és kiválasztása ---------- */
 
-function jsonp(params){
+function jsonp(params,timeoutMs){
   return new Promise((resolve,reject)=>{
     const callbackName="gcb_"+Date.now()+"_"+Math.random().toString(36).slice(2);
     const script=document.createElement("script");
@@ -379,7 +395,7 @@ function jsonp(params){
     timer=setTimeout(()=>{
       cleanup();
       reject(new Error("Időtúllépés a Google Apps Script elérésekor."));
-    },20000);
+    },timeoutMs||20000);
     window[callbackName]=data=>{ cleanup(); resolve(data); };
     script.onerror=()=>{
       cleanup();
@@ -388,16 +404,76 @@ function jsonp(params){
     const qs=Object.keys(params)
       .map(k=>encodeURIComponent(k)+"="+encodeURIComponent(params[k]))
       .join("&");
-    script.src=API_URL+"?"+qs+"&callback="+encodeURIComponent(callbackName);
+    script.src=API_URL+"?"+qs+"&callback="+encodeURIComponent(callbackName)+"&_="+Date.now();
     document.body.appendChild(script);
   });
 }
 
-function loadTasks(count){
-  return jsonp({action:"getTasks",count}).then(data=>{
+const TASK_CACHE_KEY="gepiras_tasks_cache";
+const TASK_CACHE_TTL=12*60*60*1000;   // a helyben mentett feladatbank 12 óráig használható
+
+function shortTxt(t){ return String(t||"").replace(/\s+/g," ").slice(0,70); }
+
+// Háromszor próbálkozik JSONP-vel (mobilnál előfordul egy-egy elveszett kérés),
+// ha az nem megy, fetch-csel is megpróbálja, és a hiba okát összegyűjti.
+async function loadTasks(count){
+  const diag=[];
+  for(let i=1;i<=3;i++){
+    try{
+      const data=await jsonp({action:"getTasks",count},12000);
+      if(data&&data.success) return data.tasks||[];
+      const err=new Error((data&&data.error)||"A feladatok betöltése sikertelen.");
+      err.scriptError=true;   // maga a script válaszolt hibával: újrapróbálni nem segít
+      throw err;
+    }catch(e){
+      if(e.scriptError) throw e;
+      if(i===3) diag.push("script-betöltés: "+shortTxt(e.message));
+      else await sleep(800*i);
+    }
+  }
+
+  try{
+    const r=await fetch(API_URL+"?action=getTasks&count="+count+"&_="+Date.now(),{redirect:"follow"});
+    const txt=await r.text();
+    let data=null;
+    try{ data=JSON.parse(txt); }catch(x){}
     if(data&&data.success) return data.tasks||[];
-    throw new Error((data&&data.error)||"A feladatok betöltése sikertelen.");
-  });
+    if(data){
+      const err=new Error(data.error||"A feladatok betöltése sikertelen.");
+      err.scriptError=true;
+      throw err;
+    }
+    diag.push(`fetch: nem JSON válasz (HTTP ${r.status}): ${shortTxt(txt)}`);
+  }catch(e){
+    if(e.scriptError) throw e;
+    diag.push("fetch: "+shortTxt(e.message));
+  }
+
+  diag.push("oldal: "+location.protocol+"//"+(location.host||"(helyi fájl)"));
+  diag.push("online: "+navigator.onLine);
+  diag.push("böngésző: "+shortTxt(navigator.userAgent).slice(0,60));
+  const err=new Error("Nem sikerült kapcsolódni a Google Apps Scripthez.");
+  err.detail=diag.join(" | ");
+  throw err;
+}
+
+// Ha a hálózat nem működik, a legutóbb sikeresen letöltött feladatbankot használja.
+async function loadTasksRobust(){
+  try{
+    const tasks=await loadTasks(500);
+    try{ localStorage.setItem(TASK_CACHE_KEY,JSON.stringify({ts:Date.now(),tasks})); }catch(e){}
+    return {tasks,cached:false};
+  }catch(e){
+    try{
+      const c=JSON.parse(localStorage.getItem(TASK_CACHE_KEY)||"null");
+      if(c&&Array.isArray(c.tasks)&&c.tasks.length&&Date.now()-c.ts<TASK_CACHE_TTL&&!e.scriptError){
+        return {tasks:c.tasks,cached:true};
+      }
+    }catch(x){}
+    const ne=new Error(e.message+(e.scriptError?"":" Próbáld újra egy perc múlva, vagy váltsd a wifit és a mobilnetet."));
+    ne.detail=e.detail;
+    throw ne;
+  }
 }
 
 function shuffle(arr){
@@ -410,7 +486,7 @@ function shuffle(arr){
 }
 
 // Minden típusból (szó, mondat, bekezdés stb.) ugyanannyi feladatot választ,
-// véletlenszerűen. A típusok sorrendje mindenkinél azonos (rövidebb szövegek elöl).
+// véletlenszerűen, majd az egész sorozatot is összekeveri.
 function balanceTasks(all,count){
   const groups=new Map();
   all.forEach(t=>{
@@ -444,7 +520,7 @@ function balanceTasks(all,count){
 
   const out=[];
   types.forEach((g,i)=>out.push(...g.pool.slice(0,taken[i])));
-  return out;
+  return shuffle(out);   // minden teszt új, véletlen sorrendet kap
 }
 
 // Többször újrakeveri a választást, amíg belefér az időkeretbe.
@@ -498,15 +574,17 @@ function startTest(){
     return;
   }
   if(!cls){
-    showError("Válaszd ki az osztályt.");
+    showError($("studentGrade").value==="__other"?"Írd be az osztályt.":"Válaszd ki az osztályt.");
     return;
   }
 
   rememberName(name);
   $("startBtn").disabled=true;
+  $("startBtn").textContent="Feladatok betöltése...";
 
   // Az egész feladatbankot lekérjük, és itt választunk típusonként egyenlően.
-  loadTasks(500).catch(()=>loadTasks(50)).then(async all=>{
+  loadTasksRobust().then(async res=>{
+    const all=res.tasks;
     if(!all.length) throw new Error("Nincs aktív feladat a Feladatbank munkalapon.");
 
     const wanted=Math.min(count,all.length);
@@ -544,6 +622,7 @@ function startTest(){
     testActive=true;
 
     $("totalLen").textContent=fmtDur(totalTime(tasks));
+    if(res.cached) note=(note?note+" ":"")+"ℹ️ A feladatbankot nem sikerült frissíteni, a legutóbb letöltött feladatok szerepelnek.";
     if(note){
       $("capNote").textContent=note;
       $("capNote").classList.remove("hidden");
@@ -554,17 +633,18 @@ function startTest(){
     $("startPanel").classList.add("hidden");
     $("testPanel").classList.remove("hidden");
 
-    showTask(3000,true);
+    showTask(GRACE_FIRST_MS);
   }).catch(err=>{
     $("startBtn").disabled=false;
-    showError(err.message);
+    $("startBtn").textContent="Teszt indítása";
+    showError(err.message,err.detail);
   });
 }
 
 /* ---------- Feladat megjelenítése és időzítés ---------- */
 
-function showTask(lockMs,countdown){
-  lockMs=lockMs||0;
+function showTask(graceMs){
+  graceMs=graceMs||0;
   clearInterval(timerId);
   clearInterval(cdTimer);
   clearTimeout(advanceTimer);
@@ -572,9 +652,11 @@ function showTask(lockMs,countdown){
   finished=false;
   advanced=false;
   mistakes=0;
+  graceActive=graceMs>0;
 
+  // Azonnal lehet írni, nincs zárolás: így nem vész el az első betű.
   $("answer").value="";
-  $("answer").disabled=lockMs>0;
+  $("answer").disabled=false;
   $("nextBtn").disabled=true;
   $("autoMsg").className="auto-msg";
   $("nextBtn").textContent=currentIndex===tasks.length-1?"Befejezés":"Következő";
@@ -586,23 +668,21 @@ function showTask(lockMs,countdown){
   $("progressText").textContent=`${currentIndex+1} / ${tasks.length}`;
   $("progressBar").style.width=`${(currentIndex/tasks.length)*100}%`;
 
-  if(lockMs>0){
+  if(graceActive){
+    let c=Math.round(graceMs/1000);
+    const msg=n=>`⏳ Új feladat! Az idő ${n} mp múlva indul…`;
     $("autoMsg").classList.add("info");
-    if(countdown){
-      let c=Math.round(lockMs/1000);
-      $("autoMsg").textContent=`Indulás ${c}…`;
-      cdTimer=setInterval(()=>{
-        c--;
-        $("autoMsg").textContent=c>0?`Indulás ${c}…`:"Rajt!";
-        if(c<=0) clearInterval(cdTimer);
-      },1000);
-    }else{
-      $("autoMsg").textContent="Következő feladat – készülj!";
-    }
+    $("autoMsg").textContent=msg(c);
+    cdTimer=setInterval(()=>{
+      c--;
+      if(c>0) $("autoMsg").textContent=msg(c);
+      else clearInterval(cdTimer);
+    },1000);
   }else{
     $("autoMsg").textContent="";
   }
 
+  startTime=performance.now();
   updateTimer();
   updateStats();
 
@@ -610,10 +690,11 @@ function showTask(lockMs,countdown){
   const begin=()=>{
     clearInterval(cdTimer);
     if(idx!==currentIndex||finished||stopped) return;
-    $("answer").disabled=false;
+    graceActive=false;
+    mistakes=0;                      // a türelmi idő alatti törlések nem számítanak rontásnak
     $("autoMsg").className="auto-msg";
     $("autoMsg").textContent="";
-    startTime=performance.now();
+    startTime=performance.now();     // az időmérés és a sebesség innen indul
     updateStats();
 
     timerId=setInterval(()=>{
@@ -626,12 +707,10 @@ function showTask(lockMs,countdown){
         scheduleAdvance(1500);
       }
     },1000);
-
-    $("answer").focus();
   };
 
-  // Az új feladat első másodperceiben nem lehet írni, és az idő sem indul el.
-  if(lockMs>0) setTimeout(begin,lockMs);
+  $("answer").focus();
+  if(graceMs>0) setTimeout(begin,graceMs);
   else begin();
 }
 
@@ -697,6 +776,7 @@ function finishCurrentTask(timedOut){
 
   finished=true;
   clearInterval(timerId);
+  clearInterval(cdTimer);
 
   const c=calculate();
   const task=tasks[currentIndex];
@@ -737,7 +817,7 @@ function goNext(){
 
   if(currentIndex<tasks.length-1){
     currentIndex++;
-    showTask(1000);
+    showTask(GRACE_NEXT_MS);
   }else{
     finishTest();
   }
@@ -1083,6 +1163,44 @@ function clearPending(){
   try{ localStorage.removeItem(PENDING_KEY); }catch(e){}
 }
 
+// Küldés rejtett űrlappal és iframe-mel: mobilon (iPhone/Safari, beépített böngészők)
+// megbízhatóbb, mint a fetch, és nem függ a CORS-tól vagy az átirányítástól.
+function postViaForm(result){
+  return new Promise(resolve=>{
+    const name="saveFrame_"+Date.now()+"_"+Math.random().toString(36).slice(2);
+    const iframe=document.createElement("iframe");
+    iframe.name=name;
+    iframe.style.display="none";
+
+    const form=document.createElement("form");
+    form.method="POST";
+    form.action=API_URL;
+    form.target=name;
+    form.acceptCharset="UTF-8";
+    form.style.display="none";
+
+    const input=document.createElement("input");
+    input.type="hidden";
+    input.name="data";
+    input.value=JSON.stringify(result);
+    form.appendChild(input);
+
+    let done=false;
+    const finish=()=>{
+      if(done) return;
+      done=true;
+      setTimeout(()=>{form.remove();iframe.remove();},500);
+      resolve();
+    };
+    iframe.addEventListener("load",finish);
+    setTimeout(finish,6000);   // ha az iframe nem jelez, az ellenőrzés dönt
+
+    document.body.appendChild(iframe);
+    document.body.appendChild(form);
+    form.submit();
+  });
+}
+
 // A táblázatban ellenőrzi, hogy az eredmény tényleg megérkezett-e.
 async function verifySaved(id){
   try{
@@ -1101,8 +1219,7 @@ async function sendResult(result,statusEl){
   for(let attempt=1;attempt<=3;attempt++){
     let posted=false;
     try{
-      const body=new URLSearchParams({data:JSON.stringify(result)});
-      await fetch(API_URL,{method:"POST",mode:"no-cors",body});
+      await postViaForm(result);
       posted=true;
     }catch(e){}
 
@@ -1218,7 +1335,7 @@ $("startBtn").addEventListener("click",startTest);
 $("nextBtn").addEventListener("click",nextTask);
 
 $("answer").addEventListener("keydown",e=>{
-  if(e.key==="Backspace"||e.key==="Delete") mistakes++;
+  if(!graceActive&&(e.key==="Backspace"||e.key==="Delete")) mistakes++;
 });
 $("answer").addEventListener("input",updateStats);
 $("answer").addEventListener("paste",blockPaste);
