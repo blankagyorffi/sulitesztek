@@ -120,6 +120,25 @@ p{margin:.4em 0}
 @media(max-width:480px){.stats-row{gap:3px}.stats-row .stat{padding:4px 1px}.stats-row .u{display:none}}
 .class-row{display:flex;gap:8px}
 .class-row select{flex:1;min-width:0}
+/* --- betűméret-csúszkák --- */
+.task-text{font-size:calc(1.05rem*var(--task-scale,1))}
+#answer{font-size:calc(.95rem*var(--answer-scale,1));line-height:1.4}
+.size-row{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:center;margin:2px 0 0}
+.size-row label{display:flex;align-items:center;gap:6px;margin:0;font-weight:600;font-size:.78rem;color:#5f6368}
+.size-row .lbl-t{white-space:nowrap}
+.size-row input[type=range]{flex:1;min-width:0;width:auto;padding:0;border:0;height:18px;accent-color:#1a73e8;background:transparent}
+.size-row output{min-width:2.7em;text-align:right;font-variant-numeric:tabular-nums}
+.size-reset{padding:3px 9px;font-size:.75rem;background:#e8eaed;color:#202124}
+.msg-slot .auto-msg.small{font-size:.85rem}
+@media(max-width:560px){.size-row{grid-template-columns:1fr;gap:3px}.size-row .size-reset{justify-self:end}}
+/* --- hibatípusok színei, gyakorló mód --- */
+.e-acc{background:#cfe8ff;border-radius:3px;font-weight:700}
+.t-acc{background:#2b7de9;color:#fff;border-radius:3px;font-weight:700}
+.e-case{background:#c8f0ea;border-radius:3px;font-weight:700}
+.t-case{background:#12907f;color:#fff;border-radius:3px;font-weight:700}
+.chk{display:flex;gap:8px;align-items:center;font-weight:600;margin:10px 0 0;font-size:.92rem}
+.chk input{width:auto;margin:0}
+.tag{display:inline-block;background:#fff4e5;color:#92400e;border:1px solid #f59e0b;border-radius:99px;padding:1px 8px;font-size:.75rem;font-weight:700;margin-left:6px}
 </style>
 </head>
 <body>
@@ -150,6 +169,7 @@ p{margin:.4em 0}
 <label for="taskCount">Feladatok száma</label>
 <input id="taskCount" type="number" min="1" max="50" value="15">
 <p class="muted small">A feladatok minden típusból egyenlően kerülnek kiválasztásra. A teszt legfeljebb <span id="capMinutes">35</span> percig tart.</p>
+<label class="chk"><input type="checkbox" id="practiceMode"> Gyakorló mód (az eredmény nem kerül a táblázatba)</label>
 
 <br>
 <button id="startBtn">Teszt indítása</button>
@@ -160,7 +180,7 @@ p{margin:.4em 0}
 <div class="card">
 
 <div class="row">
-<div><b id="progressText">1 / 5</b></div>
+<div><b id="progressText">1 / 5</b><span id="practiceTag" class="tag hidden">gyakorló</span></div>
 <div>Hátralévő idő: <b id="timer">--:--</b></div>
 <button type="button" id="stopBtn" class="stop-btn">⛔ Vészleállítás</button>
 </div>
@@ -169,6 +189,12 @@ p{margin:.4em 0}
 <div id="capNote" class="cap-note hidden"></div>
 
 <div class="bar"><div id="progressBar"></div></div>
+
+<div class="size-row">
+<label><span class="lbl-t">Másolandó szöveg</span><input type="range" id="sizeTask" min="70" max="250" step="5" value="100" aria-label="A másolandó szöveg mérete"><output id="sizeTaskVal">100%</output></label>
+<label><span class="lbl-t">Írott szöveg</span><input type="range" id="sizeAnswer" min="70" max="250" step="5" value="100" aria-label="Az írott szöveg mérete"><output id="sizeAnswerVal">100%</output></label>
+<button type="button" id="sizeReset" class="size-reset" title="Alapméret visszaállítása">↺ Alap</button>
+</div>
 
 <div class="task-text" id="taskText"></div>
 
@@ -200,6 +226,7 @@ p{margin:.4em 0}
 <div class="stat">Hibás<b id="finalWrong">0</b></div>
 <div class="stat">Rontás<b id="finalMistakes">0</b></div>
 <div class="stat">Sebesség<b id="finalSpeed">0</b></div>
+<div class="stat">Érdemjegy<b id="finalGrade">-</b></div>
 </div>
 
 <div id="overallFeedback" class="fb-box"></div>
@@ -211,6 +238,8 @@ p{margin:.4em 0}
 <dd>Azok a karakterek, amelyeket jól írtál be. A program az írandó és a beírt szöveget egymáshoz igazítja, ezért ha kihagysz vagy beszúrsz egy betűt, az utána következő, jól beírt karakterek továbbra is helyesnek számítanak. A kis- és nagybetű, az ékezet, a szóköz és az írásjel is számít.</dd>
 <dt>Hibás</dt>
 <dd>A tévesztések száma: másik karaktert írtál (elütés, hiányzó ékezet vagy nagybetű), kihagytál egy karaktert, vagy feleslegesen beírtál egyet. A szöveg végéből még be nem írt rész nem hibának, hanem hiányzó résznek számít.</dd>
+<dt>Ékezethiba, kis-/nagybetű hiba, elütés</dt>
+<dd>A tévesztéseket három csoportra bontjuk: <b>ékezethiba</b> (ugyanaz a betű, rossz vagy hiányzó ékezettel, pl. a/á, o/ö/ő), <b>kis-/nagybetű hiba</b> (ugyanaz a betű, rossz méretben) és <b>elütés</b> (egészen más karaktert ütöttél).</dd>
 <dt>Rontás</dt>
 <dd>Hányszor nyomtad meg a törlő billentyűt (Backspace vagy Delete). Azt mutatja, hányszor javítottál, nem a végén megmaradt hibákat.</dd>
 <dt>Leütés</dt>
@@ -221,6 +250,8 @@ p{margin:.4em 0}
 <dd>A feladat maximális pontszáma × a százalék ÷ 100, egészre kerekítve. Az összpontszám a feladatok pontjainak összege.</dd>
 <dt>Sebesség</dt>
 <dd>Leütés ÷ a feladatra fordított idő (percben). A gondolkodással, javítással töltött idő is beleszámít.</dd>
+<dt>Érdemjegy</dt>
+<dd id="gradeExplain"></dd>
 <dt>Átlag</dt>
 <dd>A feladatok százalékos eredményeinek átlaga.</dd>
 </dl>
@@ -228,9 +259,11 @@ p{margin:.4em 0}
 
 <h3>Feladatonkénti részletek</h3>
 <div class="legend">
-<span><span class="mono e-sub">a</span> írandó karakter, amit másra cseréltél</span>
+<span><span class="mono e-sub">a</span> írandó karakter, amit elütöttél</span>
+<span><span class="mono e-acc">á</span> → <span class="mono t-acc">a</span> ékezethiba</span>
+<span><span class="mono e-case">A</span> → <span class="mono t-case">a</span> kis-/nagybetű hiba</span>
 <span><span class="mono e-del">a</span> kihagyott karakter</span>
-<span><span class="mono t-sub">a</span> hibásan beírt karakter</span>
+<span><span class="mono t-sub">a</span> elütött (hibás) karakter</span>
 <span><span class="mono t-ins">a</span> felesleges karakter</span>
 <span><span class="mono ph-red">-</span> itt hiányzik valami</span>
 <span><span class="mono ph">␣</span> szóköz, ↵ sortörés a kiemelt helyeken</span>
@@ -285,9 +318,14 @@ const GRADES = [5,6,7,8,9,10,11,12];            // választható évfolyamok
 const DEFAULT_GRADE = 9;                         // alapértelmezett évfolyam
 const LETTERS = ["ny","a","b","c","n","bn","g"]; // választható betűjelek
 const DEFAULT_LETTER = "ny";                     // alapértelmezett betűjel
-const GRACE_FIRST_MS = 3000;  // az első feladat előtt ennyit vár az időmérés
+const GRACE_FIRST_MS = 6000;  // az első feladat előtt ennyit vár az időmérés (a betűméret beállításához is)
 const GRACE_NEXT_MS = 2000;   // feladatváltás után ennyit vár az időmérés
+const GRADE_LIMITS = [[90,5],[75,4],[60,3],[40,2],[0,1]];  // [legalább ennyi %, érdemjegy] - igazítsd a saját értékeléshez
+const SPEED_LIMIT = 900;     // ennél gyorsabb gépelés (leütés/perc) gyanús
+const AWAY_LIMIT = 3;        // ennyi ablakelhagyás fölött a teszt gyanús
 const NAME_KEY = "gepiras_last_name";
+const FONT_KEY = "gepiras_font_prefs";
+const FONT_TTL_MS = 60*60*1000;                  // a betűméret-beállítás 1 óráig marad meg
 const NAME_TTL_MS = 60*60*1000;                  // ennyi ideig marad alapértelmezett a név (1 óra)
 const MAX_TOTAL_SEC = 35*60;   // egy teszt alapértelmezett legnagyobb hossza
 const TEACHER_PIN = "2468";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
@@ -305,6 +343,10 @@ let remaining=0;
 let mistakes=0;
 let finished=false;
 let graceActive=false;
+let awayCount=0;
+let pasteCount=0;
+let lastAway=0;
+let practiceMode=false;
 let stopped=false;
 let testActive=false;
 let studentNameVal="";
@@ -365,6 +407,42 @@ function normalizeClass(s){
 function getClass(){
   if($("studentGrade").value==="__other") return normalizeClass($("studentClassOther").value);
   return `${$("studentGrade").value}.${$("studentLetter").value}`;
+}
+
+/* ---------- Betűméret (1 óráig megmarad) ---------- */
+
+function clampScale(v){
+  v=Number(v);
+  if(!Number.isFinite(v)) return 100;
+  return Math.max(70,Math.min(250,Math.round(v/5)*5));
+}
+
+function applyScale(task,answer){
+  task=clampScale(task); answer=clampScale(answer);
+  document.documentElement.style.setProperty("--task-scale",task/100);
+  document.documentElement.style.setProperty("--answer-scale",answer/100);
+  $("sizeTask").value=task;      $("sizeTaskVal").textContent=task+"%";
+  $("sizeAnswer").value=answer;  $("sizeAnswerVal").textContent=answer+"%";
+}
+
+function restoreFont(){
+  let t=100,a=100;
+  try{
+    const o=JSON.parse(localStorage.getItem(FONT_KEY)||"null");
+    if(o&&Date.now()-o.ts<FONT_TTL_MS){ t=o.task; a=o.answer; }
+    else if(o) localStorage.removeItem(FONT_KEY);   // lejárt: visszaáll az alapméret
+  }catch(e){}
+  applyScale(t,a);
+}
+
+function saveFont(){
+  try{
+    localStorage.setItem(FONT_KEY,JSON.stringify({
+      task:clampScale($("sizeTask").value),
+      answer:clampScale($("sizeAnswer").value),
+      ts:Date.now()
+    }));
+  }catch(e){}
 }
 
 /* ---------- Név megjegyzése (1 óráig) ---------- */
@@ -476,6 +554,19 @@ async function loadTasksRobust(){
   }
 }
 
+// Az "Évfolyam" oszlop értelmezése: üres = mindenkinek; "9", "9-12", "5,6,7", "9. évfolyam".
+function gradeMatch(spec,g){
+  spec=String(spec||"").trim();
+  if(!spec) return true;
+  const re=/(\d{1,2})\s*[-–]\s*(\d{1,2})|(\d{1,2})/g;
+  let m;
+  while((m=re.exec(spec))){
+    if(m[3]!==undefined){ if(Number(m[3])===g) return true; }
+    else if(g>=Number(m[1])&&g<=Number(m[2])) return true;
+  }
+  return false;
+}
+
 function shuffle(arr){
   const a=arr.slice();
   for(let i=a.length-1;i>0;i--){
@@ -565,11 +656,12 @@ function askApproval(count,total){
 function startTest(){
   hideError();
 
-  const name=$("studentName").value.trim().replace(/\s+/g," ");
+  const practice=$("practiceMode").checked;
+  const name=$("studentName").value.trim().replace(/\s+/g," ")||(practice?"Gyakorló":"");
   const cls=getClass();
   const count=Math.max(1,Math.min(50,Number($("taskCount").value)||5));
 
-  if(!name){
+  if(!name&&!practice){
     showError("Írd be a tanuló nevét.");
     return;
   }
@@ -578,13 +670,20 @@ function startTest(){
     return;
   }
 
-  rememberName(name);
+  if(!practice) rememberName(name);
+  restoreFont();
   $("startBtn").disabled=true;
   $("startBtn").textContent="Feladatok betöltése...";
 
   // Az egész feladatbankot lekérjük, és itt választunk típusonként egyenlően.
   loadTasksRobust().then(async res=>{
-    const all=res.tasks;
+    // Évfolyam szerinti szűrés (ha a feladatbankban van "Évfolyam" oszlop).
+    const gNum=parseInt(cls,10);
+    let all=res.tasks;
+    if(Number.isFinite(gNum)){
+      const f=all.filter(t=>gradeMatch(t.grades,gNum));
+      if(f.length) all=f;
+    }
     if(!all.length) throw new Error("Nincs aktív feladat a Feladatbank munkalapon.");
 
     const wanted=Math.min(count,all.length);
@@ -618,6 +717,8 @@ function startTest(){
     pendingResult=null;
     studentNameVal=name;
     studentClassVal=cls;
+    practiceMode=practice;
+    $("practiceTag").classList.toggle("hidden",!practice);
     testId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2));
     testActive=true;
 
@@ -652,6 +753,8 @@ function showTask(graceMs){
   finished=false;
   advanced=false;
   mistakes=0;
+  awayCount=0;
+  pasteCount=0;
   graceActive=graceMs>0;
 
   // Azonnal lehet írni, nincs zárolás: így nem vész el az első betű.
@@ -670,8 +773,12 @@ function showTask(graceMs){
 
   if(graceActive){
     let c=Math.round(graceMs/1000);
-    const msg=n=>`⏳ Új feladat! Az idő ${n} mp múlva indul…`;
+    const first=graceMs>GRACE_NEXT_MS;
+    const msg=n=>first
+      ?`⏳ Az idő ${n} mp múlva indul – állítsd be a betűméretet!`
+      :`⏳ Új feladat! Az idő ${n} mp múlva indul…`;
     $("autoMsg").classList.add("info");
+    if(first) $("autoMsg").classList.add("small");
     $("autoMsg").textContent=msg(c);
     cdTimer=setInterval(()=>{
       c--;
@@ -780,6 +887,7 @@ function finishCurrentTask(timedOut){
 
   const c=calculate();
   const task=tasks[currentIndex];
+  const br=errorBreakdown(c.expected,c.answer);
 
   results.push({
     taskId:task.id||"",
@@ -794,7 +902,14 @@ function finishCurrentTask(timedOut){
     percent:c.percent,
     speed:c.speed,
     timeSpent:Math.round(c.elapsed),
-    timedOut:!!timedOut
+    timedOut:!!timedOut,
+    accentErrors:br.accent,
+    caseErrors:br.case,
+    typoErrors:br.typo,
+    missingChars:br.del,
+    extraChars:br.ins,
+    away:awayCount,
+    pastes:pasteCount
   });
 
   $("answer").disabled=true;
@@ -846,6 +961,7 @@ function flashWarn(msg){
 
 function blockPaste(e){
   e.preventDefault();
+  if(testActive&&!finished&&!stopped) pasteCount++;
   flashWarn("🚫 Beillesztés nem engedélyezett – írd be a szöveget!");
 }
 
@@ -923,7 +1039,7 @@ function renderOpsRange(ops,from,to){
   for(let i=from;i<to;i++){
     const o=ops[i];
     if(o.t==="eq"){ eh+=plain(o.e); th+=plain(o.c); }
-    else if(o.t==="sub"){ eh+=span(o.e,"e-sub"); th+=span(o.c,"t-sub"); }
+    else if(o.t==="sub"){ const k=o.k==="accent"?"acc":o.k==="case"?"case":"sub"; eh+=span(o.e,"e-"+k); th+=span(o.c,"t-"+k); }
     else if(o.t==="del"){ eh+=span(o.e,"e-del"); th+=`<span class="ph-red">-</span>`; }
     else { eh+=`<span class="ph">-</span>`; th+=span(o.c,"t-ins"); }
   }
@@ -966,10 +1082,36 @@ function renderDiff(ops){
   return html;
 }
 
+const stripAcc=c=>String(c).normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+
+// Egy cserét (sub) ékezethibának, kis-/nagybetű hibának vagy elütésnek minősít.
+function subKind(e,c){
+  if(String(e).toLowerCase()===String(c).toLowerCase()) return "case";
+  if(stripAcc(e).toLowerCase()===stripAcc(c).toLowerCase()) return "accent";
+  return "typo";
+}
+
+function classifyOps(ops){
+  const cnt={sub:0,del:0,ins:0,accent:0,case:0,typo:0};
+  ops.forEach(o=>{
+    if(o.t==="eq") return;
+    cnt[o.t]++;
+    if(o.t==="sub"){
+      o.k=subKind(o.e,o.c);
+      cnt[o.k]++;
+    }
+  });
+  return cnt;
+}
+
+function errorBreakdown(expected,answer){
+  const {ops}=diffOps(expected,answer);
+  return classifyOps(ops);
+}
+
 function analyze(r){
   const {ops,rest}=diffOps(r.text,r.answer);
-  const cnt={sub:0,del:0,ins:0};
-  ops.forEach(o=>{ if(o.t!=="eq") cnt[o.t]++; });
+  const cnt=classifyOps(ops);
   return {ops,rest,cnt};
 }
 
@@ -1008,7 +1150,9 @@ function taskFeedback(r,a,maxPoints){
   // Hibatípusok
   if(errTotal>0){
     const parts=[];
-    if(a.cnt.sub) parts.push(`${a.cnt.sub} karaktert másra cseréltél (elütés, hiányzó ékezet vagy kis-nagybetű)`);
+    if(a.cnt.accent) parts.push(`${a.cnt.accent} ékezethiba (rossz vagy hiányzó ékezet)`);
+    if(a.cnt.case) parts.push(`${a.cnt.case} kis-/nagybetű hiba`);
+    if(a.cnt.typo) parts.push(`${a.cnt.typo} elütés (másik betűt ütöttél)`);
     if(a.cnt.del) parts.push(`${a.cnt.del} karaktert kihagytál`);
     if(a.cnt.ins) parts.push(`${a.cnt.ins} felesleges karaktert írtál be`);
     p.push(`A tévesztések: ${parts.join(", ")}.`);
@@ -1025,6 +1169,11 @@ function taskFeedback(r,a,maxPoints){
   return p.map(x=>`<p>${x}</p>`).join("");
 }
 
+function gradeFor(percent){
+  for(const [m,g] of GRADE_LIMITS) if(percent>=m) return g;
+  return 1;
+}
+
 function overallFeedback(analyses){
   const n=results.length;
   if(!n) return "";
@@ -1036,6 +1185,9 @@ function overallFeedback(analyses){
   const sub=analyses.reduce((s,a)=>s+a.cnt.sub,0);
   const del=analyses.reduce((s,a)=>s+a.cnt.del,0);
   const ins=analyses.reduce((s,a)=>s+a.cnt.ins,0);
+  const acc=analyses.reduce((s,a)=>s+a.cnt.accent,0);
+  const cas=analyses.reduce((s,a)=>s+a.cnt.case,0);
+  const typ=analyses.reduce((s,a)=>s+a.cnt.typo,0);
   const corrections=results.reduce((s,r)=>s+r.mistakes,0);
 
   const p=[];
@@ -1049,8 +1201,9 @@ function overallFeedback(analyses){
 
   const tot=sub+del+ins;
   if(tot>0){
-    const main=[["karakter-csere/elütés",sub],["kihagyott karakter",del],["felesleges karakter",ins]].sort((x,y)=>y[1]-x[1])[0];
+    const main=[["ékezethiba",acc],["kis-/nagybetű hiba",cas],["elütés",typ],["kihagyott karakter",del],["felesleges karakter",ins]].sort((x,y)=>y[1]-x[1])[0];
     p.push(`A legtöbb hibád a(z) <b>${main[0]}</b> típusú volt (${main[1]} db az összesen ${tot} tévesztésből).`);
+    if(acc>=3&&acc/tot>=0.4) p.push("Tipp: a hibáid nagy része ékezet. Figyelj az ékezetes betűkre (á, é, í, ó, ö, ő, ú, ü, ű), és gyakorold külön őket.");
   }
 
   const worst=results.map((r,i)=>({r,i})).filter(x=>!skippedIdx.has(x.i)).sort((x,y)=>x.r.percent-y.r.percent)[0];
@@ -1070,7 +1223,7 @@ function finishTest(){
   clearInterval(cdTimer);
   clearTimeout(advanceTimer);
   testActive=false;
-  rememberName(studentNameVal);
+  if(!practiceMode) rememberName(studentNameVal);
 
   $("testPanel").classList.add("hidden");
   $("resultPanel").classList.remove("hidden");
@@ -1084,6 +1237,9 @@ function finishTest(){
   const doneResults=results.filter((r,i)=>!skippedIdx.has(i));
   const averageSpeed=doneResults.length?Math.round(doneResults.reduce((s,r)=>s+r.speed,0)/doneResults.length):0;
 
+  const grade=gradeFor(averagePercent);
+  $("finalGrade").textContent=grade;
+  $("gradeExplain").textContent="Az átlagos százalékból számolva: "+GRADE_LIMITS.map(([m,g])=>`${g}: ${m}%-tól`).join(", ")+".";
   $("finalScore").textContent=totalScore;
   $("finalPercent").textContent=averagePercent+"%";
   $("finalCorrect").textContent=totalCorrect;
@@ -1092,8 +1248,10 @@ function finishTest(){
   $("finalSpeed").textContent=averageSpeed+" leütés/perc";
 
   const analyses=results.map(analyze);
+  const doneN=results.filter((r,i)=>!skippedIdx.has(i)&&!r.interrupted).length;
+  const intrN=results.filter(r=>r.interrupted).length;
   const stopBanner=stopped
-    ?`<div class="stop-banner"><b>⛔ A tesztet vészleállítással megszakították.</b> ${skippedIdx.size} feladat nem lett elvégezve, ezekre 0 pont jár. Az eredmény így is el lett mentve.</div>`
+    ?`<div class="stop-banner"><b>⛔ A tesztet vészleállítással megszakították.</b> Elvégzett feladat: ${doneN}, megszakított: ${intrN}, el sem kezdett: ${skippedIdx.size}. Csak az elvégzett és a megszakított feladatok pontjai számítanak, az el sem kezdettekre 0 pont jár.${practiceMode?"":" Az eredmény így is el lett mentve."}</div>`
     :"";
   $("overallFeedback").innerHTML=stopBanner+overallFeedback(analyses);
 
@@ -1119,12 +1277,13 @@ function finishTest(){
     return `<div class="task-res">
       <div class="row">
         <b>${i+1}. feladat${r.type?` · ${esc(r.type)}`:""}</b>
-        <span class="pill">${r.percent}% · ${r.score} / ${maxPoints} pont</span>
+        <span class="pill">${r.percent}% · ${r.score} / ${maxPoints} pont${r.interrupted?" · megszakítva":""}</span>
       </div>
       <div class="mini">
         <div>Helyes<b>${r.correct}</b></div>
         <div>Hibás<b>${r.wrong}</b></div>
         <div>Rontás<b>${r.mistakes}</b></div>
+        <div>Ékezethiba<b>${a.cnt.accent}</b></div>
         <div>Leütés<b>${r.totalTyped}</b></div>
         <div>Sebesség<b>${r.speed}</b></div>
         <div>Idő<b>${r.timeSpent} mp</b></div>
@@ -1134,6 +1293,16 @@ function finishTest(){
       ${restHtml}
     </div>`;
   }).join("");
+
+  const sum=k=>results.reduce((s,r,i)=>s+(skippedIdx.has(i)?0:(r[k]||0)),0);
+  const awayTotal=sum("away");
+  const pasteTotal=sum("pastes");
+  const flagList=[];
+  if(awayTotal>=AWAY_LIMIT) flagList.push(`ablakelhagyás ${awayTotal}×`);
+  if(pasteTotal>0) flagList.push(`beillesztési kísérlet ${pasteTotal}×`);
+  results.forEach((r,i)=>{
+    if(!skippedIdx.has(i)&&r.totalTyped>=20&&r.speed>SPEED_LIMIT) flagList.push(`${i+1}. feladat túl gyors (${r.speed}/perc)`);
+  });
 
   pendingResult={
     studentName:studentNameVal,
@@ -1147,10 +1316,27 @@ function finishTest(){
     totalTyped,
     averageSpeed,
     emergencyStop:stopped,
+    grade,
+    accentErrors:sum("accentErrors"),
+    caseErrors:sum("caseErrors"),
+    typoErrors:sum("typoErrors"),
+    missingChars:sum("missingChars"),
+    extraChars:sum("extraChars"),
+    awayCount:awayTotal,
+    pasteAttempts:pasteTotal,
+    flags:flagList.join("; "),
     testId,
     plannedSeconds:totalTime(tasks),
     tasks:results
   };
+  if(practiceMode){
+    // Gyakorló módban nem megy semmi a táblázatba.
+    pendingResult=null;
+    savedOk=true;
+    $("saveStatus").textContent="🧪 Gyakorló mód: az eredmény nem lett elmentve a táblázatba.";
+    $("saveActions").classList.add("hidden");
+    return;
+  }
   saveResult();
 }
 
@@ -1296,7 +1482,10 @@ function emergencyStop(){
   clearTimeout(advanceTimer);
 
   // A már elkezdett feladat addig számít, ameddig a diák eljutott.
-  if(!finished&&$("answer").value.length>0) finishCurrentTask(false);
+  if(!finished&&$("answer").value.length>0){
+    finishCurrentTask(false);
+    results[results.length-1].interrupted=true;   // elkezdett, de nem fejezett feladat
+  }
 
   // A többi feladat 0 pontos.
   for(let i=results.length;i<tasks.length;i++){
@@ -1352,9 +1541,23 @@ window.addEventListener("beforeunload",e=>{
   }
 });
 
+function noteAway(){
+  if(!testActive||finished||stopped) return;
+  const now=Date.now();
+  if(now-lastAway<600) return;   // a blur és a visibilitychange egy eseménynek számít
+  lastAway=now;
+  awayCount++;
+}
+window.addEventListener("blur",noteAway);
+document.addEventListener("visibilitychange",()=>{ if(document.hidden) noteAway(); });
+
 $("capMinutes").textContent=Math.round(MAX_TOTAL_SEC/60);
 initClassSelect();
 restoreName();
+restoreFont();
+$("sizeTask").addEventListener("input",()=>{applyScale($("sizeTask").value,$("sizeAnswer").value);saveFont();});
+$("sizeAnswer").addEventListener("input",()=>{applyScale($("sizeTask").value,$("sizeAnswer").value);saveFont();});
+$("sizeReset").addEventListener("click",()=>{applyScale(100,100);try{localStorage.removeItem(FONT_KEY);}catch(e){}});
 $("studentName").addEventListener("focus",e=>e.target.select());
 checkPendingOnLoad();
 </script>
