@@ -6,9 +6,9 @@
 <title>Gépírás teszt</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#f4f6f8;color:#202124;font-family:Arial,sans-serif}
+body{margin:0;background:#eaf1f8;color:#202124;font-family:Arial,sans-serif}
 .wrap{max-width:1000px;margin:auto;padding:24px}
-.card{background:#fff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.card{background:#f4f0ff;border-radius:14px;padding:22px;margin-bottom:18px;box-shadow:0 2px 10px rgba(48,55,90,.09)}
 h1,h2,h3{margin-top:0}
 label{display:block;font-weight:700;margin:12px 0 6px}
 input,textarea,select,button{font:inherit}
@@ -21,7 +21,7 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .stat b{display:block;font-size:1.35rem;margin-top:4px}
 .bar{height:10px;background:#e0e3e7;border-radius:99px;overflow:hidden;margin:10px 0 16px}
 .bar>div{height:100%;width:0;background:#1a73e8}
-.task-text{white-space:pre-wrap;font-size:1.15rem;line-height:1.55;background:#f8f9fa;border-radius:10px;padding:16px;margin:12px 0}
+.task-text{white-space:pre-wrap;font-size:1.15rem;line-height:1.55;background:#fff;color:#202124;border:1px solid #d8deea;border-radius:10px;padding:16px;margin:12px 0}
 .row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 .muted{color:#5f6368}
 .small{font-size:.9rem}
@@ -32,7 +32,7 @@ table{width:100%;border-collapse:collapse;margin:16px 0}
 th,td{padding:8px;border-bottom:1px solid #ddd;text-align:left}
 
 /* --- teljes idő --- */
-.total-line{background:#f1f3f4;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:.95rem}
+.total-line{background:#e3ecfa;color:#20304a;border:1px solid #c5d5ee;border-radius:8px;padding:8px 12px;margin-top:10px;font-size:.95rem}
 .cap-note{background:#fff4e5;color:#92400e;border-left:5px solid #f59e0b;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.95rem;line-height:1.45}
 
 /* --- üzenetsáv --- */
@@ -100,7 +100,7 @@ button{padding:7px 12px;font-size:.92rem}
 p{margin:.4em 0}
 .row{gap:6px}
 .stop-btn{padding:4px 10px;font-size:.8rem}
-.total-line{padding:5px 10px;margin-top:6px;font-size:.85rem}
+.total-line{padding:5px 10px;margin-top:6px;font-size:.85rem;line-height:1.5}
 .cap-note{padding:6px 10px;margin-top:6px;font-size:.85rem}
 .bar{height:6px;margin:8px 0}
 .task-text{font-size:1.05rem;line-height:1.45;padding:10px 12px;margin:8px 0}
@@ -139,14 +139,156 @@ p{margin:.4em 0}
 .chk{display:flex;gap:8px;align-items:center;font-weight:600;margin:10px 0 0;font-size:.92rem}
 .chk input{width:auto;margin:0}
 .tag{display:inline-block;background:#fff4e5;color:#92400e;border:1px solid #f59e0b;border-radius:99px;padding:1px 8px;font-size:.75rem;font-weight:700;margin-left:6px}
+
+/* --- kért kényelmi fejlesztések --- */
+#loadingOverlay{position:fixed;inset:0;z-index:200;background:rgba(20,28,40,.58);display:flex;align-items:center;justify-content:center;padding:18px}
+.loading-card{background:#fff;border-radius:16px;padding:24px;width:min(420px,100%);text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.28)}
+.loading-spinner{width:42px;height:42px;border:5px solid #dbeafe;border-top-color:#1a73e8;border-radius:50%;margin:4px auto 16px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-track{height:8px;border-radius:99px;background:#e8eaed;overflow:hidden;margin-top:16px}
+.loading-track span{display:block;width:35%;height:100%;border-radius:99px;background:#1a73e8;animation:loadslide 1.2s ease-in-out infinite alternate}
+@keyframes loadslide{from{transform:translateX(0)}to{transform:translateX(185%)}}
+@media(prefers-reduced-motion:reduce){.loading-spinner,.loading-track span{animation:none}}
+.msg-slot{height:0;position:relative;z-index:100}
+.msg-slot .auto-msg{position:fixed;top:12px;left:50%;transform:translateX(-50%);width:min(92vw,650px);height:auto;min-height:42px;padding:10px 16px;box-shadow:0 8px 26px rgba(0,0,0,.2);pointer-events:none;opacity:0;visibility:hidden;transition:opacity .15s;font-size:1rem}
+.msg-slot .auto-msg:not(:empty){opacity:1;visibility:visible}
+.answer-wrap{position:sticky;bottom:0;z-index:7;background:#fff;padding-top:4px;margin-top:8px;box-shadow:0 -5px 12px rgba(234,241,248,.95)}
+.answer-timer{display:flex;align-items:center;justify-content:flex-start;gap:8px;padding:7px 10px;border:1px solid #d7dce2;border-bottom:0;border-radius:9px 9px 0 0;background:#fff;font-size:.9rem;color:#202124}
+.answer-timer strong{font-size:1.15rem;font-variant-numeric:tabular-nums;color:#174ea6}
+#answer{display:block;margin:0;border-radius:0 0 9px 9px;scroll-margin-bottom:12px}
+.task-text{position:sticky;top:0;z-index:6;max-height:28vh;overflow:auto;overscroll-behavior:contain;border:1px solid #e0e3e7;box-shadow:0 3px 10px rgba(0,0,0,.07)}
+#testPanel .card{overflow:visible}
+.result-highlight{display:flex;justify-content:center;align-items:stretch;gap:14px;text-align:center;margin:12px 0 18px}
+.result-highlight .hero-stat{flex:1;max-width:280px;padding:18px 12px;border-radius:14px;background:#e8f0fe;border:2px solid #8ab4f8;color:#174ea6}
+.result-highlight .hero-stat.grade-5{background:#e6f4ea;border-color:#81c995;color:#137333}
+.result-highlight .hero-stat.grade-low{background:#fce8e6;border-color:#f28b82;color:#a50e0e}
+.result-highlight .hero-stat span{display:block;font-weight:700;font-size:.95rem}
+.result-highlight .hero-stat strong{display:block;font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.2;margin-top:5px}
+.export-actions{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.export-actions button{background:#137333}
+.export-actions .pdf-btn{background:#5f6368}
+@media(max-width:560px){.result-highlight{gap:8px}.result-highlight .hero-stat{padding:12px 6px}.answer-timer{padding:5px 8px}.task-text{max-height:24vh}}
+
+/* --- navigáció és eredménygomb --- */
+.result-top-actions{align-items:center;margin-bottom:8px}
+.result-top-actions h2{margin:0}
+.back-to-top{position:fixed;right:16px;bottom:16px;z-index:120;box-shadow:0 4px 14px rgba(0,0,0,.22);border:1px solid #fff;border-radius:999px;padding:10px 14px;opacity:.96}
+@media(max-width:560px){.back-to-top{right:10px;bottom:10px;padding:8px 11px;font-size:.82rem}.result-top-actions{align-items:flex-start}}
+/* --- fejlődési grafikon és hozzáférhetőség --- */
+.result-summary{grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
+.result-summary .stat{min-width:0;text-align:center;padding:7px 3px}
+.result-summary .stat b{white-space:nowrap;font-size:clamp(.7rem,2.3vw,1.12rem);overflow:visible}
+.result-summary .stat:first-child{font-variant-numeric:tabular-nums}
+.result-summary .summary-label{display:block;font-size:clamp(.48rem,1.45vw,.75rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.result-summary .summary-unit{display:block;font-size:.62rem;white-space:nowrap;color:#5f6368}
+.app-heading{align-items:center}
+.app-heading h1{margin:0}
+.access-btn{background:#374151;color:#fff;white-space:nowrap}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+.progress-section{margin:18px 0;padding:14px;border:1px solid #d7e3f5;border-radius:12px;background:#f8fbff}
+.progress-section h3{margin:0 0 6px}
+.progress-charts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.progress-chart{background:#fff;border:1px solid #d7dce2;border-radius:10px;padding:9px;min-width:0}
+.progress-chart h4{font-size:.9rem;margin:0 0 4px}
+.progress-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.progress-chart .chart-last{font-weight:700;font-size:.85rem}
+.achievement-badges{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.achievement{display:flex;align-items:center;gap:7px;background:#fff4cc;color:#624400;border:1px solid #e8b949;border-radius:999px;padding:7px 11px;font-weight:700;font-size:.9rem;animation:badge-pop .45s ease-out both}
+.achievement .mascot{font-size:1.35rem;display:inline-block;animation:mascot-bounce 1.5s ease-in-out infinite}
+@keyframes badge-pop{from{transform:scale(.75);opacity:.2}to{transform:scale(1);opacity:1}}
+@keyframes mascot-bounce{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(-8deg)}}
+body.high-contrast{background:#000;color:#fff}
+body.high-contrast .card,body.high-contrast .answer-wrap,body.high-contrast .progress-section,body.high-contrast .progress-chart{background:#000;color:#fff;border:2px solid #fff}
+body.high-contrast .task-text,body.high-contrast .stat,body.high-contrast .mini div,body.high-contrast .answer-timer,body.high-contrast .total-line,body.high-contrast .cap-note{background:#111!important;color:#fff!important;border:2px solid #fff!important}
+body.high-contrast .total-line b,body.high-contrast .cap-note *{color:#fff!important}
+body.high-contrast .task-text,body.high-contrast #answer{background:#000!important;color:#fff!important;border:2px solid #fff!important}
+body.high-contrast .muted,body.high-contrast .stats-row .lbl,body.high-contrast .stats-row .u{color:#eee}
+body.high-contrast input,body.high-contrast textarea,body.high-contrast select{background:#000;color:#fff;border:2px solid #fff}
+body.high-contrast button{background:#ffeb3b;color:#000;border:2px solid #fff}
+body.high-contrast .progress-chart svg text{fill:#fff}
+@media(max-width:560px){.progress-charts{grid-template-columns:1fr}.result-summary .summary-label{font-size:7px}.result-summary .summary-unit{display:none}.result-summary{gap:3px}.result-summary .stat{padding:5px 1px}.result-summary .stat b{font-size:clamp(.62rem,2.7vw,.85rem)}.result-summary .stat:not(:first-child){overflow:hidden}.access-btn{font-size:.78rem;padding:6px 8px}}
+@media(prefers-reduced-motion:reduce){.achievement,.achievement .mascot{animation:none}}
+@media print{
+  body{background:#fff!important;color:#000!important}.wrap{max-width:none;padding:0}.card{box-shadow:none;border:0;padding:0;margin:0 0 12px}
+  #startPanel,#testPanel,#error,#pendingBox,#saveActions,.export-actions,#newTestBtn,#newTestBtnTop,#backToTop,#stopModal,#approveModal,.size-row{display:none!important}
+  #resultPanel{display:block!important}.result-highlight .hero-stat{break-inside:avoid;border:1px solid #999!important;background:#fff!important;color:#000!important}
+  details.explain{break-inside:avoid}details.explain>summary{display:none}details.explain:not([open])>*:not(summary){display:block!important}
+  .task-res{break-inside:avoid-page;border:1px solid #aaa}.diff-block{break-inside:avoid}.fb-box{background:#fff;border:1px solid #aaa}
+  button{display:none!important}a{color:#000;text-decoration:none}
+  @page{size:auto;margin:5mm}
+  html,body{font-size:8pt!important;line-height:1.08!important}
+  .wrap{padding:0!important;margin:0!important;max-width:none!important}
+  #resultPanel{padding:0!important;margin:0!important}
+  h1,h2,h3,h4{margin:2pt 0!important;line-height:1.05!important}
+  p{margin:1.5pt 0!important;line-height:1.08!important}
+  .grid,.result-summary{gap:2pt!important;margin:2pt 0!important}
+  .stat,.result-summary .stat{padding:2pt!important;border-radius:2pt!important}
+  .stat b,.result-summary .stat b{font-size:9pt!important;margin-top:1pt!important}
+  .result-summary .summary-label,.result-summary .summary-unit{font-size:6pt!important}
+  .result-highlight{gap:4pt!important;margin:3pt 0!important}
+  .result-highlight .hero-stat{padding:3pt!important}
+  .result-highlight .hero-stat strong{font-size:16pt!important;margin-top:1pt!important}
+  .progress-section{padding:3pt!important;margin:3pt 0!important;break-inside:avoid}
+  .progress-charts{gap:3pt!important}
+  .progress-chart{padding:2pt!important}
+  .achievement-badges{gap:2pt!important;margin:2pt 0!important}
+  .achievement{padding:1pt 3pt!important;font-size:7pt!important;animation:none!important}
+  .fb-box,details.explain,.task-res,.diff-block,.mini,.legend{margin:3pt 0!important;padding:3pt!important;line-height:1.08!important}
+  .task-res{break-inside:auto!important}
+  .diff-block{break-inside:avoid}
+  .diff-row{margin:0!important;gap:3pt!important}
+  .diff-row .txt{font-size:7pt!important;line-height:1.05!important}
+  .mini{gap:2pt!important}
+  .mini div{padding:2pt!important;font-size:7pt!important}
+  .mini b{font-size:8pt!important}
+  table{margin:2pt 0!important}th,td{padding:2pt!important}
+  .fb p{margin:0 0 1pt!important}
+  .rest-note,.legend{font-size:7pt!important}
+  .progress-chart svg{max-height:65px!important}
+}
+
+/* --- nyugtató, kissé mélyebb zsályazöld és kékeszöld pasztell téma --- */
+body{background:#dce6df;color:#24332e}
+.card{background:#e8eee7;box-shadow:0 3px 12px rgba(38,65,54,.12)}
+button{background:#356b5b;color:#fff}
+button:hover{filter:brightness(.94)}
+.stat,.mini div{background:#dbe5dc}
+.total-line{background:#d1e0dc;color:#203c35;border-color:#9dbbb0}
+.progress-section{background:#e0e9e1;border-color:#a9c1b3}
+.progress-chart{background:#f9fbf8;border-color:#b7c8bd}
+.answer-wrap{box-shadow:0 -5px 12px rgba(220,230,223,.95)}
+.answer-timer{border-color:#b7c8bd;color:#24332e}
+.answer-timer strong{color:#285b4c}
+.bar{background:#c5d3ca}
+.bar>div{background:#397b68}
+.result-highlight .hero-stat{background:#d8e7f0;border-color:#8eafbf;color:#244e60}
+.result-highlight .hero-stat.grade-5{background:#d6e8d9;border-color:#83b794;color:#245b39}
+.export-actions button{background:#356b5b}
+.export-actions .pdf-btn{background:#536c68}
+.achievement{background:#e7e3c9;color:#4b4a29;border-color:#b9b17a}
+.fb-box{background:#dbe7ee;border-left-color:#477f99}
+@media(hover:hover){.back-to-top:hover{filter:brightness(.9)}}
+body.high-contrast .progress-export-actions button{background:#ffeb3b;color:#000}
+.result-meta{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:8px 0 12px;padding:12px;background:#d4e2d9;border:1px solid #a3b9aa;border-radius:10px}
+.result-meta .meta-item{min-width:0;overflow-wrap:anywhere}
+.result-meta .meta-label{display:block;font-size:.78rem;color:#50685c;margin-bottom:2px}
+.result-meta .meta-value{font-weight:700;color:#233b30}
+@media(max-width:560px){.result-meta{grid-template-columns:1fr;gap:6px;padding:9px}}
+body.high-contrast .result-meta{background:#000!important;color:#fff!important;border:2px solid #fff!important}
+body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .meta-value{color:#fff!important}
+@media print{.result-meta{grid-template-columns:repeat(2,minmax(0,1fr));gap:3pt;padding:4pt;margin:3pt 0;border:1px solid #888}.result-meta .meta-label{font-size:7pt}.result-meta .meta-value{font-size:8pt}}
+
 </style>
 </head>
 <body>
+<div id="loadingOverlay" class="hidden" role="status" aria-live="polite">
+  <div class="loading-card"><div class="loading-spinner" aria-hidden="true"></div><h2 id="loadingTitle">Feladatok betöltése</h2><p id="loadingText">Kapcsolódás a feladatbankhoz… Ez néhány másodpercig eltarthat.</p><div class="loading-track"><span></span></div></div>
+</div>
 <div class="wrap">
 
 <div class="card">
-<h1>Gépírás teszt</h1>
-<p class="muted">A feladatokat a tanár által kezelt Google Táblázatból tölti be a rendszer.</p>
+<div class="row app-heading"><h1>Gépírás teszt</h1><button type="button" id="contrastToggle" class="access-btn" aria-pressed="false">◐ Nagy kontraszt</button></div>
+<p class="muted">A feladatokat a tanár által kezelt Google Táblázatból tölti be a rendszer. Billentyűzet: a Tab billentyűvel lépkedhetsz, a fókuszban lévő gomb az Enterrel aktiválható; a gépelőmezőben a Ctrl+Enter a következő feladatot indítja, ha elérhető.</p>
 <div id="error" class="error hidden"></div>
 
 <div id="pendingBox" class="error hidden">
@@ -200,7 +342,10 @@ p{margin:.4em 0}
 
 <div class="msg-slot"><div id="autoMsg" class="auto-msg"></div></div>
 
-<textarea id="answer" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+<div class="answer-wrap">
+  <div class="answer-timer"><span>⏱ Feladatból hátralévő idő</span><strong id="timerBeside">--:--</strong></div>
+  <textarea id="answer" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
+</div>
 
 <div class="next-row"><button id="nextBtn" disabled>Következő</button></div>
 
@@ -217,18 +362,38 @@ p{margin:.4em 0}
 </div>
 
 <div id="resultPanel" class="card hidden">
-<h2>Végeredmény</h2>
-
-<div class="grid">
-<div class="stat">Összpontszám<b id="finalScore">0</b></div>
-<div class="stat">Átlag<b id="finalPercent">0%</b></div>
-<div class="stat">Helyes<b id="finalCorrect">0</b></div>
-<div class="stat">Hibás<b id="finalWrong">0</b></div>
-<div class="stat">Rontás<b id="finalMistakes">0</b></div>
-<div class="stat">Sebesség<b id="finalSpeed">0</b></div>
-<div class="stat">Érdemjegy<b id="finalGrade">-</b></div>
+<div class="row result-top-actions"><h2>Végeredmény</h2><button type="button" id="newTestBtnTop">↻ Új teszt</button></div>
+<section id="resultMeta" class="result-meta" aria-label="Teszt adatai">
+  <div class="meta-item"><span class="meta-label">Diák neve</span><span class="meta-value" id="metaStudentName">–</span></div>
+  <div class="meta-item"><span class="meta-label">Osztály</span><span class="meta-value" id="metaStudentClass">–</span></div>
+  <div class="meta-item"><span class="meta-label">Feladatok száma</span><span class="meta-value" id="metaTaskCount">–</span></div>
+  <div class="meta-item"><span class="meta-label">Teszt kezdete</span><span class="meta-value" id="metaStartedAt">–</span></div>
+  <div class="meta-item"><span class="meta-label">Teszt befejezése</span><span class="meta-value" id="metaFinishedAt">–</span></div>
+  <div class="meta-item"><span class="meta-label">Másik lapra/ablakra váltás</span><span class="meta-value" id="metaAway">–</span></div>
+</section>
+<div class="result-highlight">
+  <div class="hero-stat" id="percentHero"><span>Százalékos eredmény</span><strong id="heroPercent">0%</strong></div>
+  <div class="hero-stat" id="gradeHero"><span>Érdemjegy</span><strong id="heroGrade">-</strong></div>
+</div>
+<div class="grid result-summary">
+<div class="stat"><span class="summary-label">Összpontszám</span><b id="finalScore">0</b></div>
+<div class="stat"><span class="summary-label">Átlag</span><b id="finalPercent">0%</b></div>
+<div class="stat"><span class="summary-label">Helyes</span><b id="finalCorrect">0</b></div>
+<div class="stat"><span class="summary-label">Hibás</span><b id="finalWrong">0</b></div>
+<div class="stat"><span class="summary-label">Rontás</span><b id="finalMistakes">0</b></div>
+<div class="stat"><span class="summary-label">Sebesség</span><b id="finalSpeed">0</b><small class="summary-unit">leütés/perc</small></div>
 </div>
 
+<section id="progressSection" class="progress-section" aria-labelledby="progressTitle">
+<h3 id="progressTitle">🌱 Személyes fejlődésed</h3>
+<p id="progressIntro" class="muted small">A saját, ezen az eszközön végzett gyakorlataid alakulása. Az adatok helyben, ebben a böngészőben maradnak.</p>
+<div id="achievementBadges" class="achievement-badges" aria-live="polite"></div>
+<div id="progressCharts" class="progress-charts"></div>
+<div class="export-actions progress-export-actions" aria-label="Eredmények letöltése">
+  <button type="button" id="progressExportCsv">⬇ Eredmény letöltése CSV-ben</button>
+  <button type="button" id="progressExportPdf" class="pdf-btn">🖨 PDF mentése / nyomtatása</button>
+</div>
+</section>
 <div id="overallFeedback" class="fb-box"></div>
 
 <details class="explain" open>
@@ -271,6 +436,10 @@ p{margin:.4em 0}
 <div id="detail"></div>
 
 <p id="saveStatus" class="muted">Eredmény mentése...</p>
+<div class="export-actions" id="exportActions">
+  <button type="button" id="exportCsv">⬇ Eredmény letöltése CSV-ben</button>
+  <button type="button" id="exportPdf" class="pdf-btn">🖨 PDF mentése / nyomtatása</button>
+</div>
 <div id="saveActions" class="actions hidden">
 <button type="button" id="retrySave">Mentés újra</button>
 <button type="button" id="dlSave" class="btn-grey">Eredmény letöltése (.json)</button>
@@ -279,6 +448,8 @@ p{margin:.4em 0}
 </div>
 
 </div>
+
+<button type="button" id="backToTop" class="back-to-top" aria-label="Vissza a lap tetejére" title="Vissza a lap tetejére">↑ Lap tetejére</button>
 
 <div id="stopModal" class="modal-bg hidden">
 <div class="modal" role="alertdialog" aria-labelledby="stopTitle">
@@ -318,7 +489,7 @@ const GRADES = [5,6,7,8,9,10,11,12];            // választható évfolyamok
 const DEFAULT_GRADE = 9;                         // alapértelmezett évfolyam
 const LETTERS = ["ny","a","b","c","n","bn","g"]; // választható betűjelek
 const DEFAULT_LETTER = "ny";                     // alapértelmezett betűjel
-const GRACE_FIRST_MS = 6000;  // az első feladat előtt ennyit vár az időmérés (a betűméret beállításához is)
+const GRACE_FIRST_MS = 7000;  // az első feladat előtt ennyit vár az időmérés (a betűméret beállításához is)
 const GRACE_NEXT_MS = 2000;   // feladatváltás után ennyit vár az időmérés
 const GRADE_LIMITS = [[90,5],[75,4],[60,3],[40,2],[0,1]];  // [legalább ennyi %, érdemjegy] - igazítsd a saját értékeléshez
 const SPEED_LIMIT = 900;     // ennél gyorsabb gépelés (leütés/perc) gyanús
@@ -352,12 +523,21 @@ let testActive=false;
 let studentNameVal="";
 let studentClassVal="";
 let testId="";
+let testStartedAt=null;
+let testFinishedAt=null;
 let pendingResult=null;
+let exportResult=null;
 let savedOk=false;
 const skippedIdx=new Set();
 
 const $=id=>document.getElementById(id);
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function formatExactDateTime(value){
+  if(!value) return "–";
+  const d=value instanceof Date?value:new Date(value);
+  const pad=n=>String(n).padStart(2,"0");
+  return `${d.getFullYear()}.${pad(d.getMonth()+1)}.${pad(d.getDate())}. ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+}
 
 function showError(message,detail){
   $("error").innerHTML=esc(message)+(detail
@@ -674,9 +854,14 @@ function startTest(){
   restoreFont();
   $("startBtn").disabled=true;
   $("startBtn").textContent="Feladatok betöltése...";
+  $("loadingTitle").textContent="Feladatok betöltése";
+  $("loadingText").textContent="Kapcsolódás a Google Táblázathoz. A program próbálkozik, és szükség esetén a korábban mentett feladatbankot is ellenőrzi.";
+  $("loadingOverlay").classList.remove("hidden");
 
   // Az egész feladatbankot lekérjük, és itt választunk típusonként egyenlően.
   loadTasksRobust().then(async res=>{
+    // A hálózati betöltés kész: az esetleges tanári jóváhagyó ablak már látható maradjon.
+    $("loadingOverlay").classList.add("hidden");
     // Évfolyam szerinti szűrés (ha a feladatbankban van "Évfolyam" oszlop).
     const gNum=parseInt(cls,10);
     let all=res.tasks;
@@ -708,6 +893,7 @@ function startTest(){
       }
     }
 
+    $("loadingOverlay").classList.add("hidden");
     tasks=sel.list;
     results=[];
     currentIndex=0;
@@ -720,6 +906,8 @@ function startTest(){
     practiceMode=practice;
     $("practiceTag").classList.toggle("hidden",!practice);
     testId=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():(Date.now().toString(36)+Math.random().toString(36).slice(2));
+    testStartedAt=new Date();
+    testFinishedAt=null;
     testActive=true;
 
     $("totalLen").textContent=fmtDur(totalTime(tasks));
@@ -736,6 +924,7 @@ function startTest(){
 
     showTask(GRACE_FIRST_MS);
   }).catch(err=>{
+    $("loadingOverlay").classList.add("hidden");
     $("startBtn").disabled=false;
     $("startBtn").textContent="Teszt indítása";
     showError(err.message,err.detail);
@@ -823,6 +1012,7 @@ function showTask(graceMs){
 
 function updateTimer(){
   $("timer").textContent=fmtClock(remaining);
+  if($("timerBeside")) $("timerBeside").textContent=fmtClock(remaining);
   let later=0;
   for(let i=currentIndex+1;i<tasks.length;i++) later+=taskTime(tasks[i]);
   $("totalLeft").textContent=fmtClock(Math.max(0,remaining)+later);
@@ -1218,7 +1408,43 @@ function overallFeedback(analyses){
 
 /* ---------- Befejezés ---------- */
 
+const HISTORY_KEY="gepiras_progress_history_v1";
+function historyIdentity(data){return String(data.studentName||"").trim().toLocaleLowerCase("hu-HU")+"|"+String(data.studentClass||"").trim().toLocaleLowerCase("hu-HU");}
+function readProgressHistory(){try{const v=JSON.parse(localStorage.getItem(HISTORY_KEY)||"{}");return v&&typeof v==="object"?v:{}}catch(e){return {}}}
+function renderProgress(data){
+  const all=readProgressHistory(), key=historyIdentity(data), history=Array.isArray(all[key])?all[key]:[];
+  const previous=history.length?history[history.length-1]:null;
+  const point={date:new Date().toLocaleDateString("hu-HU"),speed:Number(data.averageSpeed)||0,accuracy:Number(data.averagePercent)||0,score:Number(data.totalScore)||0,grade:Number(data.grade)||0};
+  // Minden befejezett teszt megjelenik, a böngésző legfeljebb 20 legutóbbit őrzi meg.
+  history.push(point); all[key]=history.slice(-20);
+  try{localStorage.setItem(HISTORY_KEY,JSON.stringify(all));}catch(e){}
+  const badges=[];
+  if(previous){
+    const ds=point.speed-previous.speed, da=point.accuracy-previous.accuracy, dp=point.score-previous.score;
+    if(ds>=Math.max(10,previous.speed*.1)) badges.push(["🚀","Rakétasebesség!",`+${ds} leütés/perc`]);
+    if(da>=3) badges.push(["🎯","Pontos mancs!",`+${da} százalékpont`]);
+    if(dp>=Math.max(5,previous.score*.05)) badges.push(["🏆","Pontvadász!",`+${dp} pont`]);
+    if(point.grade>previous.grade) badges.push(["🥳","Szintlépés!","Jobb érdemjegy"]);
+    if(!badges.length && (ds>0||da>0||dp>0)) badges.push(["🌱","Apró lépések, nagy varázslat!","Legalább egy területen javultál"]);
+  } else badges.push(["🐣","Első lépés!","A következő gyakorlásodhoz ez lesz az összehasonlítási alap"]);
+  $("achievementBadges").innerHTML=badges.map(b=>`<div class="achievement"><span class="mascot" aria-hidden="true">${b[0]}</span><span>${esc(b[1])}<br><small>${esc(b[2])}</small></span></div>`).join("");
+  $("progressIntro").textContent=`${history.length} rögzített gyakorlás ezen az eszközön · az utolsó ${history.length} eredmény látható. A név és osztály alapján elkülönítve.`;
+  const metrics=[{key:"speed",title:"⚡ Sebesség",unit:" leütés/perc",color:"#1769aa"},{key:"accuracy",title:"🎯 Pontosság",unit:"%",color:"#13804a"},{key:"score",title:"⭐ Összpontszám",unit:" pont",color:"#8a4db5"}];
+  $("progressCharts").innerHTML=metrics.map(m=>{
+    const vals=history.map(h=>Math.max(0,Number(h[m.key])||0));
+    const max=Math.max(1,...vals), min=Math.min(0,...vals), span=Math.max(1,max-min);
+    const coords=vals.map((v,i)=>({x:10+(history.length<=1?0:i*180/(history.length-1)),y:48-(v-min)/span*35,v}));
+    const line=coords.map(c=>`${c.x},${c.y}`).join(" ");
+    const dots=coords.map((c,i)=>`<circle cx="${c.x}" cy="${c.y}" r="${i===coords.length-1?3.4:2}" fill="${m.color}"><title>${i+1}. gyakorlás: ${c.v}${m.unit}</title></circle>`).join("");
+    const latest=vals.length?vals[vals.length-1]:0;
+    const delta=previous?latest-(Number(previous[m.key])||0):0;
+    const change=previous?` · ${delta>0?"▲ +":delta<0?"▼ ":"↔ "}${delta}${m.unit}`:"";
+    return `<div class="progress-chart"><h4>${m.title}</h4><svg viewBox="0 0 200 58" role="img" aria-label="${m.title}, ${history.length} gyakorlás"><path d="M10 48 H190 M10 30 H190 M10 12 H190" stroke="#d9e0e8" stroke-width="1" fill="none"/><polyline points="${line}" fill="none" stroke="${m.color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${dots}<text x="10" y="57" font-size="6" fill="#5f6368">régebbi</text><text x="190" y="57" text-anchor="end" font-size="6" fill="#5f6368">legutóbbi</text></svg><div class="chart-last">${latest}${m.unit}${change}</div></div>`;
+  }).join("");
+}
+
 function finishTest(){
+  testFinishedAt=new Date();
   clearInterval(timerId);
   clearInterval(cdTimer);
   clearTimeout(advanceTimer);
@@ -1238,7 +1464,10 @@ function finishTest(){
   const averageSpeed=doneResults.length?Math.round(doneResults.reduce((s,r)=>s+r.speed,0)/doneResults.length):0;
 
   const grade=gradeFor(averagePercent);
-  $("finalGrade").textContent=grade;
+  $("heroGrade").textContent=grade;
+  $("heroPercent").textContent=averagePercent+"%";
+  $("gradeHero").classList.toggle("grade-5",grade===5);
+  $("gradeHero").classList.toggle("grade-low",grade<=2);
   $("gradeExplain").textContent="Az átlagos százalékból számolva: "+GRADE_LIMITS.map(([m,g])=>`${g}: ${m}%-tól`).join(", ")+".";
   $("finalScore").textContent=totalScore;
   $("finalPercent").textContent=averagePercent+"%";
@@ -1297,6 +1526,14 @@ function finishTest(){
   const sum=k=>results.reduce((s,r,i)=>s+(skippedIdx.has(i)?0:(r[k]||0)),0);
   const awayTotal=sum("away");
   const pasteTotal=sum("pastes");
+  const startedAtIso=testStartedAt?testStartedAt.toISOString():"";
+  const finishedAtIso=testFinishedAt?testFinishedAt.toISOString():new Date().toISOString();
+  $("metaStudentName").textContent=studentNameVal||"–";
+  $("metaStudentClass").textContent=studentClassVal||"–";
+  $("metaTaskCount").textContent=String(tasks.length);
+  $("metaStartedAt").textContent=formatExactDateTime(testStartedAt);
+  $("metaFinishedAt").textContent=formatExactDateTime(testFinishedAt);
+  $("metaAway").textContent=awayTotal>0?`Igen – ${awayTotal} alkalommal`:`Nem észlelt a rendszer lap-/ablakváltást`;
   const flagList=[];
   if(awayTotal>=AWAY_LIMIT) flagList.push(`ablakelhagyás ${awayTotal}×`);
   if(pasteTotal>0) flagList.push(`beillesztési kísérlet ${pasteTotal}×`);
@@ -1308,6 +1545,12 @@ function finishTest(){
     studentName:studentNameVal,
     studentClass:studentClassVal,
     taskCount:results.length,
+    testStartedAt:startedAtIso,
+    testFinishedAt:finishedAtIso,
+    testStartedAtLocal:formatExactDateTime(testStartedAt),
+    testFinishedAtLocal:formatExactDateTime(testFinishedAt),
+    awayCount:awayTotal,
+    awayDetected:awayTotal>0,
     totalScore,
     averagePercent,
     totalCorrect,
@@ -1329,8 +1572,10 @@ function finishTest(){
     plannedSeconds:totalTime(tasks),
     tasks:results
   };
+  exportResult=pendingResult;
+  renderProgress(pendingResult);
   if(practiceMode){
-    // Gyakorló módban nem megy semmi a táblázatba.
+    // Gyakorló módban nem megy semmi a táblázatba, de helyben exportálható.
     pendingResult=null;
     savedOk=true;
     $("saveStatus").textContent="🧪 Gyakorló mód: az eredmény nem lett elmentve a táblázatba.";
@@ -1440,16 +1685,45 @@ async function saveResult(){
   }
 }
 
-function downloadResult(){
-  if(!pendingResult) return;
-  const blob=new Blob([JSON.stringify(pendingResult,null,2)],{type:"application/json"});
+function getExportData(){ return exportResult||pendingResult; }
+function safeFilename(value){ return String(value||"eredmeny").replace(/[^\p{L}\p{N}]+/gu,"_").replace(/^_+|_+$/g,"")||"eredmeny"; }
+function triggerDownload(blob,filename){
   const a=document.createElement("a");
-  const safe=(pendingResult.studentName||"eredmeny").replace(/[^\p{L}\p{N}]+/gu,"_");
-  a.href=URL.createObjectURL(blob);
-  a.download=`gepiras_${safe}.json`;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1000);
+  const url=URL.createObjectURL(blob);
+  a.href=url; a.download=filename; document.body.appendChild(a); a.click();
+  setTimeout(()=>{URL.revokeObjectURL(url);a.remove();},1500);
+}
+function downloadResult(){
+  const data=getExportData(); if(!data) return;
+  triggerDownload(new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"}),`gepiras_${safeFilename(data.studentName)}.json`);
+}
+function csvCell(value){
+  let v=String(value??"");
+  // Excel/Sheets képletinjekció ellen: a felhasználói szöveg ne fusson le képletként.
+  if(/^[\s]*[=+@]/.test(v)) v="'"+v;
+  return '"'+v.replace(/"/g,'""')+'"';
+}
+function downloadCsv(){
+  const data=getExportData(); if(!data) return;
+  const rows=[
+    ["Gépírás teszt – összesítés"],
+    ["Tanuló",data.studentName], ["Osztály",data.studentClass], ["Feladatok száma",data.taskCount],
+    ["Teszt kezdete (helyi idő, másodperc pontossággal)",data.testStartedAtLocal||formatExactDateTime(data.testStartedAt)],
+    ["Teszt befejezése (helyi idő, másodperc pontossággal)",data.testFinishedAtLocal||formatExactDateTime(data.testFinishedAt)],
+    ["Teszt kezdete (ISO időbélyeg)",data.testStartedAt], ["Teszt befejezése (ISO időbélyeg)",data.testFinishedAt],
+    ["Másik lapra/ablakra váltás észlelve",data.awayDetected?"igen":"nem"], ["Lap-/ablakváltások száma",data.awayCount||0],
+    ["Összpontszám",data.totalScore], ["Átlag (%)",data.averagePercent], ["Érdemjegy",data.grade],
+    ["Helyes karakter",data.totalCorrect], ["Hibás karakter",data.totalWrong], ["Rontás",data.totalMistakes],
+    ["Leütés",data.totalTyped], ["Átlagsebesség (leütés/perc)",data.averageSpeed], [],
+    ["Feladat","Típus","Eredmény (%)","Pont","Helyes","Hibás","Rontás","Ékezethiba","Kis-/nagybetű hiba","Elütés","Kihagyott karakter","Felesleges karakter","Sebesség (leütés/perc)","Idő (mp)","Idő lejárt","Megszakítva","Írandó szöveg","Beírt szöveg"]
+  ];
+  (data.tasks||[]).forEach((r,i)=>rows.push([i+1,r.type,r.percent,r.score,r.correct,r.wrong,r.mistakes,r.accentErrors,r.caseErrors,r.typoErrors,r.missingChars,r.extraChars,r.speed,r.timeSpent,r.timedOut?"igen":"nem",r.interrupted?"igen":"nem",r.text,r.answer]));
+  const csv='\ufeff'+rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
+  triggerDownload(new Blob([csv],{type:"text/csv;charset=utf-8;"}),`gepiras_${safeFilename(data.studentName)}.csv`);
+}
+function downloadPdf(){
+  // A böngésző nyomtatási párbeszédablakában válaszd a „Mentés PDF-ként” lehetőséget.
+  window.print();
 }
 
 function checkPendingOnLoad(){
@@ -1513,17 +1787,33 @@ $("stopCancel").addEventListener("click",()=>{
 $("stopConfirm").addEventListener("click",emergencyStop);
 
 $("retrySave").addEventListener("click",saveResult);
+$("exportCsv").addEventListener("click",downloadCsv);
+$("exportPdf").addEventListener("click",downloadPdf);
+$("progressExportCsv").addEventListener("click",downloadCsv);
+$("progressExportPdf").addEventListener("click",downloadPdf);
 $("dlSave").addEventListener("click",downloadResult);
-$("newTestBtn").addEventListener("click",()=>{
+function beginNewTest(){
   if(pendingResult&&!savedOk&&!confirm("Az eredmény még nincs elküldve. Biztosan új tesztet kezdesz?")) return;
   testActive=false;
   location.reload();
-});
+}
+$("newTestBtn").addEventListener("click",beginNewTest);
+$("newTestBtnTop").addEventListener("click",beginNewTest);
+const backToTopButton=$("backToTop");
+backToTopButton.addEventListener("click",()=>window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}));
+function updateBackToTop(){backToTopButton.classList.toggle("hidden",window.scrollY<350)}
+window.addEventListener("scroll",updateBackToTop,{passive:true});
+updateBackToTop();
 
+const CONTRAST_KEY="gepiras_high_contrast";
+function setContrast(on){document.body.classList.toggle("high-contrast",!!on);$("contrastToggle").setAttribute("aria-pressed",String(!!on));$("contrastToggle").textContent=on?"◑ Normál kontraszt":"◐ Nagy kontraszt";try{localStorage.setItem(CONTRAST_KEY,on?"1":"0")}catch(e){}}
+try{setContrast(localStorage.getItem(CONTRAST_KEY)==="1")}catch(e){setContrast(false)}
+$("contrastToggle").addEventListener("click",()=>setContrast(!document.body.classList.contains("high-contrast")));
 $("startBtn").addEventListener("click",startTest);
 $("nextBtn").addEventListener("click",nextTask);
 
 $("answer").addEventListener("keydown",e=>{
+  if(e.ctrlKey&&e.key==="Enter"){e.preventDefault();if(!$("nextBtn").disabled) nextTask();return;}
   if(!graceActive&&(e.key==="Backspace"||e.key==="Delete")) mistakes++;
 });
 $("answer").addEventListener("input",updateStats);
