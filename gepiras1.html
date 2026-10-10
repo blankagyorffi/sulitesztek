@@ -90,9 +90,9 @@ details.explain dd{margin:2px 0 0 0;color:#3c4043;line-height:1.5}
 .gap{color:#9aa0a6;text-align:center;margin:2px 0;font-size:.9rem}
 .e-sub{background:#ffd8a8;border-radius:3px;font-weight:700}
 .e-del{background:#ffb3b3;border-radius:3px;font-weight:700}
-.t-sub{background:#ff8a80;color:#fff;border-radius:3px;font-weight:700}
+.t-sub{background:#d93025;color:#fff;border-radius:3px;font-weight:700}
 .t-ins{background:#d1a3ff;border-radius:3px;font-weight:700}
-.ph{color:#bdc1c6}
+.ph{color:#555a5f}
 .ph-red{background:#ffe0e0;color:#c5221f;border-radius:3px}
 .rest-note{font-size:.9rem;color:#5f6368;margin-top:6px}
 .ok-line{color:#137333;font-weight:700}
@@ -142,9 +142,9 @@ p{margin:.4em 0}
 @media(max-width:560px){.size-row{grid-template-columns:1fr;gap:3px}.size-row .size-reset{justify-self:end}}
 /* --- hibatípusok színei, gyakorló mód --- */
 .e-acc{background:#cfe8ff;border-radius:3px;font-weight:700}
-.t-acc{background:#2b7de9;color:#fff;border-radius:3px;font-weight:700}
+.t-acc{background:#1a62c9;color:#fff;border-radius:3px;font-weight:700}
 .e-case{background:#c8f0ea;border-radius:3px;font-weight:700}
-.t-case{background:#12907f;color:#fff;border-radius:3px;font-weight:700}
+.t-case{background:#0b7a6b;color:#fff;border-radius:3px;font-weight:700}
 .chk{display:flex;gap:8px;align-items:center;font-weight:600;margin:10px 0 0;font-size:.92rem}
 .chk input{width:auto;margin:0}
 .tag{display:inline-block;background:#fff4e5;color:#92400e;border:1px solid #f59e0b;border-radius:99px;padding:1px 8px;font-size:.75rem;font-weight:700;margin-left:6px}
@@ -298,6 +298,45 @@ body.high-contrast .result-meta .meta-label,body.high-contrast .result-meta .met
 .top-actions{display:flex;flex-wrap:wrap;gap:6px}
 body.high-contrast .send-bar,body.high-contrast .conn,body.high-contrast .weak-box{background:#000!important;color:#fff!important;border:2px solid #fff!important}
 @media print{.send-bar,.top-actions #practiceWeakTop,.weak-box{display:none!important}}
+
+/* ===== Nagy kontraszt: egységes, minden elemre kiterjedő szabályok (fekete alap, fehér szöveg, sárga gombok) ===== */
+body.high-contrast :is(label,output,.lbl-t,.summary-label,.summary-unit,.meta-label,.meta-value,.score-explain,.score-explain *,.grade-note,.rest-note,.rest-note *,.mono,.muted,.small,small,.explain *,.fb-box *,.fb *,.legend *,.task-res *,.total-line *,.cap-note *,.conn,.weak-box b,.weak-box span,.send-bar span,.stats-row .lbl,.stats-row .u,dt,dd,summary,h1,h2,h3,h4,.chart-last,.progress-section p){color:#fff!important}
+body.high-contrast :is(.fb-box,.fb,details.explain,.diff-block,.diff-block .txt,.task-res,.legend,.rest-note,.stop-banner,.cap-note,.modal,.weak-box,.send-bar,.conn,.error,.save-banner,.score-explain){background:#000!important;color:#fff!important;border-color:#fff!important}
+body.high-contrast :is(.fb-box,details.explain,.task-res,.diff-block,.stop-banner,.modal,.weak-box,.send-bar,.conn,.error,.save-banner){border:2px solid #fff!important}
+body.high-contrast .modal-bg,body.high-contrast #loadingOverlay{background:rgba(0,0,0,.92)!important}
+body.high-contrast .bar{background:#555!important}
+body.high-contrast .skipped,body.high-contrast :is(.stop-banner,.error,.save-banner) :is(span,b,u,p){color:#ffb4a9!important}
+body.high-contrast .send-bar.ok,body.high-contrast .send-bar.ok *,body.high-contrast .conn.ok{color:#9dffb0!important}
+body.high-contrast .conn.bad,body.high-contrast .conn.bad *{color:#ffb4a9!important}
+body.high-contrast .pill,body.high-contrast .tag{background:#000!important;color:#ffeb3b!important;border:2px solid #ffeb3b!important}
+body.high-contrast .hero-stat,body.high-contrast .hero-stat span,body.high-contrast .hero-stat strong{background:#000!important;color:#fff!important}
+body.high-contrast .hero-stat{border:3px solid #fff!important}
+body.high-contrast .hero-stat.grade-5{border-color:#69f0ae!important}body.high-contrast .hero-stat.grade-5 strong{color:#69f0ae!important}
+body.high-contrast .hero-stat.grade-low{border-color:#ff8a80!important}body.high-contrast .hero-stat.grade-low strong{color:#ff8a80!important}
+body.high-contrast .auto-msg{background:#000!important;color:#fff!important;border-color:#fff!important}
+body.high-contrast .auto-msg.warn{background:#ffeb3b!important;color:#000!important;border-color:#fff!important}
+body.high-contrast .auto-msg.info{background:#000!important;color:#80d8ff!important;border-color:#80d8ff!important}
+body.high-contrast .answer-timer,body.high-contrast .answer-timer *{color:#ffeb3b!important}
+html body.high-contrast.high-contrast button,html body.high-contrast.high-contrast button *{color:#000!important}
+html body.high-contrast.high-contrast button{background:#ffeb3b!important;border:2px solid #fff!important}
+html body.high-contrast.high-contrast button.btn-grey{background:#e0e0e0!important}
+html body.high-contrast.high-contrast .stop-btn{background:#ff5252!important}
+html body.high-contrast.high-contrast button:disabled,html body.high-contrast.high-contrast button:disabled *{opacity:1!important;background:#555!important;color:#fff!important;border-color:#aaa!important}
+body.high-contrast a{color:#80d8ff!important}
+body.high-contrast ::placeholder{color:#ccc!important;opacity:1}
+body.high-contrast input,body.high-contrast select,body.high-contrast textarea{background:#000!important;color:#fff!important;border:2px solid #fff!important}
+body.high-contrast input[type=range]{accent-color:#ffeb3b}
+body.high-contrast .achievement,body.high-contrast .achievement *{background:#000!important;color:#ffeb3b!important;border-color:#ffeb3b!important}
+/* hibajelölések (szín + aláhúzás/keret, hogy ne csak a színen múljon) */
+html body.high-contrast.high-contrast .e-sub,html body.high-contrast.high-contrast .e-del,html body.high-contrast.high-contrast .e-acc,html body.high-contrast.high-contrast .e-case{background:#ffeb3b!important;color:#000!important;text-decoration:underline}
+html body.high-contrast.high-contrast .t-sub{background:#b71c1c!important;color:#fff!important;outline:1px solid #fff}
+html body.high-contrast.high-contrast .t-ins{background:#6a1b9a!important;color:#fff!important;outline:1px solid #fff}
+html body.high-contrast.high-contrast .t-acc{background:#0d47a1!important;color:#fff!important;outline:1px solid #fff}
+html body.high-contrast.high-contrast .t-case{background:#00695c!important;color:#fff!important;outline:1px solid #fff}
+html body.high-contrast.high-contrast .ph{color:#bbb!important}
+html body.high-contrast.high-contrast .ph-red{background:#000!important;color:#ff8a80!important;outline:1px solid #ff8a80}
+html.big-text{font-size:120%}
+@media print{html.big-text{font-size:100%}}
 </style>
 </head>
 <body>
@@ -307,7 +346,7 @@ body.high-contrast .send-bar,body.high-contrast .conn,body.high-contrast .weak-b
 <div class="wrap">
 
 <div class="card">
-<div class="row app-heading"><h1>Gépírás teszt</h1><button type="button" id="contrastToggle" class="access-btn" aria-pressed="false">◐ Nagy kontraszt</button></div>
+<div class="row app-heading"><h1>Gépírás teszt</h1><div class="top-actions"><button type="button" id="bigTextToggle" class="access-btn" aria-pressed="false">A+ Nagy betű</button><button type="button" id="contrastToggle" class="access-btn" aria-pressed="false">◐ Nagy kontraszt</button></div></div>
 <p class="muted">A feladatokat a tanár által kezelt Google Táblázatból tölti be a rendszer. Billentyűzet: a Tab billentyűvel lépkedhetsz, a fókuszban lévő gomb az Enterrel aktiválható; a gépelőmezőben a Ctrl+Enter a következő feladatot indítja, ha elérhető.</p>
 <div id="error" class="error hidden"></div>
 
@@ -318,6 +357,11 @@ body.high-contrast .send-bar,body.high-contrast .conn,body.high-contrast .weak-b
 <span id="bannerStatus"></span>
 </div>
 
+<div id="draftBox" class="weak-box hidden" role="status">
+<span id="draftText"></span>
+<span class="actions"><button type="button" id="draftResume">▶ Folytatom</button> <button type="button" id="draftDiscard" class="btn-grey">Elvetem</button></span>
+</div>
+
 <div id="pendingBox" class="error hidden">
 <span id="pendingText"></span>
 <span class="actions"><button type="button" id="pendingSend">Elküldés most</button> <button type="button" id="pendingDismiss" class="btn-grey">Elvetem</button></span>
@@ -326,7 +370,8 @@ body.high-contrast .send-bar,body.high-contrast .conn,body.high-contrast .weak-b
 
 <div id="startPanel">
 <label for="studentName">Tanuló neve</label>
-<input id="studentName" autocomplete="name">
+<input id="studentName" autocomplete="off" list="nameList">
+<datalist id="nameList"></datalist>
 
 <label for="studentGrade">Osztály</label>
 <div class="class-row">
@@ -535,8 +580,10 @@ const DEFAULT_ANSWER_SCALE = 140;                // írott szöveg alapmérete (
 const NAME_TTL_MS = 60*60*1000;                  // ennyi ideig marad alapértelmezett a név (1 óra)
 let MAX_TOTAL_SEC = 35*60;   // egy teszt alapértelmezett legnagyobb hossza
 const LOCK_SETTINGS = true;   // true: a feladatszám és az időkeret csak tanári kóddal módosítható
-const TEACHER_PIN = "2468";    // tanári jóváhagyó kód a hosszabb teszthez ("" = nincs kód, csak megerősítés)
+// A tanári kód a Google Apps Scriptben van (CONFIG.TEACHER_PIN), az oldal forrásában nem szerepel.
 const PENDING_KEY = "gepiras_pending_result";
+const DRAFT_KEY = "gepiras_test_draft";
+const SEND_JITTER_MS = 12000;   // az első automatikus küldés előtti véletlen várakozás (max.), hogy 20-30 diák mentése ne egyszerre érkezzen
 
 let tasks=[];
 let results=[];
@@ -858,15 +905,29 @@ function bestSelection(all,n,tries){
   return best;
 }
 
+// A tanári kód ellenőrzése a szerveren: "ok", "bad", "blocked" vagy "offline".
+async function checkPinServer(pin){
+  try{
+    const r=await jsonp({action:"checkPin",pin},10000);
+    if(r&&r.success){ return r.ok?"ok":(r.blocked?"blocked":"bad"); }
+  }catch(e){}
+  return "offline";
+}
+function pinMessage(st){
+  return st==="blocked"?"Túl sok hibás próbálkozás, próbáld 10 perc múlva."
+    :st==="offline"?"A kód ellenőrzése nem sikerült (nincs kapcsolat, vagy a Google script még nem frissült)."
+    :"Hibás kód.";
+}
+
 function askApproval(count,total){
   return new Promise(resolve=>{
     $("approveText").innerHTML=
       `A kért <b>${count}</b> feladat összesen kb. <b>${fmtDur(total)}</b>, ez meghaladja a megengedett <b>${fmtDur(MAX_TOTAL_SEC)}</b> időkeretet.`;
     $("approvePin").value="";
     $("approveErr").classList.add("hidden");
-    $("pinRow").classList.toggle("hidden",!TEACHER_PIN);
+    $("pinRow").classList.remove("hidden");
     $("approveModal").classList.remove("hidden");
-    if(TEACHER_PIN) $("approvePin").focus();
+    $("approvePin").focus();
 
     const done=v=>{
       $("approveModal").classList.add("hidden");
@@ -874,8 +935,12 @@ function askApproval(count,total){
       $("approveNo").onclick=null;
       resolve(v);
     };
-    $("approveYes").onclick=()=>{
-      if(TEACHER_PIN&&$("approvePin").value.trim()!==TEACHER_PIN){
+    $("approveYes").onclick=async()=>{
+      $("approveYes").disabled=true;
+      const st=await checkPinServer($("approvePin").value.trim());
+      $("approveYes").disabled=false;
+      if(st!=="ok"){
+        $("approveErr").textContent=pinMessage(st);
         $("approveErr").classList.remove("hidden");
         return;
       }
@@ -890,11 +955,13 @@ function startTest(){
   initAudio();
   // Új teszt indulásakor a korábbi mentési figyelmeztetések végleg eltűnnek.
   clearPending();
+  clearDraft();
+  $("draftBox").classList.add("hidden");
   $("pendingBox").classList.add("hidden");
   showSaveBanner(false);
 
   const practice=$("practiceMode").checked;
-  const name=$("studentName").value.trim().replace(/\s+/g," ")||(practice?"Gyakorló":"");
+  let name=$("studentName").value.trim().replace(/\s+/g," ")||(practice?"Gyakorló":"");
   const cls=getClass();
   const count=Math.max(1,Math.min(50,Number($("taskCount").value)||5));
 
@@ -905,6 +972,15 @@ function startTest(){
   if(!cls){
     showError($("studentGrade").value==="__other"?"Írd be az osztályt.":"Válaszd ki az osztályt.");
     return;
+  }
+  // Névsor-ellenőrzés (ha a táblázatban van "Nevek" munkalap az adott osztályhoz)
+  if(!practice){
+    const list=rosterFor(cls);
+    if(list.length){
+      const hit=list.find(n=>normName(n)===normName(name));
+      if(hit){ $("studentName").value=hit; name=hit; }
+      else if(!confirm(`„${name}” nem szerepel a(z) ${cls} osztály névsorában. Biztosan így írod a nevedet? (Elírás esetén a Mégsem gombbal javíthatod.)`)) return;
+    }
   }
 
   if(!practice) rememberName(name);
@@ -979,6 +1055,8 @@ function startTest(){
     $("startPanel").classList.add("hidden");
     $("testPanel").classList.remove("hidden");
 
+    resumeCount=0;
+    saveDraft();
     showTask(GRACE_FIRST_MS);
   }).catch(err=>{
     $("loadingOverlay").classList.add("hidden");
@@ -1162,6 +1240,7 @@ function finishCurrentTask(timedOut){
   $("answer").disabled=true;
   $("nextBtn").disabled=false;
   playSound(timedOut?"timeout":"done");
+  saveDraft();
   $("autoMsg").className="auto-msg"+(timedOut?" warn":"");
   $("autoMsg").textContent=timedOut
     ?"⏰ Lejárt az idő!"
@@ -1503,6 +1582,7 @@ function renderProgress(data){
 
 function finishTest(){
   testFinishedAt=new Date();
+  clearDraft();
   try{ saveFont(); }catch(e){}
   clearInterval(timerId);
   clearInterval(cdTimer);
@@ -1525,6 +1605,8 @@ function finishTest(){
   const grade=gradeFor(averagePercent);
   $("heroGrade").textContent=grade;
   $("heroPercent").textContent=averagePercent+"%";
+  $("gradeHero").classList.toggle("hidden",!!practiceMode);
+  $("gradeNote").classList.toggle("hidden",!!practiceMode);
   $("gradeHero").classList.toggle("grade-5",grade===5);
   $("gradeHero").classList.toggle("grade-low",grade<=2);
   const gl=GRADE_LIMITS.slice().sort((x,y)=>x[0]-y[0]);
@@ -1602,6 +1684,7 @@ function finishTest(){
   const flagList=[];
   if(awayTotal>=AWAY_LIMIT) flagList.push(`ablakelhagyás ${awayTotal}×`);
   if(pasteTotal>0) flagList.push(`beillesztési kísérlet ${pasteTotal}×`);
+  if(resumeCount>0) flagList.push(`újratöltés után folytatva ${resumeCount}×`);
   results.forEach((r,i)=>{
     if(!skippedIdx.has(i)&&r.totalTyped>=20&&r.speed>SPEED_LIMIT) flagList.push(`${i+1}. feladat túl gyors (${r.speed}/perc)`);
   });
@@ -1753,11 +1836,11 @@ function showSaveBanner(show){
   if(show) $("bannerStatus").textContent="";
 }
 
-let saving=false, autoRetryN=0, autoRetryTimer=null;
+let lastReal=null, saving=false, autoRetryN=0, autoRetryTimer=null, firstAutoSend=true;
 function scheduleAutoRetry(){
   clearTimeout(autoRetryTimer);
   if(autoRetryN>=6) return;
-  autoRetryTimer=setTimeout(()=>{ autoRetryN++; if(pendingResult&&!savedOk) saveResult(); },20000);
+  autoRetryTimer=setTimeout(()=>{ autoRetryN++; if(lastReal) saveResult(); },20000);
 }
 async function saveResult(){
   if(saving) return;
@@ -1766,15 +1849,26 @@ async function saveResult(){
 }
 async function saveResultInner(){
   clearTimeout(autoRetryTimer);
+  if(pendingResult) lastReal=pendingResult;   // gyakorlókör közben is a valódi eredményt küldjük tovább
+  const res=lastReal;
+  if(!res) return;
   $("saveActions").classList.add("hidden");
   showSaveBanner(false);
-  backupPending(pendingResult);
+  backupPending(res);
   $("sendBar").className="send-bar"; $("sendBarSkip").classList.remove("hidden");
   const mirror={set textContent(v){ $("saveStatus").textContent=v; $("sendBarText").textContent="⏳ Az eredmény küldése folyamatban a háttérben ("+v.replace(/\.\.\.$/,"")+"). Várd meg a ✅ jelet, utána biztonságosan indíthatsz új tesztet."; }};
+  if(firstAutoSend){
+    firstAutoSend=false;
+    const wait=Math.round(Math.random()*SEND_JITTER_MS);
+    $("saveStatus").textContent="Az eredmény küldése hamarosan indul...";
+    $("sendBarText").textContent="⏳ Az eredmény küldése hamarosan indul a háttérben. Várd meg a ✅ jelet, utána biztonságosan indíthatsz új tesztet.";
+    await sleep(wait);
+  }
   mirror.textContent="Eredmény mentése a Google Táblázatba...";
-  const ok=await sendResult(pendingResult,mirror);
+  const ok=await sendResult(res,mirror);
   if(ok){
     savedOk=true;
+    lastReal=null;
     clearPending();
     showSaveBanner(false);
     $("sendBar").className="send-bar ok"; $("sendBarText").textContent="✅ Az eredmény biztonságban elküldve – új tesztet indíthatsz."; $("sendBarSkip").classList.add("hidden");
@@ -1789,9 +1883,9 @@ async function saveResultInner(){
     scheduleAutoRetry();   // a háttérben magától is újrapróbálja
   }
 }
-window.addEventListener("online",()=>{ if(pendingResult&&!savedOk&&!testActive) saveResult(); });
+window.addEventListener("online",()=>{ if(lastReal&&!testActive) saveResult(); });
 
-function getExportData(){ return exportResult||pendingResult; }
+function getExportData(){ return lastReal||exportResult||pendingResult; }
 function safeFilename(value){ return String(value||"eredmeny").replace(/[^\p{L}\p{N}]+/gu,"_").replace(/^_+|_+$/g,"")||"eredmeny"; }
 function triggerDownload(blob,filename){
   const a=document.createElement("a");
@@ -1905,13 +1999,14 @@ $("stopCancel").addEventListener("click",()=>{
 });
 $("stopConfirm").addEventListener("click",emergencyStop);
 
-$("retrySave").addEventListener("click",saveResult);
+$("retrySave").addEventListener("click",()=>{firstAutoSend=false;saveResult();});
 $("sendBarSkip").addEventListener("click",()=>{
   if(!confirm("Ha most új tesztet kezdesz, ennek az eredménynek a küldése leáll, és nem biztos, hogy a tanárhoz eljut. Előtte letöltheted CSV-ben. Biztosan új tesztet kezdesz?")) return;
-  clearTimeout(autoRetryTimer); clearPending(); savedOk=true; pendingResult=null; testActive=false;
+  clearTimeout(autoRetryTimer); clearPending(); savedOk=true; pendingResult=null; lastReal=null; testActive=false;
   location.reload();
 });
 $("bannerRetry").addEventListener("click",async()=>{
+  firstAutoSend=false;
   $("bannerRetry").disabled=true;
   $("bannerStatus").textContent="Küldés...";
   await saveResult();
@@ -1926,9 +2021,10 @@ $("progressExportCsv").addEventListener("click",downloadCsv);
 $("progressExportPdf").addEventListener("click",downloadPdf);
 $("dlSave").addEventListener("click",downloadResult);
 function beginNewTest(){
-  if(pendingResult&&!savedOk&&!confirm((saving?"Az eredmény küldése még folyamatban van a háttérben. ":"")+"Az eredmény még nincs elküldve. Biztosan új tesztet kezdesz? (Az el nem küldött eredmény elvész, ha előtte nem töltöd le.)")) return;
+  if((lastReal||(pendingResult&&!savedOk))&&!confirm((saving?"Az eredmény küldése még folyamatban van a háttérben. ":"")+"Az eredmény még nincs elküldve. Biztosan új tesztet kezdesz? (Az el nem küldött eredmény elvész, ha előtte nem töltöd le.)")) return;
   clearPending();
   savedOk=true;
+  lastReal=null;
   testActive=false;
   location.reload();
 }
@@ -1943,6 +2039,10 @@ updateBackToTop();
 const CONTRAST_KEY="gepiras_high_contrast";
 function setContrast(on){document.body.classList.toggle("high-contrast",!!on);$("contrastToggle").setAttribute("aria-pressed",String(!!on));$("contrastToggle").textContent=on?"◑ Normál kontraszt":"◐ Nagy kontraszt";try{localStorage.setItem(CONTRAST_KEY,on?"1":"0")}catch(e){}}
 try{setContrast(localStorage.getItem(CONTRAST_KEY)==="1")}catch(e){setContrast(false)}
+const BIGTEXT_KEY="gepiras_big_text";
+function setBigText(on){document.documentElement.classList.toggle("big-text",!!on);$("bigTextToggle").setAttribute("aria-pressed",String(!!on));$("bigTextToggle").textContent=on?"A Normál betű":"A+ Nagy betű";try{localStorage.setItem(BIGTEXT_KEY,on?"1":"0")}catch(e){}}
+try{setBigText(localStorage.getItem(BIGTEXT_KEY)==="1")}catch(e){setBigText(false)}
+$("bigTextToggle").addEventListener("click",()=>setBigText(!document.documentElement.classList.contains("big-text")));
 $("contrastToggle").addEventListener("click",()=>setContrast(!document.body.classList.contains("high-contrast")));
 $("startBtn").addEventListener("click",startTest);
 $("nextBtn").addEventListener("click",nextTask);
@@ -1960,7 +2060,7 @@ $("answer").addEventListener("beforeinput",e=>{
 
 // Frissítés vagy az oldal bezárása előtti figyelmeztetés teszt közben
 window.addEventListener("beforeunload",e=>{
-  if(testActive||(pendingResult&&!savedOk)){
+  if(testActive||lastReal||(pendingResult&&!savedOk)){
     e.preventDefault();
     e.returnValue="";
   }
@@ -1976,15 +2076,78 @@ function noteAway(){
 window.addEventListener("blur",noteAway);
 document.addEventListener("visibilitychange",()=>{ if(document.hidden) noteAway(); });
 
+/* ---------- Megszakadt teszt mentése és folytatása ---------- */
+let resumeCount=0;
+function saveDraft(){
+  if(practiceMode||!testActive) return;
+  try{
+    localStorage.setItem(DRAFT_KEY,JSON.stringify({
+      ts:Date.now(),tasks,results,testId,name:studentNameVal,cls:studentClassVal,
+      startedAt:testStartedAt?testStartedAt.toISOString():"",resumes:resumeCount
+    }));
+  }catch(e){}
+}
+function clearDraft(){ try{localStorage.removeItem(DRAFT_KEY);}catch(e){} }
+function checkDraftOnLoad(){
+  let d=null;
+  try{ d=JSON.parse(localStorage.getItem(DRAFT_KEY)||"null"); }catch(e){}
+  if(!d||!Array.isArray(d.tasks)||!d.tasks.length||!d.name) return;
+  if(Date.now()-d.ts>3*3600*1000||d.results.length>=d.tasks.length){ clearDraft(); return; }
+  $("draftText").textContent=`⏸ Megszakadt tesztet találtam: ${d.name} (${d.cls}), ${d.results.length}/${d.tasks.length} feladat kész. Folytathatod onnan, ahol abbamaradt (a soron lévő feladat elölről indul).`;
+  $("draftBox").classList.remove("hidden");
+  $("draftDiscard").onclick=()=>{ clearDraft(); $("draftBox").classList.add("hidden"); };
+  $("draftResume").onclick=()=>{
+    $("draftBox").classList.add("hidden");
+    tasks=d.tasks; results=d.results; currentIndex=results.length;
+    skippedIdx.clear(); stopped=false; savedOk=false; pendingResult=null;
+    studentNameVal=d.name; studentClassVal=d.cls; practiceMode=false;
+    resumeCount=(d.resumes||0)+1;
+    testId=d.testId; testStartedAt=d.startedAt?new Date(d.startedAt):new Date(); testFinishedAt=null; testActive=true;
+    $("studentName").value=d.name;
+    $("practiceTag").classList.add("hidden");
+    $("totalLen").textContent=fmtDur(totalTime(tasks));
+    $("capNote").textContent="↩ Folytatott teszt: a megszakadt feladat elölről indult.";
+    $("capNote").classList.remove("hidden");
+    $("startPanel").classList.add("hidden");
+    $("testPanel").classList.remove("hidden");
+    restoreFont();
+    saveDraft();
+    showTask(GRACE_FIRST_MS);
+  };
+}
+
+/* ---------- Névsor (opcionális "Nevek" munkalap) ---------- */
+let ROSTER=[];
+function normName(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/\s+/g," ").trim();}
+function normCls(s){return String(s||"").toLowerCase().replace(/\s+/g,"").replace(/\.$/,"");}
+function rosterFor(cls){return ROSTER.filter(r=>normCls(r.c)===normCls(cls)).map(r=>r.n);}
+function refreshNameList(){
+  const dl=$("nameList"); if(!dl) return;
+  let list=rosterFor(getClass());
+  if(!list.length) list=[];
+  dl.innerHTML=list.slice(0,200).map(n=>`<option value="${esc(n)}"></option>`).join("");
+}
+async function loadRoster(){
+  try{
+    const r=await jsonp({action:"getRoster"},8000);
+    if(r&&r.success&&Array.isArray(r.roster)){ ROSTER=r.roster; refreshNameList(); }
+  }catch(e){}
+}
+["studentGrade","studentLetter","studentClassOther"].forEach(id=>{ $(id).addEventListener("change",refreshNameList); $(id).addEventListener("input",refreshNameList); });
+loadRoster();
+
 /* ---------- Tanári zár ---------- */
 function applyLock(){
   if(!LOCK_SETTINGS){ $("taskCount").readOnly=false; $("unlockBtn").classList.add("hidden"); return; }
   $("taskCount").readOnly=true;
 }
-$("unlockBtn").addEventListener("click",()=>{
-  const code=TEACHER_PIN?prompt("Tanári kód:"):"";
+$("unlockBtn").addEventListener("click",async()=>{
+  const code=prompt("Tanári kód:");
   if(code===null) return;
-  if(TEACHER_PIN&&String(code).trim()!==TEACHER_PIN){ alert("Hibás kód."); return; }
+  $("unlockBtn").disabled=true;
+  const st=await checkPinServer(String(code).trim());
+  $("unlockBtn").disabled=false;
+  if(st!=="ok"){ alert(pinMessage(st)); return; }
   $("taskCount").readOnly=false;
   $("teacherOpts").classList.remove("hidden");
   $("unlockBtn").classList.add("hidden");
@@ -2098,6 +2261,7 @@ $("sizeReset").addEventListener("click",()=>{applyScale(DEFAULT_TASK_SCALE,DEFAU
 $("studentName").addEventListener("focus",e=>e.target.select());
 $("studentName").addEventListener("change",restoreFont);
 checkPendingOnLoad();
+checkDraftOnLoad();
 </script>
 </body>
 </html>
