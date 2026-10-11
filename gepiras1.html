@@ -358,6 +358,100 @@ html.big-text{font-size:120%}
 
 
 #practiceOptions{margin:8px 0;padding:10px;border:1px solid #9eb6a9;border-radius:8px;background:#e3eee8}#livePracticeOptions{flex:0 0 auto;padding:3px 0;font-size:.8rem}#livePracticeOptions label{display:inline;margin:0;font-size:.8rem}#livePracticeOptions select{width:auto;max-width:100%;padding:3px;font-size:.8rem;margin:2px}#practiceChangeStatus{display:block;font-size:.7rem}body.high-contrast #practiceOptions{background:#111;color:#fff;border-color:#fff}@media print{#practiceOptions,#livePracticeOptions{display:none!important}}
+
+@media screen and (max-width:760px){
+ #typingWorkspace,body.keyboard-open #typingWorkspace{position:relative!important;top:auto!important;left:auto!important;width:100%!important;height:var(--typing-height,calc(100dvh - 8px))!important;min-height:0!important;margin:0!important;padding:4px!important;z-index:auto!important;box-shadow:none!important}
+ #mobileExtraControls{margin:8px 0;padding:8px;background:#e3eee8;border:1px solid #9eb6a9;border-radius:8px}
+ #mobileExtraControls .mobile-task-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:space-between}
+ #mobileExtraControls #speechStatus{position:static!important;width:auto!important;height:auto!important;clip-path:none!important;white-space:normal!important;margin:4px 0;font-size:.8rem}
+ #mobileExtraControls button{padding:7px 9px;font-size:.8rem}
+ #mobileExtraControls #speechTools{margin-bottom:6px}
+ body.high-contrast #mobileExtraControls{background:#000;color:#fff;border-color:#fff}
+}
+@media print{#mobileExtraControls{display:none!important}}
+/* Kompakt kezdőlap és teszt: a látható böngészőterülethez igazítva. */
+@media screen{
+ body.screen-start .wrap,body.screen-test .wrap{max-width:1100px;padding:6px;margin:0 auto}
+ body.screen-start .wrap>.card:first-child,body.screen-test .wrap>.card:first-child{padding:8px;margin:0 0 5px}
+ .app-heading h1{font-size:1.2rem;margin:0}.app-heading{gap:5px}.access-btn{padding:5px 8px;font-size:.8rem}
+ .compact-help{font-size:.75rem;margin:3px 0}.compact-help p{margin:4px 0;line-height:1.2}
+ #startPanel label{margin:0 0 3px;font-size:.8rem}#startPanel input,#startPanel select{padding:5px 7px}
+ .start-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:8px 0}.start-field,#teacherOpts{min-width:0}
+ #startPanel .class-row{gap:4px}#startPanel .lock-row{gap:4px}#startPanel .chk{margin:5px 0;font-size:.8rem}
+ #startPanel>p{font-size:.75rem;line-height:1.15;margin:4px 0}#teacherConfigStatus:empty{display:none}
+ #practiceOptions{display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:4px;margin:5px 0;padding:6px}
+ #practiceOptions p{grid-column:1/-1;margin:1px 0;font-size:.72rem}.start-footer{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between;margin-top:5px}.start-footer button{padding:7px 12px}.start-footer .conn{margin:0}
+ body.screen-test .compact-help,body.screen-test #teacherConfigStatus{display:none}
+ body.screen-test .wrap{height:var(--screen-height,100dvh);display:flex;flex-direction:column}
+ body.screen-test .wrap>.card:first-child{flex:0 0 auto}
+ body.screen-test #testPanel{flex:1 1 0;min-height:0}
+ body.screen-test #testPanel>.card{height:100%;display:flex;flex-direction:column;gap:3px;padding:7px;margin:0;overflow:auto}
+ body.screen-test #testPanel>.card>.row{flex:0 0 auto;font-size:.8rem;gap:5px}
+ body.screen-test .total-line{padding:3px 5px;margin:0;font-size:.75rem}
+ body.screen-test .bar{height:4px;margin:1px 0;flex:0 0 auto}
+ body.screen-test .size-row{margin:0;gap:4px;grid-template-columns:1fr 1fr auto;flex:0 0 auto}
+ body.screen-test .size-row label{font-size:.72rem}.size-row .size-reset{padding:3px 6px}
+ body.screen-test #typingWorkspace,body.screen-test.keyboard-open #typingWorkspace{position:relative!important;top:auto!important;left:auto!important;width:100%!important;flex:1 1 0!important;height:auto!important;min-height:115px!important;display:flex;flex-direction:column;gap:3px;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important}
+ body.screen-test #typingWorkspace #taskText{position:static;flex:1 1 0;min-height:35px;max-height:none;overflow:auto;margin:0;padding:6px;line-height:1.25}
+ body.screen-test #typingWorkspace .answer-wrap{position:static;flex:0 0 auto;padding:0;margin:0;box-shadow:none}
+ body.screen-test #answer{min-height:0!important;height:calc(2.5em + 12px)!important;max-height:calc(2.5em + 12px)!important;padding:5px 7px;resize:none;line-height:1.25}
+ body.screen-test .answer-timer{padding:2px 5px;margin:0 0 2px;font-size:.75rem}
+ body.screen-test #mobileExtraControls{flex:0 0 auto;margin:0;padding:3px;border-radius:5px;display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+ body.screen-test #mobileExtraControls .mobile-task-actions{display:flex;gap:4px;margin-left:auto}
+ body.screen-test #mobileExtraControls button,body.screen-test .next-row button{padding:4px 7px;font-size:.75rem}
+ body.screen-test #speechTools{margin:0;display:flex;flex-wrap:wrap;gap:3px;align-items:center}
+ body.screen-test #speechStatus{position:absolute!important;width:1px!important;height:1px!important;clip-path:inset(50%)!important;overflow:hidden!important;margin:0!important}
+ body.screen-test #livePracticeOptions{display:flex;flex-wrap:wrap;align-items:center;gap:3px;padding:0;font-size:.72rem}
+ body.screen-test #livePracticeOptions label{font-size:.72rem;margin:0}
+ body.screen-test #livePracticeOptions select{padding:2px 3px;font-size:.75rem;margin:0;width:auto;max-width:150px}
+ body.screen-test #practiceChangeStatus{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+ body.screen-test .stats-row{flex:0 0 auto;margin:0;gap:3px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr))}
+ body.screen-test .stats-row .stat{padding:3px 1px}.stats-row .stat b{font-size:.95rem}.stats-row .lbl{font-size:.65rem}
+ body.screen-test .next-row:empty{display:none}body.screen-test .next-row{margin:0}
+ body.screen-test .msg-slot{height:0;flex:0 0 auto}body.screen-test .cap-note{margin:0;padding:3px;font-size:.7rem;max-height:40px;overflow:auto}
+}
+@media screen and (max-width:760px){
+ .start-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}#startPanel input,#startPanel select{font-size:16px}
+ #practiceOptions{grid-template-columns:auto minmax(0,1fr);gap:3px}.start-footer{gap:4px}.start-footer .conn{font-size:.7rem}.start-footer #startBtn{margin-left:auto}
+ body.screen-test .app-heading h1{font-size:1rem}body.screen-test .app-heading .access-btn{font-size:.7rem;padding:3px 5px}
+ body.screen-test .size-row{grid-template-columns:1fr 1fr auto}.size-row .lbl-t{white-space:normal}.size-row input[type=range]{height:14px}.size-row output{min-width:2em}
+ body.screen-test .stats-row .u{display:none}body.screen-test .stats-row .stat b{font-size:.8rem}body.screen-test .stats-row .lbl{font-size:.6rem}
+ body.screen-test #typingWorkspace #taskText{font-size:calc(17px * var(--task-scale,.95))}
+ body.screen-test #answer{font-size:max(16px,calc(17px * var(--answer-scale,.95)))!important}
+}
+@media screen and (max-height:450px){
+ body.screen-test .total-line{font-size:.65rem}body.screen-test .size-row label{font-size:.65rem}body.screen-test .stats-row .stat{padding:1px}
+ body.screen-test #mobileExtraControls button{padding:2px 5px}body.screen-test .wrap>.card:first-child{padding:3px;margin-bottom:2px}
+}
+
+#nameClassStatus{display:block;font-size:.7rem;line-height:1.15;margin-top:2px;color:#466355}body.high-contrast #nameClassStatus{color:#fff}
+
+/* Közel egymáshoz, azonos helyet kapó szövegpanelek. */
+@media screen{
+ body.screen-test #typingWorkspace,body.screen-test.keyboard-open #typingWorkspace{display:grid!important;grid-template-rows:minmax(0,1fr) minmax(0,1fr)!important;gap:4px!important;min-height:150px!important}
+ body.screen-test #typingWorkspace #taskText{min-height:0!important;height:100%!important;max-height:none!important;margin:0!important;overflow:auto!important}
+ body.screen-test #typingWorkspace .answer-wrap{display:flex!important;flex-direction:column!important;min-height:0!important;height:100%!important;margin:0!important;padding:0!important;gap:2px!important}
+ body.screen-test #typingWorkspace .answer-timer{flex:0 0 auto;margin:0!important;padding:2px 5px!important}
+ body.screen-test #typingWorkspace #answer{flex:1 1 0!important;height:auto!important;min-height:0!important;max-height:none!important;width:100%!important;margin:0!important;resize:none!important;overflow:auto!important}
+}
+
+
+.start-field{position:relative}.name-suggestions{position:absolute;top:100%;left:0;right:0;max-height:180px;overflow:auto;z-index:80;background:#fff;border:1px solid #6d9380;border-radius:6px;box-shadow:0 4px 12px #0003}
+.name-suggestions button{display:block;width:100%;text-align:left;border-radius:0;padding:7px 8px;font-size:.85rem;background:#fff;color:#1f362b;font-weight:normal}
+.name-suggestions button:hover,.name-suggestions button[aria-selected=true]{background:#dcece2}
+#rosterLoadStatus{display:block;font-size:.7rem;line-height:1.15}#rosterRetry{font-size:.7rem;padding:3px 5px}
+body.high-contrast .name-suggestions,body.high-contrast .name-suggestions button{background:#000;color:#fff;border-color:#fff}body.high-contrast .name-suggestions button[aria-selected=true]{background:#ffeb3b;color:#000}
+
+
+@media screen{
+ body.screen-test #typingWorkspace .answer-timer{display:flex!important;flex-wrap:wrap;align-items:center;gap:5px!important;justify-content:flex-start}
+ body.screen-test #typingWorkspace .answer-timer #stopBtn{margin-left:auto!important;flex:0 0 auto;padding:4px 7px!important;font-size:.72rem!important;white-space:nowrap}
+}
+
+@media screen{
+ body.screen-test #speechTools button{padding:4px 6px!important;font-size:.75rem!important;white-space:nowrap;flex:0 0 auto}
+ body.screen-test #disableSpeechTestBtn{min-width:0!important;width:auto!important}
+}
 </style>
 </head>
 <body>
@@ -392,7 +486,7 @@ html.big-text{font-size:120%}
 <div id="startPanel">
 <label for="studentName">Tanuló neve</label>
 <input id="studentName" autocomplete="off" list="nameList">
-<datalist id="nameList"></datalist>
+<datalist id="nameList"></datalist><small id="nameClassStatus" role="status" aria-live="polite"></small><small id="rosterLoadStatus" role="status"></small><button type="button" id="rosterRetry" class="hidden" onclick="loadRoster()">Névsor újratöltése</button>
 
 <label for="studentGrade">Osztály</label>
 <div class="class-row">
@@ -402,10 +496,11 @@ html.big-text{font-size:120%}
 <input id="studentClassOther" class="hidden" placeholder="Írd be az osztályt, pl. 6.a vagy 11.ny" style="margin-top:8px">
 
 <label for="taskCount">Feladatok száma</label>
-<div class="lock-row"><input id="taskCount" type="number" min="1" max="50" value="15" readonly><button type="button" id="unlockBtn" class="btn-grey">🔒 Tanári feloldás</button></div>
-<div id="teacherOpts" class="hidden"><label for="capInput">Időkeret (perc) – tanári beállítás</label><input id="capInput" type="number" min="5" max="120" value="35"></div>
+<div class="lock-row"><input id="taskCount" type="number" min="1" max="50" value="15"><button type="button" id="unlockBtn" class="btn-grey hidden">🔒 Tanári feloldás</button></div>
+<p id="teacherConfigStatus" class="muted small" role="status"></p>
+<div id="teacherOpts"><label for="capInput">Időkeret (perc) – tanári beállítás</label><input id="capInput" type="number" min="5" max="120" value="35"></div>
 <p class="muted small">A feladatok minden típusból egyenlően kerülnek kiválasztásra. A teszt legfeljebb <span id="capMinutes">35</span> percig tart.</p>
-<label class="chk"><input type="checkbox" id="practiceMode"> Gyakorló mód (az eredmény nem kerül a táblázatba)</label><div id="practiceOptions"><label for="practiceTime">Gyakorlási idő</label><select id="practiceTime" disabled><option value="1">Tanári idő (1×)</option><option value="1.5">50%-kal több idő (1,5×)</option><option value="2">Kétszeres idő (2×)</option></select><label for="practiceSpeechRate">Felolvasás tempója</label><select id="practiceSpeechRate" disabled><option value="0">Tanári felolvasási tempó</option><option value="0.5">Lassú (0,5×)</option><option value="0.75">Nyugodt (0,75×)</option><option value="1">Normál (1×)</option><option value="1.25">Gyorsabb (1,25×)</option><option value="1.5">Gyors (1,5×)</option></select><p class="muted">A beállításokhoz pipáld be a Gyakorló módot. Teszt közben is módosíthatók.</p></div>
+<label class="chk"><input type="checkbox" id="practiceMode"> Gyakorló mód (az eredmény nem kerül a táblázatba)</label><div id="practiceOptions"><label for="practiceTextKind">Gyakorló feladatok</label><select id="practiceTextKind" disabled><option value="all">Mindenféle szöveg</option><option value="short">Rövid szavak és kifejezések</option><option value="long">Hosszabb mondatok és szövegek</option></select><label for="practiceTime">Gyakorlási idő</label><select id="practiceTime" disabled><option value="1">Tanári idő (1×)</option><option value="1.5">50%-kal több idő (1,5×)</option><option value="2">Kétszeres idő (2×)</option></select><label for="practiceSpeechRate">Felolvasás tempója</label><select id="practiceSpeechRate" disabled><option value="0">Tanári felolvasási tempó</option><option value="0.5">Lassú (0,5×)</option><option value="0.75">Nyugodt (0,75×)</option><option value="1">Normál (1×)</option><option value="1.25">Gyorsabb (1,25×)</option><option value="1.5">Gyors (1,5×)</option></select><p class="muted">A szövegválasztás csak gyakorló módban, indulás előtt állítható. Rövid: legfeljebb 8 szó és 80 karakter; hosszabb: az ennél hosszabb szövegek. Az idő és a felolvasási tempó teszt közben is módosítható.</p></div>
 <label class="chk"><input type="checkbox" id="soundOn"> 🔊 Hangjelzés (lejárt idő, kész feladat)</label>
 <div id="connChip" class="conn small" role="status" title="Kattints az újraellenőrzéshez">Kapcsolat ellenőrzése…</div>
 
@@ -440,7 +535,7 @@ html.big-text{font-size:120%}
 
 <div class="answer-wrap">
   <div class="answer-timer"><span>⏱ Feladatból hátralévő idő</span><strong id="timerBeside">--:--</strong></div>
-  <div id="speechTools" class="hidden"><button type="button" id="readTaskBtn">🔊 Felolvasás / újrahallgatás</button> <button type="button" id="stopReadBtn">Felolvasás leállítása</button><p id="speechStatus" role="status" aria-live="polite"></p></div>
+  <div id="speechTools" class="hidden"><button type="button" id="readTaskBtn">🔊 Felolvasás / újrahallgatás</button> <button type="button" id="stopReadBtn">Felolvasás leállítása</button><button type="button" id="disableSpeechTestBtn" aria-pressed="false" title="Felolvasás kikapcsolása erre a tesztre; később visszakapcsolható" aria-label="Felolvasás kikapcsolása erre a tesztre; később visszakapcsolható">🔇 Felolvasás ki</button><p id="speechStatus" role="status" aria-live="polite"></p></div>
 <textarea id="answer" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off"></textarea>
 </div>
 
@@ -539,7 +634,6 @@ html.big-text{font-size:120%}
 <div class="export-actions" id="exportActions">
   <button type="button" onclick="downloadXlsx()">⬇ Formázott Excel (XLSX)</button>
   <button type="button" id="exportCsv">⬇ Eredmény letöltése CSV-ben</button>
-  <button type="button" onclick="window.print()">Teljes nézet nyomtatása (grafikonokkal, színes hibákkal)</button>
   <button type="button" id="exportPdf" class="pdf-btn">🖨 PDF mentése / nyomtatása</button>
 </div>
 <div id="saveActions" class="actions hidden">
@@ -622,6 +716,7 @@ let remaining=0;
 let mistakes=0;
 let finished=false;
 let graceActive=false;
+let dictationWaiting=false,dictationBegin=null;
 let awayCount=0;
 let pasteCount=0;
 let lastAway=0;
@@ -832,7 +927,7 @@ async function loadTasks(count){
 // Ha a hálózat nem működik, a legutóbb sikeresen letöltött feladatbankot használja.
 async function loadTasksRobust(){
   try{
-    const tasks=await loadTasks(500);
+    const tasks=await loadTasks(1000);
     try{ localStorage.setItem(TASK_CACHE_KEY,JSON.stringify({ts:Date.now(),tasks})); }catch(e){}
     return {tasks,cached:false};
   }catch(e){
@@ -870,12 +965,46 @@ function shuffle(arr){
   return a;
 }
 
+function practiceTextMatches(task,kind){
+ const text=String(task.text||'').trim().replace(/\s+/g,' ');
+ const short=text.length<=80&&text.split(' ').filter(Boolean).length<=8;
+ return kind==='short'?short:kind==='long'?!short:true;
+}
+
+// Diákonkénti szövegelőzmény: az új, majd a régebben látott szövegek kerülnek előre.
+let varietyScope='',varietyHistory=[],varietyMarked=new Set();
+function varietyHash(value){
+ let a=2166136261,b=5381;
+ for(const ch of String(value)){const c=ch.codePointAt(0);a=Math.imul(a^c,16777619);b=Math.imul(b,33)^c;}
+ return (a>>>0).toString(36)+'_'+(b>>>0).toString(36);
+}
+function varietyTextKey(task){return varietyHash(String(task.text||'').normalize('NFC').replace(/\s+/g,' ').trim());}
+function loadVarietyHistory(name,cls){
+ const scope='gepiras_variety_v1_'+varietyHash(nameChoiceKey(name)+'|'+normCls(cls));
+ if(scope===varietyScope)return;
+ varietyScope=scope;varietyHistory=[];
+ try{const stored=JSON.parse(localStorage.getItem(scope)||'[]');if(Array.isArray(stored))varietyHistory=stored.filter(x=>typeof x==='string').slice(-1000);}catch(e){}
+}
+function varietyOrder(arr){
+ const seen=new Map();varietyHistory.forEach((key,i)=>seen.set(key,i));
+ return shuffle(arr).sort((a,b)=>(seen.has(varietyTextKey(a))?seen.get(varietyTextKey(a)):-1)-(seen.has(varietyTextKey(b))?seen.get(varietyTextKey(b)):-1));
+}
+function rememberPresentedTask(task){
+ loadVarietyHistory(studentNameVal,studentClassVal);
+ const event=String(testId)+'|'+currentIndex;
+ if(varietyMarked.has(event))return;
+ varietyMarked.add(event);
+ const key=varietyTextKey(task);
+ varietyHistory=varietyHistory.filter(x=>x!==key);varietyHistory.push(key);varietyHistory=varietyHistory.slice(-1000);
+ try{localStorage.setItem(varietyScope,JSON.stringify(varietyHistory));}catch(e){}
+}
+
 // Ha a feladatbankban van "Nehézség" oszlop, a könnyű/közepes/nehéz feladatok egyenlően keverednek.
 function interleaveDiff(arr){
   const g=new Map();
   arr.forEach(t=>{const k=t.difficulty||"";if(!g.has(k))g.set(k,[]);g.get(k).push(t);});
-  if(g.size<2) return arr;
-  const lists=shuffle([...g.values()]);
+  if(g.size<2) return varietyOrder(arr);
+  const lists=shuffle([...g.values()].map(varietyOrder));
   const out=[];
   let more=true;
   while(more){more=false;lists.forEach(l=>{if(l.length){out.push(l.shift());more=true;}});}
@@ -936,6 +1065,7 @@ function bestSelection(all,n,tries){
 async function checkPinServer(pin){
   try{
     const r=await jsonp({action:"checkPin",pin},10000);
+    if(r?.success&&r.pinRequired===false){teacherPinRequired=false;applyLock();}
     if(r&&r.success){ return r.ok?"ok":(r.blocked?"blocked":"bad"); }
   }catch(e){}
   return "offline";
@@ -946,13 +1076,14 @@ function pinMessage(st){
     :"Hibás kód.";
 }
 
-function askApproval(count,total){
+async function askApproval(count,total){
+  if(!await refreshTeacherSettings()) throw new Error("Nem sikerült ellenőrizni a tanári beállításokat. Próbáld újra.");
   return new Promise(resolve=>{
     $("approveText").innerHTML=
       `A kért <b>${count}</b> feladat összesen kb. <b>${fmtDur(total)}</b>, ez meghaladja a megengedett <b>${fmtDur(MAX_TOTAL_SEC)}</b> időkeretet.`;
     $("approvePin").value="";
     $("approveErr").classList.add("hidden");
-    $("pinRow").classList.remove("hidden");
+    $("pinRow").classList.toggle("hidden",teacherPinRequired===false);
     $("approveModal").classList.remove("hidden");
     $("approvePin").focus();
 
@@ -964,7 +1095,7 @@ function askApproval(count,total){
     };
     $("approveYes").onclick=async()=>{
       $("approveYes").disabled=true;
-      const st=await checkPinServer($("approvePin").value.trim());
+      const st=teacherPinRequired===false?"ok":await checkPinServer($("approvePin").value);
       $("approveYes").disabled=false;
       if(st!=="ok"){
         $("approveErr").textContent=pinMessage(st);
@@ -990,6 +1121,7 @@ function startTest(){
   showSaveBanner(false);
 
   const practice=$("practiceMode").checked;
+  const practiceTextKind=practice?$("practiceTextKind").value:"all";
   let name=$("studentName").value.trim().replace(/\s+/g," ")||(practice?"Gyakorló":"");
   const cls=getClass();
   const count=Math.max(1,Math.min(50,Number($("taskCount").value)||5));
@@ -1033,9 +1165,14 @@ function startTest(){
     }
     if(!all.length) throw new Error("Nincs aktív feladat a Feladatbank munkalapon.");
 
+    if(practice&&practiceTextKind!=="all"){
+      all=all.filter(t=>practiceTextMatches(t,practiceTextKind));
+      if(!all.length)throw new Error('A feladatbankban nincs az évfolyamnak megfelelő '+(practiceTextKind==='short'?'rövid szó vagy kifejezés':'hosszabb mondat vagy szöveg')+'. Válaszd a Mindenféle szöveg lehetőséget, vagy a másik szövegcsoportot.');
+    }
+    loadVarietyHistory(name,cls);
     const wanted=Math.min(count,all.length);
     let sel=bestSelection(all,wanted,300);
-    let note="";
+    let note=practice&&practiceTextKind!=="all"&&wanted<count?`ℹ️ Ebben a szövegcsoportban ${wanted} megfelelő feladat érhető el, ezért ennyi kerül a gyakorlásba.`:"";
 
     if(!sel.fits){
       const ok=await askApproval(wanted,sel.total);
@@ -1056,6 +1193,7 @@ function startTest(){
     }
 
     $("loadingOverlay").classList.add("hidden");
+    enableSpeechForNewTest();
     tasks=sel.list;
     results=[];
     currentIndex=0;
@@ -1099,6 +1237,7 @@ function startTest(){
 
 function showTask(graceMs){
   taskEpoch++; stopReading();
+  dictationWaiting=false;dictationBegin=null;
   graceMs=graceMs||0;
   clearInterval(timerId);
   clearInterval(cdTimer);
@@ -1119,6 +1258,7 @@ function showTask(graceMs){
   $("nextBtn").textContent=currentIndex===tasks.length-1?"Befejezés":"Következő";
 
   const task=tasks[currentIndex];
+  rememberPresentedTask(task);
 
   task._allowedSeconds=Math.ceil((Number(task.time)||60)*(practiceMode?validPracticeFactor(practiceFactor):1));
   remaining=taskTime(task);
@@ -1127,7 +1267,7 @@ function showTask(graceMs){
   $("progressText").textContent=`${currentIndex+1} / ${tasks.length}`;
   $("progressBar").style.width=`${(currentIndex/tasks.length)*100}%`;
 
-  if(graceActive){
+  if(graceActive&&!enabledFlag(task.dictation)){
     let c=Math.round(graceMs/1000);
     const first=graceMs>GRACE_NEXT_MS;
     const msg=n=>first
@@ -1154,7 +1294,7 @@ function showTask(graceMs){
     clearInterval(cdTimer);
     if(epoch!==taskEpoch||idx!==currentIndex||finished||stopped) return;
     graceActive=false;
-    if(enabledFlag(task.readAloud)||enabledFlag(task.dictation)) readTask();
+    if(enabledFlag(task.readAloud)&&!enabledFlag(task.dictation)) readTask();
     mistakes=0;                      // a türelmi idő alatti törlések nem számítanak rontásnak
     $("autoMsg").className="auto-msg";
     $("autoMsg").textContent="";
@@ -1173,12 +1313,19 @@ function showTask(graceMs){
     },1000);
   };
 
+  if(enabledFlag(task.dictation)){
+    dictationWaiting=true;dictationBegin=begin;graceActive=true;
+    $('answer').disabled=true;$('nextBtn').disabled=false;$('nextBtn').textContent='Tollbamondás kihagyása';
+    $('autoMsg').className='auto-msg info';$('autoMsg').textContent='Tollbamondás következik. Az idő a felolvasás elindulásáig áll.';
+    showDictationNotice();return;
+  }
   $("answer").focus();
   if(graceMs>0) setTimeout(begin,graceMs);
   else begin();
 }
 
 function updateTimer(){
+  autoScrollTaskText();
   $("timer").textContent=fmtClock(remaining);
   if($("timerBeside")) $("timerBeside").textContent=fmtClock(remaining);
   let later=0;
@@ -1237,6 +1384,7 @@ function updateStats(){
 }
 
 function finishCurrentTask(timedOut){
+  dictationWaiting=false;dictationBegin=null;
   stopReading();
   if(finished) return;
 
@@ -1302,7 +1450,10 @@ function goNext(){
 }
 
 function nextTask(){
+  const skippedDictation=dictationWaiting;
+  if(dictationWaiting){dictationWaiting=false;dictationBegin=null;startTime=performance.now();}
   if(!finished) finishCurrentTask(false);
+  if(skippedDictation&&results.length){results[results.length-1].skipped=true;results[results.length-1].timeSpent=0;skippedIdx.add(currentIndex);saveDraft();}
   goNext();
 }
 
@@ -1617,6 +1768,8 @@ function renderProgress(data){
 }
 
 function finishTest(){
+  dictationWaiting=false;dictationBegin=null;
+  stopReading();
   testFinishedAt=new Date();
   clearDraft();
   try{ saveFont(); }catch(e){}
@@ -1975,7 +2128,7 @@ function downloadCsv(){
 
 function downloadPdf(){
   // A böngésző nyomtatási párbeszédablakában válaszd a „Mentés PDF-ként” lehetőséget.
-  directPdf();
+  formattedPdf();
 }
 
 async function checkPendingOnLoad(){
@@ -2013,6 +2166,7 @@ async function checkPendingOnLoad(){
 /* ---------- Vészleállítás ---------- */
 
 function emergencyStop(){
+  stopReading();
   if(stopped) return;
   stopped=true;
   $("stopModal").classList.add("hidden");
@@ -2042,6 +2196,7 @@ function emergencyStop(){
 /* ---------- Eseménykezelők ---------- */
 
 $("stopBtn").addEventListener("click",()=>{
+  stopReading();
   $("stopModal").classList.remove("hidden");
   $("stopCancel").focus();
 });
@@ -2132,7 +2287,7 @@ function saveDraft(){
   if(practiceMode||!testActive) return;
   try{
     localStorage.setItem(DRAFT_KEY,JSON.stringify({
-      ts:Date.now(),tasks,results,testId,name:studentNameVal,cls:studentClassVal,
+      ts:Date.now(),speechDisabled:speechDisabledForTest,tasks,results,testId,name:studentNameVal,cls:studentClassVal,
       startedAt:testStartedAt?testStartedAt.toISOString():"",resumes:resumeCount
     }));
   }catch(e){}
@@ -2148,6 +2303,7 @@ function checkDraftOnLoad(){
   $("draftDiscard").onclick=()=>{ clearDraft(); $("draftBox").classList.add("hidden"); };
   $("draftResume").onclick=()=>{
     $("draftBox").classList.add("hidden");
+    speechDisabledForTest=!!d.speechDisabled;refreshSpeechSwitch();
     tasks=d.tasks; results=d.results; currentIndex=results.length;
     skippedIdx.clear(); stopped=false; savedOk=false; pendingResult=null;
     studentNameVal=d.name; studentClassVal=d.cls; practiceMode=false;
@@ -2172,43 +2328,44 @@ function normName(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u03
 function normCls(s){return String(s||"").toLowerCase().replace(/\s+/g,"").replace(/\.$/,"");}
 function rosterFor(cls){return ROSTER.filter(r=>normCls(r.c)===normCls(cls)).map(r=>r.n);}
 function refreshNameList(){
-  const dl=$("nameList"); if(!dl) return;
-  let list=rosterFor(getClass());
-  if(!list.length) list=[];
-  dl.innerHTML=list.slice(0,200).map(n=>`<option value="${esc(n)}"></option>`).join("");
+  const dl=$("nameList");if(!dl)return;
+  const current=normCls(getClass()),byName=new Map();
+  ROSTER.forEach(r=>{
+    const name=String(r.n||"").trim(),cls=String(r.c||"").trim();if(!name)return;
+    if(!byName.has(name))byName.set(name,{name,classes:new Set()});if(cls)byName.get(name).classes.add(cls);
+  });
+  const choices=Array.from(byName.values()).sort((a,b)=>
+    Number(Array.from(b.classes).some(c=>normCls(c)===current))-Number(Array.from(a.classes).some(c=>normCls(c)===current))||a.name.localeCompare(b.name,"hu"));
+  dl.innerHTML=choices.map(r=>`<option value="${esc(r.name)}" label="${esc(Array.from(r.classes).join(', '))}"></option>`).join("");
 }
+let rosterLoading=false;
 async function loadRoster(){
-  try{
-    const r=await jsonp({action:"getRoster"},8000);
-    if(r&&r.success&&Array.isArray(r.roster)){ ROSTER=r.roster; refreshNameList(); }
-  }catch(e){}
+ if(rosterLoading)return;rosterLoading=true;
+ const status=document.getElementById('rosterLoadStatus');if(status)status.textContent='Névsor betöltése…';
+ let answer=null;
+ try{
+  for(let attempt=0;attempt<2;attempt++){
+   try{const r=await jsonp({action:'getRoster'},8000);if(r?.success&&Array.isArray(r.roster)){answer=r;break;}}catch(e){}
+  }
+  if(!answer){try{const controller=new AbortController(),timeout=setTimeout(()=>controller.abort(),8000);try{const response=await fetch(API_URL+'?action=getRoster&_='+Date.now(),{signal:controller.signal,redirect:'follow'});const r=await response.json();if(r?.success&&Array.isArray(r.roster))answer=r;}finally{clearTimeout(timeout);}}catch(e){}}
+  if(answer){
+   ROSTER=answer.roster.filter(r=>String(r.n||'').trim()&&String(r.c||'').trim());refreshNameList();
+   if(status)status.textContent=ROSTER.length?'':'A névsor üres. A nevet kézzel is beírhatod.';
+   if(typeof renderNameSuggestions==='function')renderNameSuggestions();
+  }else if(status)status.textContent='A névsor nem töltődött be. A nevet kézzel is beírhatod; ellenőrizd a háttérkód telepítését.';
+ }finally{rosterLoading=false;document.getElementById('rosterRetry')?.classList.toggle('hidden',!!answer&&ROSTER.length>0);}
 }
+
 ["studentGrade","studentLetter","studentClassOther"].forEach(id=>{ $(id).addEventListener("change",refreshNameList); $(id).addEventListener("input",refreshNameList); });
 loadRoster();
 
 /* ---------- Tanári zár ---------- */
-function applyLock(){
-  if(!LOCK_SETTINGS){ $("taskCount").readOnly=false; $("unlockBtn").classList.add("hidden"); return; }
-  $("taskCount").readOnly=true;
-}
-$("unlockBtn").addEventListener("click",async()=>{
-  const code=prompt("Tanári kód:");
-  if(code===null) return;
-  $("unlockBtn").disabled=true;
-  const st=await checkPinServer(String(code).trim());
-  $("unlockBtn").disabled=false;
-  if(st!=="ok"){ alert(pinMessage(st)); return; }
-  $("taskCount").readOnly=false;
-  $("teacherOpts").classList.remove("hidden");
-  $("unlockBtn").classList.add("hidden");
-  $("taskCount").focus();
-});
 $("capInput").addEventListener("input",()=>{
   const m=Math.max(5,Math.min(120,Number($("capInput").value)||35));
   MAX_TOTAL_SEC=m*60;
   $("capMinutes").textContent=m;
 });
-applyLock();
+
 
 /* ---------- Hangjelzés ---------- */
 const SOUND_KEY="gepiras_sound";
@@ -2284,6 +2441,7 @@ function startWeakPractice(){
   }
   if(!list.length) return;
   // Új, mentés nélküli gyakorlókör (az eredeti teszt eredményét nem érinti).
+  enableSpeechForNewTest();
   tasks=list; results=[]; currentIndex=0; skippedIdx.clear();
   stopped=false; savedOk=true; pendingResult=null; practiceMode=true;
   $("practiceTag").classList.remove("hidden");
@@ -2318,32 +2476,60 @@ const PDF_CMAP={"32": 1, "33": 2, "34": 3, "35": 4, "36": 5, "37": 6, "38": 7, "
 let practiceFactor=1, practiceSpeechRate=0, taskEpoch=0;
 function selectedPractice(){return !!document.getElementById('practiceMode')?.checked;}
 function enabledFlag(v){return v===true||['igen','true','1','yes','x'].includes(String(v??'').trim().toLowerCase());}
+let speechDisabledForTest=false;
 let speechLoopTimer=null, speechGeneration=0;
 function stopReading(){
  speechGeneration++;clearTimeout(speechLoopTimer);speechLoopTimer=null;
- if('speechSynthesis' in window) speechSynthesis.cancel();
+ if('speechSynthesis' in window){try{speechSynthesis.pause();speechSynthesis.cancel();}catch(e){}}
+}
+function dictationSentences(text){
+ text=String(text||'').trim();if(!text)return [''];
+ try{
+  if(typeof Intl.Segmenter==='function')return Array.from(new Intl.Segmenter('hu',{granularity:'sentence'}).segment(text),part=>part.segment.trim()).filter(Boolean);
+ }catch(e){}
+ return (text.match(/[^.!?…]+(?:[.!?…]+["»”’']*|$)/gu)||[text]).map(part=>part.trim()).filter(Boolean);
 }
 function readTask(){
+ if(speechDisabledForTest)return;
  if(typeof finished!=='undefined'&&finished) return;
  const t=tasks[currentIndex]; if(!t) return;
- if(!('speechSynthesis' in window)){ $('speechStatus').textContent='Ezen a böngészőn a felolvasás nem támogatott.';return; }
+ if(!('speechSynthesis' in window)){ $('speechStatus').textContent='Ezen a böngészőn a felolvasás nem támogatott.';if(dictationWaiting)$('autoMsg').textContent='A felolvasás itt nem támogatott. Az idő áll; ezt a részfeladatot kihagyhatod.';return; }
  stopReading(); const generation=speechGeneration, index=currentIndex;
- const active=()=>generation===speechGeneration&&index===currentIndex&&!finished&&(typeof stopped==='undefined'||!stopped);
+ const dictation=enabledFlag(t.dictation),sentences=dictation?dictationSentences(t.text):[String(t.text||'')];
+ let sentenceIndex=0,sentenceRepeat=0;
+ const active=()=>!speechDisabledForTest&&generation===speechGeneration&&index===currentIndex&&!finished&&(typeof stopped==='undefined'||!stopped);
  const speak=()=>{
   if(!active())return;
-  const u=new SpeechSynthesisUtterance(String(t.text||''));u.lang='hu-HU';
+  const u=new SpeechSynthesisUtterance(sentences[sentenceIndex]);u.lang='hu-HU';
   const hu=speechSynthesis.getVoices().find(v=>/^hu/i.test(v.lang));if(hu)u.voice=hu;
-  u.rate=Math.max(.5,Math.min(1.5,(typeof practiceMode!=='undefined'&&practiceMode&&practiceSpeechRate)?practiceSpeechRate:Number(t.speechRate)||.85));
-  u.onerror=()=>{if(!active())return;clearTimeout(speechLoopTimer);$('speechStatus').textContent='Nem indult el a felolvasás. Nyomd meg a Felolvasás gombot; szükség lehet magyar hang telepítésére.';};
-  u.onend=()=>{if(!active())return;$('speechStatus').textContent='A felolvasás ismétlődik a feladat végéig.';speechLoopTimer=setTimeout(speak,500);};
+  const customRate=typeof practiceMode!=='undefined'&&practiceMode&&practiceSpeechRate>0;
+  const baseRate=Math.max(.5,Math.min(1.5,customRate?practiceSpeechRate:Number(t.speechRate)||.85));
+  u.rate=baseRate*(dictation&&!customRate ? .9 : 1);
+  u.onstart=()=>{
+   if(!active()||!dictationWaiting||!dictationBegin)return;
+   const begin=dictationBegin;dictationBegin=null;dictationWaiting=false;
+   $('answer').disabled=false;$('nextBtn').disabled=true;
+   $('nextBtn').textContent=currentIndex===tasks.length-1?'Befejezés':'Következő';
+   $('taskText').textContent='🎧 Tollbamondás: minden mondat háromszor hangzik el. Hallgasd a felolvasást, és gépeld be a szöveget.';
+   begin();$('answer').focus();
+  };
+  u.onerror=()=>{if(!active())return;clearTimeout(speechLoopTimer);if(dictationWaiting)$('autoMsg').textContent='A felolvasás nem indult el. Az idő áll; próbáld újra az indítást, vagy hagyd ki a részfeladatot.';$('speechStatus').textContent='Nem indult el a felolvasás. Nyomd meg a Felolvasás gombot; szükség lehet magyar hang telepítésére.';};
+  u.onend=()=>{
+   if(!active())return;
+   if(dictation){sentenceRepeat++;if(sentenceRepeat===3){sentenceRepeat=0;sentenceIndex=(sentenceIndex+1)%sentences.length;}}
+   $('speechStatus').textContent='A felolvasás ismétlődik a feladat végéig.';speechLoopTimer=setTimeout(speak,500);
+  };
   $('speechStatus').textContent=hu?'Felolvasás ismételve a feladat végéig.':'Magyar hangot nem találtam; az alapértelmezett hanggal ismétlek.';
-  speechSynthesis.speak(u);
+  speechSynthesis.resume();speechSynthesis.speak(u);
  };
  speak();
 }
 function prepareSpeech(t){
  stopReading(); const on=enabledFlag(t.readAloud)||enabledFlag(t.dictation);
  $('speechTools').classList.toggle('hidden',!on); $('speechStatus').textContent='';
+ refreshSpeechSwitch();
+ if(speechDisabledForTest)$('speechStatus').textContent='Felolvasás kikapcsolva erre a tesztre.';
+ $('taskText').scrollTop=0;taskScrollHoldUntil=0;
  $('taskText').textContent=enabledFlag(t.dictation)?'🎧 Tollbamondás: hallgasd meg a szöveget a Felolvasás gombbal.':String(t.text||'');
 }
 function exportFilename(data,ext){
@@ -2352,6 +2538,7 @@ function exportFilename(data,ext){
  return `gepiras_${clean(data.studentName)}_${clean(data.studentClass)}_${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())}_${p(d.getHours())}.${p(d.getMinutes())}.${ext}`;
 }
 function resetStartScreen(){
+ dictationWaiting=false;dictationBegin=null;
  taskEpoch++; stopReading(); clearInterval(timerId);
  if(typeof cdTimer!=='undefined') clearInterval(cdTimer);
  if(typeof advanceTimer!=='undefined') clearTimeout(advanceTimer);
@@ -2403,7 +2590,7 @@ function makePdf(data){
 }
 function directPdf(){const data=getExportData();if(!data){alert('Előbb fejezz be egy tesztet.');return;}try{triggerDownload(makePdf(data),exportFilename(data,'pdf'));}catch(e){alert('A PDF nem készült el: '+e.message);}}
 
-$('readTaskBtn').addEventListener('click',readTask); $('stopReadBtn').addEventListener('click',stopReading);
+$('readTaskBtn').addEventListener('click',()=>{if(dictationWaiting)startDictationReading();else readTask();}); $('stopReadBtn').addEventListener('click',stopReading);
 
 const XLSX_TEMPLATE={"xl/workbook.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:workbook xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:sheets><x:sheet name=\"Eredmeny\" sheetId=\"1\" r:id=\"Rb2f3eee17465499b\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /><x:sheet name=\"Hosszu_szovegek\" sheetId=\"2\" r:id=\"R0c25d30509594a0a\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\" /></x:sheets></x:workbook>", "xl/styles.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:styleSheet xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:fonts count=\"3\"><x:font><x:sz val=\"11\" /><x:name val=\"Carlito\" /></x:font><x:font><x:sz val=\"10\" /><x:name val=\"Arial\" /></x:font><x:font><x:b /><x:sz val=\"10\" /><x:name val=\"Arial\" /></x:font></x:fonts><x:fills count=\"3\"><x:fill><x:patternFill patternType=\"none\" /></x:fill><x:fill><x:patternFill patternType=\"gray125\" /></x:fill><x:fill><x:patternFill patternType=\"solid\"><x:fgColor rgb=\"FFD9EAD3\" /></x:patternFill></x:fill></x:fills><x:borders count=\"1\"><x:border><x:left /><x:right /><x:top /><x:bottom /><x:diagonal /></x:border></x:borders><x:cellStyleXfs count=\"1\"><x:xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\" /></x:cellStyleXfs><x:cellXfs count=\"6\"><x:xf numFmtId=\"0\" fontId=\"0\" fillId=\"0\" borderId=\"0\" xfId=\"0\" /><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" /><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment wrapText=\"1\" /></x:xf><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"0\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /></x:xf><x:xf numFmtId=\"0\" fontId=\"1\" fillId=\"2\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /></x:xf><x:xf numFmtId=\"0\" fontId=\"2\" fillId=\"2\" borderId=\"0\" xfId=\"0\" applyNumberFormat=\"1\" applyFont=\"1\" applyFill=\"1\" applyBorder=\"1\" applyAlignment=\"1\"><x:alignment vertical=\"top\" wrapText=\"1\" /></x:xf></x:cellXfs><x:cellStyles count=\"1\"><x:cellStyle name=\"Normal\" xfId=\"0\" /></x:cellStyles></x:styleSheet>", "xl/theme/theme1.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><a:theme name=\"ChatGPT\" xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:themeElements><a:clrScheme name=\"ChatGPT\"><a:dk1><a:sysClr val=\"windowText\" lastClr=\"000000\" /></a:dk1><a:lt1><a:sysClr val=\"window\" lastClr=\"FFFFFF\" /></a:lt1><a:dk2><a:srgbClr val=\"0E2841\" /></a:dk2><a:lt2><a:srgbClr val=\"E8E8E8\" /></a:lt2><a:accent1><a:srgbClr val=\"156082\" /></a:accent1><a:accent2><a:srgbClr val=\"E97132\" /></a:accent2><a:accent3><a:srgbClr val=\"196B24\" /></a:accent3><a:accent4><a:srgbClr val=\"0F9ED5\" /></a:accent4><a:accent5><a:srgbClr val=\"A02B93\" /></a:accent5><a:accent6><a:srgbClr val=\"4EA72E\" /></a:accent6><a:hlink><a:srgbClr val=\"467886\" /></a:hlink><a:folHlink><a:srgbClr val=\"96607D\" /></a:folHlink></a:clrScheme><a:fontScheme name=\"Office\"><a:majorFont><a:latin typeface=\"Calibri Light\" /><a:ea typeface=\"Calibri Light\" /><a:cs typeface=\"Calibri Light\" /></a:majorFont><a:minorFont><a:latin typeface=\"Calibri\" /><a:ea typeface=\"Calibri\" /><a:cs typeface=\"Calibri\" /></a:minorFont></a:fontScheme><a:fmtScheme name=\"ChatGPT\"><a:fillStyleLst><a:solidFill><a:schemeClr val=\"phClr\" /></a:solidFill><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"67000\" /><a:lumMod val=\"110000\" /><a:satMod val=\"105000\" /></a:schemeClr></a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:tint val=\"73000\" /><a:lumMod val=\"105000\" /><a:satMod val=\"103000\" /></a:schemeClr></a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:tint val=\"81000\" /><a:lumMod val=\"105000\" /><a:satMod val=\"109000\" /></a:schemeClr></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\" /></a:gradFill><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"94000\" /><a:lumMod val=\"102000\" /><a:satMod val=\"103000\" /></a:schemeClr></a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:shade val=\"100000\" /><a:lumMod val=\"100000\" /><a:satMod val=\"110000\" /></a:schemeClr></a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:shade val=\"78000\" /><a:lumMod val=\"99000\" /><a:satMod val=\"120000\" /></a:schemeClr></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\" /></a:gradFill></a:fillStyleLst><a:lnStyleLst><a:ln w=\"12700\"><a:solidFill><a:schemeClr val=\"phClr\" /></a:solidFill><a:prstDash val=\"solid\" /></a:ln><a:ln w=\"19050\"><a:solidFill><a:schemeClr val=\"phClr\" /></a:solidFill><a:prstDash val=\"solid\" /></a:ln><a:ln w=\"25400\"><a:solidFill><a:schemeClr val=\"phClr\" /></a:solidFill><a:prstDash val=\"solid\" /></a:ln></a:lnStyleLst><a:effectStyleLst><a:effectStyle><a:effectLst /></a:effectStyle><a:effectStyle><a:effectLst /></a:effectStyle><a:effectStyle><a:effectLst><a:outerShdw blurRad=\"57150\" dist=\"19050\" dir=\"5400000\"><a:srgbClr val=\"000000\"><a:alpha val=\"63000\" /></a:srgbClr></a:outerShdw></a:effectLst></a:effectStyle></a:effectStyleLst><a:bgFillStyleLst><a:solidFill><a:schemeClr val=\"phClr\" /></a:solidFill><a:solidFill><a:schemeClr val=\"phClr\"><a:tint val=\"95000\" /><a:satMod val=\"170000\" /></a:schemeClr></a:solidFill><a:gradFill><a:gsLst><a:gs pos=\"0\"><a:schemeClr val=\"phClr\"><a:tint val=\"93000\" /><a:shade val=\"98000\" /><a:lumMod val=\"102000\" /><a:satMod val=\"150000\" /></a:schemeClr></a:gs><a:gs pos=\"50000\"><a:schemeClr val=\"phClr\"><a:tint val=\"98000\" /><a:shade val=\"90000\" /><a:lumMod val=\"103000\" /><a:satMod val=\"130000\" /></a:schemeClr></a:gs><a:gs pos=\"100000\"><a:schemeClr val=\"phClr\"><a:shade val=\"63000\" /><a:satMod val=\"120000\" /></a:schemeClr></a:gs></a:gsLst><a:lin ang=\"5400000\" scaled=\"0\" /></a:gradFill></a:bgFillStyleLst></a:fmtScheme></a:themeElements></a:theme>", "xl/sharedStrings.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:sst xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\" />", "xl/worksheets/sheet1.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:worksheet xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:sheetViews><x:sheetView showGridLines=\"0\" workbookViewId=\"0\"><x:pane ySplit=\"1\" topLeftCell=\"A2\" activePane=\"bottomLeft\" state=\"frozen\" /></x:sheetView></x:sheetViews><x:sheetFormatPr defaultRowHeight=\"15\" /><x:cols><x:col min=\"1\" max=\"1\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"2\" max=\"2\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"3\" max=\"3\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"4\" max=\"4\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"5\" max=\"5\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"6\" max=\"6\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"7\" max=\"7\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"8\" max=\"8\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"9\" max=\"9\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"10\" max=\"10\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"11\" max=\"11\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"12\" max=\"12\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"13\" max=\"13\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"14\" max=\"14\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"15\" max=\"15\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"16\" max=\"16\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"17\" max=\"17\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"18\" max=\"18\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"19\" max=\"19\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"20\" max=\"20\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"21\" max=\"21\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"22\" max=\"22\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"23\" max=\"23\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"24\" max=\"24\" width=\"20\" hidden=\"0\" customWidth=\"1\" /></x:cols><x:sheetData><x:row r=\"1\" ht=\"15\" hidden=\"0\" customHeight=\"1\"><x:c r=\"A1\" s=\"5\" t=\"str\"><x:v>Adat</x:v></x:c><x:c r=\"B1\" s=\"5\" t=\"str\"><x:v>Érték</x:v></x:c><x:c r=\"C1\" s=\"5\" t=\"str\"><x:v>Rész</x:v></x:c><x:c r=\"D1\" s=\"5\" t=\"str\"><x:v>Tartalom</x:v></x:c><x:c r=\"E1\" s=\"5\" /><x:c r=\"F1\" s=\"5\" /><x:c r=\"G1\" s=\"5\" /><x:c r=\"H1\" s=\"5\" /><x:c r=\"I1\" s=\"5\" /><x:c r=\"J1\" s=\"5\" /><x:c r=\"K1\" s=\"5\" /><x:c r=\"L1\" s=\"5\" /><x:c r=\"M1\" s=\"5\" /><x:c r=\"N1\" s=\"5\" /><x:c r=\"O1\" s=\"5\" /><x:c r=\"P1\" s=\"5\" /><x:c r=\"Q1\" s=\"5\" /><x:c r=\"R1\" s=\"5\" /><x:c r=\"S1\" s=\"5\" /><x:c r=\"T1\" s=\"5\" /><x:c r=\"U1\" s=\"5\" /><x:c r=\"V1\" s=\"5\" /><x:c r=\"W1\" s=\"5\" /><x:c r=\"X1\" s=\"5\" /></x:row><x:row r=\"2\" ht=\"36\" hidden=\"0\" customHeight=\"1\"><x:c r=\"A2\" s=\"3\" t=\"str\"><x:v>Gépírás eredménye</x:v></x:c><x:c r=\"B2\" s=\"3\" t=\"str\" /><x:c r=\"C2\" s=\"3\" t=\"n\"><x:v>1</x:v></x:c><x:c r=\"D2\" s=\"3\" t=\"str\"><x:v>A hosszú szöveg külön sorokban, teljes egészében megmarad.</x:v></x:c><x:c r=\"E2\" s=\"3\" /><x:c r=\"F2\" s=\"3\" /><x:c r=\"G2\" s=\"3\" /><x:c r=\"H2\" s=\"3\" /><x:c r=\"I2\" s=\"3\" /><x:c r=\"J2\" s=\"3\" /><x:c r=\"K2\" s=\"3\" /><x:c r=\"L2\" s=\"3\" /><x:c r=\"M2\" s=\"3\" /><x:c r=\"N2\" s=\"3\" /><x:c r=\"O2\" s=\"3\" /><x:c r=\"P2\" s=\"3\" /><x:c r=\"Q2\" s=\"3\" /><x:c r=\"R2\" s=\"3\" /><x:c r=\"S2\" s=\"3\" /><x:c r=\"T2\" s=\"3\" /><x:c r=\"U2\" s=\"3\" /><x:c r=\"V2\" s=\"3\" /><x:c r=\"W2\" s=\"3\" /><x:c r=\"X2\" s=\"3\" /></x:row></x:sheetData><x:pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\" /></x:worksheet>", "xl/worksheets/sheet2.xml": "<?xml version=\"1.0\" encoding=\"utf-8\"?><x:worksheet xmlns:x=\"http://schemas.openxmlformats.org/spreadsheetml/2006/main\"><x:sheetViews><x:sheetView showGridLines=\"0\" workbookViewId=\"0\"><x:pane ySplit=\"1\" topLeftCell=\"A2\" activePane=\"bottomLeft\" state=\"frozen\" /></x:sheetView></x:sheetViews><x:sheetFormatPr defaultRowHeight=\"15\" /><x:cols><x:col min=\"1\" max=\"1\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"2\" max=\"2\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"3\" max=\"3\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"4\" max=\"4\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"5\" max=\"5\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"6\" max=\"6\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"7\" max=\"7\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"8\" max=\"8\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"9\" max=\"9\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"10\" max=\"10\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"11\" max=\"11\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"12\" max=\"12\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"13\" max=\"13\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"14\" max=\"14\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"15\" max=\"15\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"16\" max=\"16\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"17\" max=\"17\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"18\" max=\"18\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"19\" max=\"19\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"20\" max=\"20\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"21\" max=\"21\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"22\" max=\"22\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"23\" max=\"23\" width=\"20\" hidden=\"0\" customWidth=\"1\" /><x:col min=\"24\" max=\"24\" width=\"20\" hidden=\"0\" customWidth=\"1\" /></x:cols><x:sheetData><x:row r=\"1\" ht=\"15\" hidden=\"0\" customHeight=\"1\"><x:c r=\"A1\" s=\"5\" t=\"str\"><x:v>Adat</x:v></x:c><x:c r=\"B1\" s=\"5\" t=\"str\"><x:v>Érték</x:v></x:c><x:c r=\"C1\" s=\"5\" t=\"str\"><x:v>Rész</x:v></x:c><x:c r=\"D1\" s=\"5\" t=\"str\"><x:v>Tartalom</x:v></x:c><x:c r=\"E1\" s=\"5\" /><x:c r=\"F1\" s=\"5\" /><x:c r=\"G1\" s=\"5\" /><x:c r=\"H1\" s=\"5\" /><x:c r=\"I1\" s=\"5\" /><x:c r=\"J1\" s=\"5\" /><x:c r=\"K1\" s=\"5\" /><x:c r=\"L1\" s=\"5\" /><x:c r=\"M1\" s=\"5\" /><x:c r=\"N1\" s=\"5\" /><x:c r=\"O1\" s=\"5\" /><x:c r=\"P1\" s=\"5\" /><x:c r=\"Q1\" s=\"5\" /><x:c r=\"R1\" s=\"5\" /><x:c r=\"S1\" s=\"5\" /><x:c r=\"T1\" s=\"5\" /><x:c r=\"U1\" s=\"5\" /><x:c r=\"V1\" s=\"5\" /><x:c r=\"W1\" s=\"5\" /><x:c r=\"X1\" s=\"5\" /></x:row><x:row r=\"2\" ht=\"36\" hidden=\"0\" customHeight=\"1\"><x:c r=\"A2\" s=\"3\" t=\"str\"><x:v>Gépírás eredménye</x:v></x:c><x:c r=\"B2\" s=\"3\" t=\"str\" /><x:c r=\"C2\" s=\"3\" t=\"n\"><x:v>1</x:v></x:c><x:c r=\"D2\" s=\"3\" t=\"str\"><x:v>A hosszú szöveg külön sorokban, teljes egészében megmarad.</x:v></x:c><x:c r=\"E2\" s=\"3\" /><x:c r=\"F2\" s=\"3\" /><x:c r=\"G2\" s=\"3\" /><x:c r=\"H2\" s=\"3\" /><x:c r=\"I2\" s=\"3\" /><x:c r=\"J2\" s=\"3\" /><x:c r=\"K2\" s=\"3\" /><x:c r=\"L2\" s=\"3\" /><x:c r=\"M2\" s=\"3\" /><x:c r=\"N2\" s=\"3\" /><x:c r=\"O2\" s=\"3\" /><x:c r=\"P2\" s=\"3\" /><x:c r=\"Q2\" s=\"3\" /><x:c r=\"R2\" s=\"3\" /><x:c r=\"S2\" s=\"3\" /><x:c r=\"T2\" s=\"3\" /><x:c r=\"U2\" s=\"3\" /><x:c r=\"V2\" s=\"3\" /><x:c r=\"W2\" s=\"3\" /><x:c r=\"X2\" s=\"3\" /></x:row></x:sheetData><x:pageMargins left=\"0.7\" right=\"0.7\" top=\"0.75\" bottom=\"0.75\" header=\"0.3\" footer=\"0.3\" /></x:worksheet>", "_rels/.rels": "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument\" Target=\"/xl/workbook.xml\" Id=\"Rf2fd3217c0ca4421\" /></Relationships>", "xl/_rels/workbook.xml.rels": "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Relationships xmlns=\"http://schemas.openxmlformats.org/package/2006/relationships\"><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles\" Target=\"/xl/styles.xml\" Id=\"R35008db2cb5a489d\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme\" Target=\"/xl/theme/theme1.xml\" Id=\"Rdf74cc19898b4b70\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/sharedStrings\" Target=\"/xl/sharedStrings.xml\" Id=\"Rdde9cf6c2b314bdc\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"/xl/worksheets/sheet1.xml\" Id=\"Rb2f3eee17465499b\" /><Relationship Type=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet\" Target=\"/xl/worksheets/sheet2.xml\" Id=\"R0c25d30509594a0a\" /></Relationships>", "[Content_Types].xml": "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Types xmlns=\"http://schemas.openxmlformats.org/package/2006/content-types\"><Default Extension=\"xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml\" /><Default Extension=\"rels\" ContentType=\"application/vnd.openxmlformats-package.relationships+xml\" /><Override PartName=\"/xl/styles.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml\" /><Override PartName=\"/xl/theme/theme1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.theme+xml\" /><Override PartName=\"/xl/sharedStrings.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.sharedStrings+xml\" /><Override PartName=\"/xl/worksheets/sheet1.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\" /><Override PartName=\"/xl/worksheets/sheet2.xml\" ContentType=\"application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml\" /></Types>"};
 function xlsxEsc(value){return String(value??'').replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g,'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));}
@@ -2452,12 +2639,19 @@ function setupMobileWorkspace(){
  if(!wrap){wrap=document.createElement('div');wrap.className='answer-wrap';answer.before(wrap);
   const timer=document.createElement('div');timer.className='answer-timer';timer.innerHTML='⏱ Hátralévő idő: <strong id="mobileTimer">--:--</strong>';wrap.append(timer,$('speechTools'),answer);}
  workspace.append(wrap);
+ const stopButton=document.getElementById('stopBtn');
+ if(stopButton)wrap.querySelector('.answer-timer').append(stopButton);
  const live=document.createElement('div');live.innerHTML='<div id="livePracticeOptions" class="hidden"><label for="livePracticeTime">🧪 Gyakorlási idő</label><select id="livePracticeTime"><option value="1">Tanári idő (1×)</option><option value="1.5">50%-kal több idő (1,5×)</option><option value="2">Kétszeres idő (2×)</option></select><label for="livePracticeSpeechRate">Felolvasás tempója</label><select id="livePracticeSpeechRate"><option value="0">Tanári felolvasási tempó</option><option value="0.5">Lassú (0,5×)</option><option value="0.75">Nyugodt (0,75×)</option><option value="1">Normál (1×)</option><option value="1.25">Gyorsabb (1,25×)</option><option value="1.5">Gyors (1,5×)</option></select><span id="practiceChangeStatus" role="status" aria-live="polite"></span></div>';workspace.append(live.firstElementChild);
- const toolbar=document.createElement('div');toolbar.className='mobile-task-actions';workspace.append(toolbar);
- const buttons=['nextBtn','stopBtn'].map(id=>document.getElementById(id)).filter(Boolean).map(button=>{const marker=document.createComment('eredeti gombhely');button.before(marker);return {button,marker};});
+ const extras=document.createElement('div');extras.id='mobileExtraControls';workspace.after(extras);
+ const toolbar=document.createElement('div');toolbar.className='mobile-task-actions';extras.append(toolbar);
+ const speechMarker=document.createComment('felolvasó eredeti helye');$('speechTools').before(speechMarker);
+ const buttons=['nextBtn'].map(id=>document.getElementById(id)).filter(Boolean).map(button=>{const marker=document.createComment('eredeti gombhely');button.before(marker);return {button,marker};});
  const mobile=window.matchMedia('(max-width:760px)');let baseline=window.visualViewport?.height||window.innerHeight;
- function moveButtons(){for(const {button,marker} of buttons){if(mobile.matches)toolbar.append(button);else marker.after(button);}}
- function fit(){
+ function moveButtons(){
+  for(const {button,marker} of buttons){toolbar.append(button);}
+  extras.prepend($('speechTools'),$('livePracticeOptions'));
+ }
+ function fit(align=false){
   const vv=window.visualViewport,h=vv?.height||window.innerHeight,w=vv?.width||window.innerWidth;
   const focused=document.activeElement===answer,active=!$('testPanel').classList.contains('hidden');
   if(!focused)baseline=Math.max(baseline,h);
@@ -2468,9 +2662,9 @@ function setupMobileWorkspace(){
   const timer=document.getElementById('mobileTimer');if(timer)timer.textContent=$('timer').textContent;
  }
  moveButtons();mobile.addEventListener('change',()=>{moveButtons();fit();});
- window.visualViewport?.addEventListener('resize',fit);window.visualViewport?.addEventListener('scroll',fit);window.addEventListener('resize',fit);
- answer.addEventListener('focus',fit);answer.addEventListener('blur',()=>requestAnimationFrame(fit));
- new MutationObserver(fit).observe($('testPanel'),{attributes:true,attributeFilter:['class']});
+ window.visualViewport?.addEventListener('resize',()=>fit(document.activeElement===answer));window.visualViewport?.addEventListener('scroll',fit);window.addEventListener('resize',fit);
+ answer.addEventListener('focus',()=>fit(true));answer.addEventListener('blur',()=>requestAnimationFrame(fit));
+ new MutationObserver(()=>fit(!$('testPanel').classList.contains('hidden'))).observe($('testPanel'),{attributes:true,attributeFilter:['class']});
  new MutationObserver(fit).observe($('timer'),{childList:true,characterData:true,subtree:true});fit();
 }
 setupMobileWorkspace();
@@ -2482,6 +2676,7 @@ function activePractice(){return !$('testPanel').classList.contains('hidden')&&t
 function practiceControls(){
  const running=!$('testPanel').classList.contains('hidden'),on=running?activePractice():selectedPractice();
  $('practiceOptions').classList.remove('hidden');$('practiceTime').disabled=!on||running;
+ $('practiceTextKind').disabled=!on||running;
  const live=$('livePracticeOptions');if(live)live.classList.toggle('hidden',!on||!running);
  const time=$('livePracticeTime');if(time){time.disabled=!on;time.value=String(practiceFactor);}
  const rate=$('practiceSpeechRate');if(rate)rate.disabled=!on||running;
@@ -2524,6 +2719,226 @@ function initPracticeSettings(){
  practiceControls();
 }
 initPracticeSettings();
+
+</script>
+<script>
+function formattedPdf(){
+ const data=getExportData();if(!data){alert('Előbb fejezz be egy tesztet.');return;}
+ const popup=window.open('','_blank');
+ if(!popup){alert('A formázott PDF-nézet megnyitásához engedélyezd a felugró ablakot, majd kattints újra a PDF mentése / nyomtatása gombra.');return;}
+ const title=exportFilename(data,'pdf').replace(/\.pdf$/,'');
+ const root=$('resultPanel').cloneNode(true);root.classList.remove('hidden');root.querySelectorAll('button,.export-actions,#sendBar,#saveActions,#saveStatus,#weakBox').forEach(n=>n.remove());root.querySelectorAll('details').forEach(n=>n.open=true);
+ const styles=Array.from(document.querySelectorAll('style')).map(n=>n.textContent).join('\n');
+ const safeTitle=title.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const compact=`@page{size:A4;margin:5mm}html,body{margin:0!important;padding:0!important;background:#fff!important;color:#202124!important;font-size:8pt!important;line-height:1.1!important}*{animation:none!important;transition:none!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.wrap,#resultPanel{width:auto!important;max-width:none!important;margin:0!important;padding:0!important;overflow:visible!important}.card{box-shadow:none!important}.task-res,.diff-block{break-inside:auto!important}.diff-row .txt{white-space:pre-wrap!important;overflow-wrap:anywhere!important}.result-meta{grid-template-columns:repeat(2,minmax(0,1fr))!important}.result-highlight .hero-stat{background:#e3eee8!important;color:#215347!important}.progress-chart svg{height:55px!important}.legend{font-size:7pt!important}.pdf-toolbar{padding:8px;margin-bottom:8px;background:#e3eee8;font:14px Arial}button{display:inline-block!important}@media print{.pdf-toolbar{display:none!important}}`;
+ popup.document.open();popup.document.write('<!doctype html><html lang="hu"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+safeTitle+'</title><style>'+styles+'\n'+compact+'</style></head><body><div class="pdf-toolbar">A nyomtatási ablakban válaszd a Mentés PDF-ként lehetőséget. A fejlécek/láblécek kikapcsolásával több hely marad.<br><button type="button" onclick="window.print()">PDF mentése / nyomtatás</button> <button type="button" id="returnToResults">Vissza az eredménylapra</button><span id="pdfReturnHint" role="status"></span></div><main class="wrap">'+root.outerHTML+'</main></body></html>');popup.document.close();
+ const returnToResults=()=>{
+  try{window.focus();}catch(e){}
+  try{popup.close();}catch(e){}
+  if(!popup.closed){
+   const hint=popup.document.getElementById('pdfReturnHint');
+   if(hint)hint.textContent=' Az eredménylap az eredeti böngészőlapon van. Ezt a PDF-nézetet bezárhatod.';
+  }
+ };
+ popup.document.getElementById('returnToResults').addEventListener('click',returnToResults);
+ // A nyomtatás és a Mégsem után is az eredeti eredménylapra térünk vissza.
+ popup.addEventListener('afterprint',()=>setTimeout(returnToResults,0),{once:true});
+ const print=()=>{if(popup.closed)return;try{popup.focus();popup.print();}catch(e){}};
+ if(popup.document.fonts?.ready)popup.document.fonts.ready.then(()=>setTimeout(print,300));else setTimeout(print,500);
+}
+
+</script>
+<div id="teacherUnlockModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="teacherUnlockTitle"><div class="modal"><h2 id="teacherUnlockTitle">Tanári feloldás</h2><label for="teacherUnlockPin">Tanári jelszó</label><input type="password" id="teacherUnlockPin" autocomplete="off"><p id="teacherUnlockError" role="alert"></p><button type="button" id="teacherUnlockSubmit">Feloldás</button> <button type="button" id="teacherUnlockCancel">Mégsem</button></div></div><script>
+// A mellékelt háttérkód jelszó nélküli: induláskor a beállítások szabadok.
+// Ha a szerver később jelszót jelez, applyLock újra zárolja őket.
+let teacherPinRequired=false,teacherSettingsPromise=null;
+function applyLock(){
+ const locked=LOCK_SETTINGS&&teacherPinRequired!==false;
+ $('taskCount').readOnly=locked;$('unlockBtn').classList.toggle('hidden',!LOCK_SETTINGS||teacherPinRequired!==true);
+ $('teacherOpts').classList.toggle('hidden',locked);
+}
+async function refreshTeacherSettings(){
+ if(teacherSettingsPromise)return teacherSettingsPromise;
+ teacherSettingsPromise=(async()=>{
+  try{
+   let r=null;
+   try{r=await jsonp({action:'getSettings'},10000);}catch(e){}
+   if(!r?.success||typeof r.pinRequired!=='boolean'){
+    r=await jsonp({action:'checkPin',pin:''},10000);
+    if(r?.success&&typeof r.ok==='boolean')r.pinRequired=!r.ok;
+   }
+   if(r?.success&&typeof r.pinRequired==='boolean'){teacherPinRequired=r.pinRequired;applyLock();$('teacherConfigStatus').textContent='';return true;}
+  }catch(e){}
+  $('teacherConfigStatus').textContent='A háttérkód nem válaszolt a beállítások lekérdezésére. Ellenőrizd az internetet, az API-címet és az Apps Script telepített verzióját; ez nem hibás jelszót jelent.';applyLock();return false;
+ })();try{return await teacherSettingsPromise;}finally{teacherSettingsPromise=null;}
+}
+function openTeacherUnlock(){
+ if(teacherPinRequired===false){applyLock();return;}
+ if(teacherPinRequired!==true){refreshTeacherSettings();return;}
+ $('teacherUnlockModal').classList.remove('hidden');$('teacherUnlockError').textContent='';$('teacherUnlockPin').value='';$('teacherUnlockPin').focus();
+}
+async function submitTeacherUnlock(){
+ $('teacherUnlockSubmit').disabled=true;
+ try{const status=await checkPinServer($('teacherUnlockPin').value);if(status!=='ok'){$('teacherUnlockError').textContent=pinMessage(status);return;}
+ $('teacherUnlockModal').classList.add('hidden');$('taskCount').readOnly=false;$('teacherOpts').classList.remove('hidden');$('unlockBtn').classList.add('hidden');
+ }finally{$('teacherUnlockSubmit').disabled=false;}
+}
+$('unlockBtn').addEventListener('click',openTeacherUnlock);
+$('teacherUnlockCancel').addEventListener('click',()=>$('teacherUnlockModal').classList.add('hidden'));
+$('teacherUnlockSubmit').addEventListener('click',submitTeacherUnlock);
+$('teacherUnlockPin').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();submitTeacherUnlock();}if(e.key==='Escape')$('teacherUnlockCancel').click();});
+applyLock();refreshTeacherSettings();
+
+</script>
+<script>
+
+let taskScrollHoldUntil=0;
+function autoScrollTaskText(){
+ const panel=$('taskText'),task=tasks[currentIndex];if(!panel||!task||finished)return;
+ if(typeof graceActive!=='undefined'&&graceActive)return;
+ if(Date.now()<taskScrollHoldUntil)return;
+ const allowed=task._allowedSeconds||configuredTime(task),elapsed=Math.max(0,allowed-remaining);
+ if(elapsed<allowed/2)return;
+ const max=Math.max(0,panel.scrollHeight-panel.clientHeight);if(!max)return;
+ const progress=remaining<=1?1:Math.min(1,Math.max(0,(elapsed-allowed/2)/(allowed/2)));
+ panel.scrollTo({top:max*progress,behavior:window.matchMedia('(prefers-reduced-motion:reduce)').matches?'auto':'smooth'});
+}
+['touchstart','wheel','pointerdown'].forEach(event=>$('taskText').addEventListener(event,()=>{taskScrollHoldUntil=Date.now()+4000;},{passive:true}));
+
+</script>
+<script>
+function setupScreenFit(){
+ const start=$('startPanel'),grid=document.createElement('div');grid.className='start-grid';start.prepend(grid);
+ const group=(label,controls)=>{const field=document.createElement('div');field.className='start-field';if(label)field.append(label);controls.filter(Boolean).forEach(n=>field.append(n));grid.append(field);};
+ group(start.querySelector('label[for="studentName"]'),[$('studentName'),$('nameClassStatus'),$('rosterLoadStatus'),$('rosterRetry')]);
+ group(start.querySelector('label[for="studentGrade"]'),[start.querySelector('.class-row'),$('studentClassOther')]);
+ group(start.querySelector('label[for="taskCount"]'),[start.querySelector('.lock-row')]);
+ const opts=$('teacherOpts');if(opts)grid.append(opts);
+ const practice=start.querySelector('label.chk');if(practice)practice.classList.add('start-wide');
+ const footer=document.createElement('div');footer.className='start-footer';start.append(footer);
+ const sound=$('soundOn')?.closest('label');if(sound)footer.append(sound);footer.append($('connChip'),$('startBtn'));
+ start.querySelectorAll(':scope > br').forEach(n=>n.remove());
+ const intro=document.querySelector('.app-heading')?.nextElementSibling;
+ if(intro?.matches('p')){const details=document.createElement('details');details.className='compact-help';const summary=document.createElement('summary');summary.textContent='Használati útmutató';details.append(summary);intro.before(details);details.append(intro);}
+ const root=document.documentElement;
+ function update(){
+  const active=!$('testPanel').classList.contains('hidden'),result=!$('resultPanel').classList.contains('hidden');
+  document.body.classList.toggle('screen-test',active);document.body.classList.toggle('screen-start',!active&&!result);
+  root.style.setProperty('--screen-height',(window.visualViewport?.height||window.innerHeight)+'px');
+ }
+ window.visualViewport?.addEventListener('resize',update);window.addEventListener('resize',update);
+ new MutationObserver(update).observe($('testPanel'),{attributes:true,attributeFilter:['class']});new MutationObserver(update).observe($('resultPanel'),{attributes:true,attributeFilter:['class']});update();
+}
+setupScreenFit();
+
+</script>
+<script>
+function nameChoiceKey(value){return String(value||'').normalize('NFC').trim().replace(/\s+/g,' ').toLocaleLowerCase('hu-HU');}
+let lastMatchedName='';
+function applyRosterClass(value){
+ const cls=normalizeClass(value),parts=cls.match(/^(\d{1,2})\.([\p{L}]*)$/u);
+ const grade=$('studentGrade'),letter=$('studentLetter');
+ const g=parts&&Array.from(grade.options).find(o=>String(o.value)===parts[1]);
+ const l=parts&&Array.from(letter.options).find(o=>String(o.value).toLocaleLowerCase('hu-HU')===parts[2].toLocaleLowerCase('hu-HU'));
+ if(g&&l){grade.value=g.value;letter.value=l.value;$('studentClassOther').value='';letter.classList.remove('hidden');$('studentClassOther').classList.add('hidden');}
+ else{grade.value='__other';$('studentClassOther').value=cls;letter.classList.add('hidden');$('studentClassOther').classList.remove('hidden');}
+ refreshNameList();
+}
+function syncNameClass(){
+ const key=nameChoiceKey($('studentName').value);if(!key||key===lastMatchedName)return;
+ const matches=ROSTER.filter(r=>nameChoiceKey(r.n)===key);
+ if(!matches.length){lastMatchedName='';$('nameClassStatus').textContent='';return;}
+ const classes=Array.from(new Set(matches.map(r=>normCls(normalizeClass(r.c)))));
+ const selected=matches.find(r=>normCls(normalizeClass(r.c))===normCls(getClass()));
+ const choice=selected||(classes.length===1?matches[0]:null);
+ lastMatchedName=key;
+ if(!choice){$('nameClassStatus').textContent='Ez a név több osztályban szerepel. Válaszd ki az osztályodat.';return;}
+ applyRosterClass(choice.c);
+ $('nameClassStatus').textContent=`Névsor szerinti osztály: ${normalizeClass(choice.c)}. A név és az osztály is módosítható.`;
+}
+$('studentName').addEventListener('input',syncNameClass);
+$('studentName').addEventListener('change',syncNameClass);
+
+</script>
+<script>
+function showDictationNotice(){
+ const box=$('taskText');box.replaceChildren();
+ const notice=document.createElement('p');notice.id='dictationNotice';
+ notice.textContent='🎧 Tollbamondás következik: minden mondat háromszor hangzik el. Saját tempóbeállítás nélkül a felolvasás 10%-kal lassabb. Az idő csak a felolvasás indulásakor kezdődik. Elindíthatod, vagy kihagyhatod ezt a részfeladatot.';
+ const start=document.createElement('button');start.type='button';start.id='dictationStart';start.textContent='🔊 Felolvasás bekapcsolása és kezdés';start.addEventListener('click',startDictationReading);
+ const skip=document.createElement('button');skip.type='button';skip.textContent='Részfeladat kihagyása';skip.addEventListener('click',nextTask);
+ box.append(notice,start,document.createTextNode(' '),skip);
+}
+function startDictationReading(){
+ if(!dictationWaiting||finished||stopped)return;
+ speechDisabledForTest=false;refreshSpeechSwitch();readTask();saveDraft();
+}
+function refreshSpeechSwitch(){
+ $('readTaskBtn').disabled=speechDisabledForTest;$('stopReadBtn').disabled=speechDisabledForTest;
+ const button=$('disableSpeechTestBtn');button.disabled=false;button.setAttribute('aria-pressed',String(speechDisabledForTest));
+ button.textContent=speechDisabledForTest?'🔊 Felolvasás be':'🔇 Felolvasás ki';
+ const hint=speechDisabledForTest?'Felolvasás visszakapcsolása erre a tesztre':'Felolvasás kikapcsolása erre a tesztre; később visszakapcsolható';
+ button.title=hint;button.setAttribute('aria-label',hint);
+}
+function disableSpeechForTest(){
+ speechDisabledForTest=!speechDisabledForTest;stopReading();refreshSpeechSwitch();
+ $('speechStatus').textContent=speechDisabledForTest?'A felolvasás kikapcsolva erre a tesztre. Ezzel a gombbal visszakapcsolható.':'A felolvasás visszakapcsolva.';
+ if(!speechDisabledForTest&&!finished&&!stopped){if(dictationWaiting)startDictationReading();else readTask();}
+ if(typeof saveDraft==='function')saveDraft();
+}
+function enableSpeechForNewTest(){speechDisabledForTest=false;refreshSpeechSwitch();}
+$('disableSpeechTestBtn').addEventListener('click',disableSpeechForTest);
+refreshSpeechSwitch();
+
+</script>
+<script>
+let nameSuggestionIndex=-1,nameSuggestionRows=[],nameSuggestionTyped=false;
+function namePartSimilarity(query,name){
+ const parts=normName(name).split(/\s+/).filter(Boolean);
+ const candidates=[normName(name),...parts];
+ return Math.max(0,...candidates.map(candidate=>{
+  let previous=Array.from({length:candidate.length+1},(_,i)=>i);
+  for(let i=1;i<=query.length;i++){
+   const next=[i];
+   for(let j=1;j<=candidate.length;j++)next[j]=Math.min(next[j-1]+1,previous[j]+1,previous[j-1]+Number(query[i-1]!==candidate[j-1]));
+   previous=next;
+  }
+  return 1-previous[candidate.length]/Math.max(query.length,candidate.length);
+ }));
+}
+function closeNameSuggestions(){ $('nameSuggestions').classList.add('hidden');$('studentName').setAttribute('aria-expanded','false');nameSuggestionIndex=-1;$('studentName').removeAttribute('aria-activedescendant'); }
+function chooseNameSuggestion(row){
+ nameSuggestionTyped=false; $('studentName').value=String(row.n||'');applyRosterClass(row.c);lastMatchedName=nameChoiceKey(row.n);
+ $('nameClassStatus').textContent=`Névsor szerinti osztály: ${normalizeClass(row.c)}. A név és az osztály is módosítható.`;
+ restoreFont();closeNameSuggestions();$('studentName').focus();
+}
+function renderNameSuggestions(){
+ const input=$('studentName');if(document.activeElement!==input)return;
+ const query=normName(input.value),current=normCls(getClass());
+ if(!nameSuggestionTyped||query.replace(/\s/g,'').length<3){nameSuggestionRows=[];closeNameSuggestions();return;}
+ nameSuggestionRows=ROSTER.map(row=>({row,score:namePartSimilarity(query,row.n)})).filter(hit=>hit.score>=0.6).sort((a,b)=>b.score-a.score||Number(normCls(b.row.c)===current)-Number(normCls(a.row.c)===current)||String(a.row.n).localeCompare(String(b.row.n),'hu')).slice(0,5).map(hit=>hit.row);
+ const box=$('nameSuggestions');box.replaceChildren();nameSuggestionIndex=-1;
+ if(!nameSuggestionRows.length){closeNameSuggestions();return;}
+ nameSuggestionRows.forEach((row,i)=>{const button=document.createElement('button');button.type='button';button.id='nameSuggestion_'+i;button.setAttribute('role','option');button.setAttribute('aria-selected','false');button.textContent=String(row.n)+' — '+String(row.c);button.addEventListener('pointerdown',e=>e.preventDefault());button.addEventListener('click',()=>chooseNameSuggestion(row));box.append(button);});
+ box.classList.remove('hidden');input.setAttribute('aria-expanded','true');
+}
+function initNameSuggestions(){
+ const input=$('studentName'),box=document.createElement('div');box.id='nameSuggestions';box.className='name-suggestions hidden';box.setAttribute('role','listbox');box.setAttribute('aria-label','Névsor, osztállyal');input.after(box);
+ input.removeAttribute('list');input.setAttribute('role','combobox');input.setAttribute('aria-autocomplete','list');input.setAttribute('aria-controls','nameSuggestions');input.setAttribute('aria-expanded','false');
+ input.addEventListener('input',()=>{nameSuggestionTyped=true;renderNameSuggestions();});input.addEventListener('focus',()=>{nameSuggestionTyped=false;closeNameSuggestions();});
+ input.addEventListener('blur',()=>setTimeout(closeNameSuggestions,180));
+ input.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeNameSuggestions();return;}
+  if(box.classList.contains('hidden'))return;
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+   e.preventDefault();nameSuggestionIndex=(nameSuggestionIndex+(e.key==='ArrowDown'?1:-1)+nameSuggestionRows.length)%nameSuggestionRows.length;
+   Array.from(box.children).forEach((b,i)=>b.setAttribute('aria-selected',String(i===nameSuggestionIndex)));
+   const selected=box.children[nameSuggestionIndex];input.setAttribute('aria-activedescendant',selected.id);selected.scrollIntoView({block:'nearest'});
+  }else if(e.key==='Enter'&&nameSuggestionIndex>=0){e.preventDefault();chooseNameSuggestion(nameSuggestionRows[nameSuggestionIndex]);}
+ });
+ document.addEventListener('pointerdown',e=>{if(!box.contains(e.target)&&e.target!==input)closeNameSuggestions();});
+}
+initNameSuggestions();
 
 </script>
 </body>
