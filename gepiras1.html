@@ -2749,9 +2749,8 @@ function formattedPdf(){
 
 </script>
 <div id="teacherUnlockModal" class="modal-bg hidden" role="dialog" aria-modal="true" aria-labelledby="teacherUnlockTitle"><div class="modal"><h2 id="teacherUnlockTitle">Tanári feloldás</h2><label for="teacherUnlockPin">Tanári jelszó</label><input type="password" id="teacherUnlockPin" autocomplete="off"><p id="teacherUnlockError" role="alert"></p><button type="button" id="teacherUnlockSubmit">Feloldás</button> <button type="button" id="teacherUnlockCancel">Mégsem</button></div></div><script>
-// A mellékelt háttérkód jelszó nélküli: induláskor a beállítások szabadok.
-// Ha a szerver később jelszót jelez, applyLock újra zárolja őket.
-let teacherPinRequired=false,teacherSettingsPromise=null;
+// A zárolás csak sikeres szerverválasz után oldható fel. Üres szerveroldali jelszó esetén minden beállítás szabad.
+let teacherPinRequired=null,teacherSettingsPromise=null;
 function applyLock(){
  const locked=LOCK_SETTINGS&&teacherPinRequired!==false;
  $('taskCount').readOnly=locked;$('unlockBtn').classList.toggle('hidden',!LOCK_SETTINGS||teacherPinRequired!==true);
