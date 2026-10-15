@@ -1,447 +1,71 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sulitesztek</title>
-  <style>
-    :root {
-      --bg: #f3f6fb;
-      --card: #ffffff;
-      --text: #1b2430;
-      --muted: #66758a;
-      --accent: #2563eb;
-      --accent-soft: #e6eefe;
-      --border: #e1e7ef;
-      --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 4px 14px rgba(16, 24, 40, .05);
-      --hero-a: #2563eb;
-      --hero-b: #7c3aed;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #11151b;
-        --card: #1a2029;
-        --text: #e8ecf1;
-        --muted: #98a4b4;
-        --accent: #7aa7ff;
-        --accent-soft: #232f48;
-        --border: #2a3340;
-        --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 4px 14px rgba(0, 0, 0, .25);
-        --hero-a: #1e3a8a;
-        --hero-b: #5b21b6;
-      }
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.45;
-    }
-
-    /* ---------- Fejléc + óra ---------- */
-    header.hero {
-      background: linear-gradient(135deg, var(--hero-a), var(--hero-b));
-      color: #fff;
-      padding: 2rem 1rem 3.5rem;
-    }
-    .hero-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.25rem;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .hero h1 { margin: 0; font-size: 2rem; letter-spacing: -.01em; }
-    .hero p { margin: .25rem 0 0; opacity: .85; }
-    .clock { text-align: right; }
-    .clock .time {
-      font-size: 2.6rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      letter-spacing: .02em;
-      line-height: 1;
-    }
-    .clock .date { margin-top: .35rem; opacity: .9; font-size: .95rem; }
-    @media (max-width: 520px) { .clock { text-align: left; } }
-
-    /* ---------- Tartalom ---------- */
-    main { max-width: 960px; margin: -2rem auto 3rem; padding: 0 1rem; }
-
-    .toolbar {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      padding: .9rem 1rem;
-      display: flex;
-      flex-direction: column;
-      gap: .75rem;
-    }
-    .search {
-      width: 100%;
-      padding: .7rem .9rem;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      font-size: 1rem;
-    }
-    .search:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
-    .chips { display: flex; flex-wrap: wrap; gap: .5rem; }
-    .chip {
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-      padding: .35rem .8rem;
-      border-radius: 999px;
-      font-size: .9rem;
-      cursor: pointer;
-      transition: background .15s, border-color .15s;
-    }
-    .chip:hover { border-color: var(--accent); }
-    .chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
-
-    section.topic { margin-top: 2rem; }
-    section.topic h2 {
-      display: flex;
-      align-items: center;
-      gap: .6rem;
-      margin: 0 0 .25rem;
-      font-size: 1.3rem;
-    }
-    section.topic h2 .ico {
-      display: inline-grid;
-      place-items: center;
-      width: 2rem; height: 2rem;
-      border-radius: 9px;
-      background: var(--accent-soft);
-      font-size: 1.1rem;
-    }
-    section.topic > p.desc { margin: 0 0 .9rem 2.6rem; color: var(--muted); font-size: .95rem; }
-
-    ul.grid {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: .9rem;
-    }
-    a.card {
-      display: flex;
-      flex-direction: column;
-      gap: .35rem;
-      height: 100%;
-      padding: 1rem 1.15rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      color: var(--text);
-      text-decoration: none;
-      transition: border-color .15s, transform .15s;
-    }
-    a.card:hover { border-color: var(--accent); transform: translateY(-2px); }
-    a.card strong { color: var(--accent); font-size: 1.05rem; }
-    a.card .d { color: var(--muted); font-size: .92rem; }
-    .tags { display: flex; flex-wrap: wrap; gap: .35rem; margin-top: auto; padding-top: .4rem; }
-    .tag {
-      font-size: .75rem;
-      padding: .15rem .55rem;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 600;
-    }
-    details.topics { margin-top: .3rem; font-size: .88rem; color: var(--muted); }
-    details.topics summary { cursor: pointer; color: var(--accent); font-weight: 600; }
-    details.topics ol { margin: .4rem 0 0; padding-left: 1.3rem; }
-
-    .empty { display: none; text-align: center; color: var(--muted); margin-top: 2.5rem; }
-    footer { text-align: center; color: var(--muted); font-size: .85rem; padding-bottom: 2rem; }
-  </style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f6f9ff">
+<meta name="description" content="SuliTesztek – interaktív gyakorlótesztek és tananyagok 5. osztálytól az érettségiig.">
+<title>SuliTesztek – Tanulj. Gyakorolj. Fejlődj.</title>
+<style>
+:root{--ink:#11265b;--muted:#61708d;--blue:#3865ff;--border:#e6ebf6;--bg:#f6f9ff}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
+a{color:inherit}.wrap{max-width:1160px;margin:auto;padding:0 22px}
+header{background:#ffffffed;position:sticky;top:0;z-index:5;border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:76px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:clamp(1.25rem,2.7vw,1.9rem);font-weight:900;letter-spacing:-.06em;white-space:nowrap}
+.logo-icon{font-size:2rem}.logo .color{background:linear-gradient(95deg,#ff6c52,#ffac23,#21bc88,#0bbde2,#8254ee);background-clip:text;-webkit-background-clip:text;color:transparent}
+nav{display:flex;gap:20px;align-items:center}nav a{text-decoration:none;font-weight:700;font-size:.91rem}nav a:hover{color:var(--blue)}
+.clock{font-size:.83rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.hero{background:radial-gradient(circle at 90% 15%,#f9d9ff 0,transparent 34%),radial-gradient(circle at 6% 70%,#c9f9f7 0,transparent 35%),linear-gradient(120deg,#eef5ff,#fff9f3);padding:70px 0 84px}
+.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:30px}.eyebrow{display:inline-block;background:white;border:1px solid #dce8ff;border-radius:40px;padding:6px 13px;color:#345ee9;font-size:.84rem;font-weight:800}
+h1{font-size:clamp(2.7rem,6vw,5rem);letter-spacing:-.065em;line-height:1.06;margin:20px 0}h1 .color{background:linear-gradient(90deg,#ff655c,#f9a725,#13bba5,#4275ff,#9255ed);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero p{font-size:1.12rem;color:#4f607e;max-width:620px}.hero-art{font-size:clamp(5rem,13vw,10rem);text-align:center;filter:drop-shadow(0 15px 15px #6172a322)}
+.primary{display:inline-block;border:0;border-radius:13px;padding:13px 20px;background:linear-gradient(100deg,#3269ff,#7947ef);color:white;font-weight:800;text-decoration:none;box-shadow:0 8px 18px #4367df30;cursor:pointer}
+main{padding-top:32px;padding-bottom:60px}.toolbar{background:white;border:1px solid var(--border);border-radius:22px;padding:20px;box-shadow:0 8px 24px #19345a0a}
+.search{width:100%;border:1px solid #dbe4f3;background:#f7faff;border-radius:13px;padding:15px 18px;font:inherit;color:var(--ink)}
+.search:focus{outline:2px solid #7d98ff}.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.chip{background:#f3f6ff;border:1px solid #e1e7f6;border-radius:40px;padding:9px 15px;color:var(--ink);cursor:pointer;font-weight:700}
+.chip.active{background:var(--ink);color:white}.chip:hover{border-color:#8c9df6}
+.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}
+.level{background:white;border:1px solid var(--border);border-radius:19px;padding:20px;text-align:left;box-shadow:0 8px 18px #19345a09}
+.level:nth-child(1){background:#e9f8ff}.level:nth-child(2){background:#f4eaff}.level:nth-child(3){background:#fff1df}
+.level strong{display:block;font-size:1.08rem}.level span{font-size:.9rem;color:#586985}
+.topic{margin-top:42px;scroll-margin-top:100px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
+.section-head h2{font-size:1.5rem;letter-spacing:-.03em;margin:0}.section-head p{margin:3px 0;color:var(--muted)}.count{font-size:.82rem;background:#e8edff;padding:5px 10px;border-radius:20px;white-space:nowrap}
+.test-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.test-card{background:white;border:1px solid var(--border);border-radius:19px;padding:23px;text-decoration:none;box-shadow:0 7px 22px #263d6b0a;display:flex;flex-direction:column;gap:11px;transition:.18s}
+[hidden]{display:none!important}.test-card:hover{transform:translateY(-4px);border-color:#91a5ff;box-shadow:0 15px 28px #263d6b16}
+.card-icon{font-size:2rem}.test-card strong{font-size:1.08rem}.card-desc{color:var(--muted);font-size:.92rem;flex:1}
+.tag{align-self:flex-start;background:#edf0ff;color:#5b51c9;border-radius:20px;padding:4px 10px;font-size:.76rem;font-weight:750}
+.card-arrow{color:#315fe8;font-weight:800;font-size:.9rem}.empty{display:none;text-align:center;padding:35px;color:var(--muted)}
+footer{text-align:center;padding:32px;color:var(--muted);border-top:1px solid var(--border)}
+@media(max-width:800px){.hero-grid{grid-template-columns:1fr}.hero-art{display:none}.test-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.clock{display:none}nav{gap:10px}}
+@media(max-width:600px){.wrap{padding:0 16px}.nav{flex-wrap:wrap;padding:12px 0;gap:8px}nav{width:100%;justify-content:space-between;font-size:.8rem}.hero{padding:42px 0 52px}.levels,.test-grid{grid-template-columns:1fr}.section-head{align-items:flex-start}.section-head h2{font-size:1.25rem}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.test-card{transition:none}}
+</style>
 </head>
 <body>
+<header><div class="wrap nav"><a class="logo" href="#top" aria-label="SuliTesztek kezdőlap"><span class="logo-icon">📚✅</span><span>Suli<span class="color">Tesztek</span></span></a><nav aria-label="Fő navigáció"><a href="#tesztek">Tesztek</a><a href="#evfolyamok">Évfolyamok</a><a href="#topic-2">Érettségi</a></nav><div class="clock"><div id="clock-time"></div><div id="clock-date"></div></div></div></header>
+<div id="top" class="hero"><div class="wrap hero-grid"><div><span class="eyebrow">✨ 5. osztálytól az érettségiig</span><h1>Tanulj. <span class="color">Gyakorolj.</span><br>Fejlődj.</h1><p>Interaktív tesztek és gyakorlófeladatok egy helyen. Válaszd ki a témát, és kezdődhet a gyakorlás!</p><a class="primary" href="#tesztek">Tesztek felfedezése →</a></div><div class="hero-art" aria-hidden="true">📚<br>🎓💻</div></div></div>
+<main class="wrap">
+<div id="evfolyamok" class="levels" aria-label="Tanulási szintek"><div class="level"><strong>🎒 5–8. osztály</strong><span>Általános iskolai gyakorlás</span></div><div class="level"><strong>📘 9–12. osztály</strong><span>Középiskolai felkészülés</span></div><div class="level"><strong>🎓 Érettségi</strong><span>Vizsgafelkészítő feladatok</span></div></div>
+<div id="tesztek" class="toolbar"><label for="search"><strong>🔎 Keress a tesztek között!</strong></label><input class="search" id="search" type="search" placeholder="Tantárgy, témakör vagy kulcsszó…" autocomplete="off"><div class="chips" id="chips" aria-label="Témakör szűrők"></div></div>
+<section class="topic" id="topic-0" data-topic="Python – alapok"><div class="section-head"><div><h2>🐍 Python – alapok</h2><p>Az első lépések: alapfogalmak, eljárások és függvények.</p></div><span class="count">3 teszt</span></div><div class="test-grid"><a class="test-card" href="python_alapok_teszt_google_sheets.html"><span class="card-icon">🐍</span><strong>Python alapok teszt</strong><span class="card-desc">Google Sheets kapcsolattal, hibavisszajelzéssel</span><span class="tag">Google Sheets · Hibavisszajelzés</span><span class="card-arrow">Teszt megnyitása →</span></a><a class="test-card" href="python_fuggvenyek_eljarasok_onjavito_teszt.html"><span class="card-icon">🐍</span><strong>Python függvények, eljárások alapok</strong><span class="card-desc">Önjavító teszt hibavisszajelzéssel</span><span class="tag">Önjavító</span><span class="card-arrow">Teszt megnyitása →</span></a><a class="test-card" href="python_eljarasok_onjavito_teszt.html"><span class="card-icon">🐍</span><strong>Python eljárások (és függvények) – alapok</strong><span class="card-desc">Eljárások gyakorlása</span><span class="tag">Önjavító</span><span class="card-arrow">Teszt megnyitása →</span></a></div></section>
+<section class="topic" id="topic-1" data-topic="Python – gyakorló kvízek"><div class="section-head"><div><h2>🧠 Python – gyakorló kvízek</h2><p>Érettségi stílusú feladatok, eredménytárolással.</p></div><span class="count">3 teszt</span></div><div class="test-grid"><a class="test-card" href="python_fuggvenygyakorló_erettsegi_kviz_kodos.html"><span class="card-icon">🧠</span><strong>Python gyakorló (függvényes) kvíz</strong><span class="card-desc">Kóddal védett teszt (kód: alma). Témák: range, listák, enumerate, zip, szövegkezelés.</span><span class="tag">Kóddal védett · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><a class="test-card" href="python_erettsegi_kviz_kezdo_kozephalado.html"><span class="card-icon">🧠</span><strong>Python kvíz – kezdő és középhaladó</strong><span class="card-desc">Kóddal védett teszt (kód: alma). Ciklusok, elágazások, algoritmusok.</span><span class="tag">Kóddal védett · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><a class="test-card" href="python_erettsegi_kviz_kozephalado_korai%20verzio.html"><span class="card-icon">🧠</span><strong>Python kvíz középhaladóknak</strong><span class="card-desc">Komplex, többlépéses feladatok (kód: alma).</span><span class="tag">Középhaladó</span><span class="card-arrow">Teszt megnyitása →</span></a></div></section>
+<section class="topic" id="topic-2" data-topic="Érettségi"><div class="section-head"><div><h2>🎓 Érettségi</h2><p>Felkészülés a vizsgára.</p></div><span class="count">1 teszt</span></div><div class="test-grid"><a class="test-card" href="erettsegire_keszules_jav.html"><span class="card-icon">🎓</span><strong>Érettségire készülés</strong><span class="card-desc">Gyakorlófeladatok az érettségire.</span><span class="tag">Érettségi</span><span class="card-arrow">Teszt megnyitása →</span></a></div></section>
+<section class="topic" id="topic-3" data-topic="Gépírás"><div class="section-head"><div><h2>⌨️ Gépírás</h2><p>Gyakorlás időméréssel és hibaszámlálással.</p></div><span class="count">1 teszt</span></div><div class="test-grid"><a class="test-card" href="https://blankagyorffi.github.io/gepiras/"><span class="card-icon">⌨️</span><strong>Gépírás gyakorlatok visszajelzéssel</strong><span class="card-desc">Eredmények tárolásával, idő- és hibaszámlálással.</span><span class="tag">Időmérés · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a></div></section>
+<section class="topic" id="topic-4" data-topic="Egyéb"><div class="section-head"><div><h2>📁 Egyéb</h2><p>További tesztek és tananyagok.</p></div><span class="count">2 teszt</span></div><div class="test-grid"><a class="test-card" href="masik_teszt.html"><span class="card-icon">📁</span><strong>Másik teszt</strong><span class="card-desc">Google Sheets kapcsolattal, hibavisszajelzéssel.</span><span class="tag">Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><a class="test-card" href="digikult_5_kviz.html"><span class="card-icon">📁</span><strong>5. osztályos Kvíz 1</strong><span class="card-desc">Digitális kultúra: operációs rendszer, fájlok, képernyőkép, levelezés. 30 kérdés.</span><span class="tag">5. osztály · Gyakorlás</span><span class="card-arrow">Teszt megnyitása →</span></a></div></section>
 
-<header class="hero">
-  <div class="hero-inner">
-    <div>
-      <h1>Sulitesztek</h1>
-      <p>Válassz témakört, majd egy tesztet!</p>
-    </div>
-    <div class="clock" aria-live="off">
-      <div class="time" id="clock-time">--:--:--</div>
-      <div class="date" id="clock-date">&nbsp;</div>
-    </div>
-  </div>
-</header>
-
-<main>
-
-  <div class="toolbar">
-    <input class="search" id="search" type="search" placeholder="Keresés a tesztek között…" autocomplete="off">
-    <div class="chips" id="chips"></div>
-  </div>
-
-  <!-- ===================== PYTHON – ALAPOK ===================== -->
-  <section class="topic" data-topic="Python alapok">
-    <h2><span class="ico">🐍</span> Python – alapok</h2>
-    <p class="desc">Az első lépések: alapfogalmak, eljárások és függvények.</p>
-    <ul class="grid">
-      <li>
-        <a class="card" href="python_alapok_teszt_google_sheets.html">
-          <strong>Python alapok teszt</strong>
-          <span class="d">Google Sheets kapcsolattal, hibavisszajelzéssel</span>
-          <div class="tags"><span class="tag">Google Sheets</span><span class="tag">Hibavisszajelzés</span></div>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="python_fuggvenyek_eljarasok_onjavito_teszt.html">
-          <strong>Python függvények, eljárások alapok</strong>
-          <span class="d">Önjavító teszt hibavisszajelzéssel</span>
-          <div class="tags"><span class="tag">Önjavító</span><span class="tag">Hibavisszajelzés</span></div>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="python_eljarasok_onjavito_teszt.html">
-          <strong>Python eljárások (és függvények) – alapok</strong>
-          <span class="d">Eljárások gyakorlása, hibavisszajelzéssel</span>
-          <div class="tags"><span class="tag">Önjavító</span><span class="tag">Hibavisszajelzés</span></div>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- ===================== PYTHON – ÉRETTSÉGI KVÍZEK ===================== -->
-  <section class="topic" data-topic="Python kvízek">
-    <h2><span class="ico">🧠</span> Python – gyakorló kvízek</h2>
-    <p class="desc">Érettségi stílusú feladatok kódvédelemmel és eredménytárolással.</p>
-    <ul class="grid">
-      
-      
-      <!-- Ez ugyanaz mint a következő csak nincs rajta még kötelező kód
-      
-      <li>
-        <a class="card" href="python_fuggvenygyakorlo_erettsegi_kviz.html">
-          <strong>Függvénygyakorló</strong>
-          <span class="d">Python kódok gyakorlása visszajelzéssel</span>
-          <div class="tags"><span class="tag">Google Sheets</span><span class="tag">Visszajelzés</span></div>
-        </a>
-      </li> ----->
-
-      
-      <li>
-        <a class="card" href="python_fuggvenygyakorló_erettsegi_kviz_kodos.html">
-          <strong>Python gyakorló (függvényes) kvíz</strong>
-          <span class="d">Kóddal védett teszt (kód: <b><u>alma</u></b>)</span>
-
-
-
-          <details class="topics">
-            <summary>Témakörök</summary>
-            <ol>
-              <li>Alapok: bemenet, típusok, hossz</li>
-              <li>range()</li>
-              <li>Összegzés, átlag, min/max</li>
-              <li>Listák rendezése, módosítása</li>
-              <li>enumerate() és zip()</li>
-              <li>Érettségi minták</li>
-              <li>Szövegkezelés</li>
-              
-            </ol>
-          </details>
-
-
-
-
-
-          
-          <div class="tags"><span class="tag">Kóddal védett</span><span class="tag">Google Sheets</span></div>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="python_erettsegi_kviz_kezdo_kozephalado.html">
-          <strong>Python kvíz – kezdő és középhaladó szint</strong>
-          <span class="d">Kóddal védett teszt (kód: <b><u>alma</u></b>)</span>
-          <details class="topics">
-            <summary>Témakörök</summary>
-            <ol>
-              <li>Beolvasás és kiírás</li>
-              <li>Elágazás (if / elif / else)</li>
-              <li>Számlálós ciklus (for, range)</li>
-              <li>Sorozatszámítás és megszámlálás</li>
-              <li>Eldöntés és keresés</li>
-              <li>Kiválasztás és kiválogatás</li>
-              <li>Szétválogatás, másolás, vegyes feladatok</li>
-              <li>Pszeudokód átírása Pythonba (kiegészítés)</li>
-            </ol>
-          </details>
-          <div class="tags"><span class="tag">Kóddal védett</span><span class="tag">Google Sheets</span><span class="tag">Kezdő–közép</span></div>
-        </a>
-      </li>
-      <li>
-        <a class="card" href="python_erettsegi_kviz_kozephalado_korai%20verzio.html">
-          <strong>Python kvíz középhaladóknak</strong>
-          <span class="d">Komplexebb, többlépéses, gondolkodtató feladatok, a tipikus hibaforrásokra építve. Kóddal védett (kód: <b><u>alma</u></b>).</span>
-          <div class="tags"><span class="tag">Kóddal védett</span><span class="tag">Google Sheets</span><span class="tag">Középhaladó</span></div>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- ===================== ÉRETTSÉGI ===================== -->
-  <section class="topic" data-topic="Érettségi">
-    <h2><span class="ico">🎓</span> Érettségi</h2>
-    <p class="desc">Felkészülés a vizsgára.</p>
-    <ul class="grid">
-      <li>
-        <a class="card" href="erettsegire_keszules_jav.html">
-          <strong>Érettségire készülés</strong>
-          <span class="d">Rövid leírás</span>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- ===================== GÉPÍRÁS ===================== korábbi: gepiras1.html-->
-  <section class="topic" data-topic="Gépírás">
-    <h2><span class="ico">⌨️</span> Gépírás</h2>
-    <p class="desc">Gyakorlás mért idővel és hibaszámlálással.</p>
-    <ul class="grid">
-      <li>
-        <a class="card" href="https://blankagyorffi.github.io/gepiras/">
-          <strong>Gépírás gyakorlatok visszajelzéssel</strong>
-          <span class="d">Eredmények tárolásával, idő- és hibaszámlálással</span>
-          <div class="tags"><span class="tag">Google Sheets</span><span class="tag">Időmérés</span></div>
-        </a>
-      </li>
-    </ul>
-  </section>
-
-  <!-- ===================== EGYÉB ===================== -->
-  <section class="topic" data-topic="Egyéb">
-    <h2><span class="ico">📁</span> Egyéb</h2>
-    <p class="desc">Besorolásra váró tesztek.</p>
-    <ul class="grid">
-      <li>
-        <a class="card" href="masik_teszt.html">
-          <strong>Másik teszt</strong>
-          <span class="d">Google Sheets kapcsolattal, hibavisszajelzéssel</span>
-          <div class="tags"><span class="tag">Google Sheets</span><span class="tag">Hibavisszajelzés</span></div>
-        </a>
-      </li>
-
-
-
-      
-<li>
-      <a class="card" href="digikult_5_kviz.html">
-        <strong>5. osztályos Kvíz 1</strong>
-        <span class="d">Operációs rendszer, eszközök, fájlok, képernyőkép, elektronikus levelezés. 30 kérdés, minden kérdésre azonnal megkapod a választ. </span>
-        <div class="tags"><span class="tag">__Csak gyakorláshoz___</span></div>
-      </a>
-    </li>
-
-
-      
-    </ul>
-  </section>
-
-  <!--
-    ÚJ TESZT HOZZÁADÁSA:
-    1. Keresd meg a megfelelő témakört (<section class="topic">).
-    2. Másold ki az alábbi <li>...</li> blokkot, és illeszd be az adott <ul class="grid"> végére.
-    3. Írd át a href-et, a címet és a leírást. A címkék (tag) elhagyhatók.
-    Új témakör: másolj ki egy teljes <section class="topic">...</section> blokkot,
-    írd át a data-topic értékét és a címet. A szűrőgombok maguktól létrejönnek.
-
-    <li>
-      <a class="card" href="uj_oldal.html">
-        <strong>Új teszt címe</strong>
-        <span class="d">Rövid leírás</span>
-        <div class="tags"><span class="tag">Címke</span></div>
-      </a>
-    </li>
-  -->
-
-
-
-
-  
-  <p class="empty" id="empty">Nincs találat a keresésre.</p>
-</main>
-
-<footer>Sulitesztek</footer>
-
+<p class="empty" id="empty" role="status">Nincs találat a keresésre.</p></main>
+<footer>© <span id="year"></span> SuliTesztek · Tanulj. Gyakorolj. Fejlődj.</footer>
 <script>
-  // ---------- Pontos idő (budapesti időzóna, másodpercre pontosan) ----------
-  var TZ = 'Europe/Budapest';
-  var timeFmt = new Intl.DateTimeFormat('hu-HU', {
-    timeZone: TZ, hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-  });
-  var dateFmt = new Intl.DateTimeFormat('hu-HU', {
-    timeZone: TZ, year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-  });
-  var elTime = document.getElementById('clock-time');
-  var elDate = document.getElementById('clock-date');
-
-  function tick() {
-    var now = new Date();
-    elTime.textContent = timeFmt.format(now);
-    elDate.textContent = dateFmt.format(now);
-    // a következő egész másodpercre időzítünk, így nem csúszik el az óra
-    setTimeout(tick, 1000 - (now.getTime() % 1000) + 5);
-  }
-  tick();
-
-  // ---------- Szűrés: témakör gombok + keresés ----------
-  var sections = Array.prototype.slice.call(document.querySelectorAll('section.topic'));
-  var chipsBox = document.getElementById('chips');
-  var search = document.getElementById('search');
-  var empty = document.getElementById('empty');
-  var activeTopic = '';
-
-  function makeChip(label, value) {
-    var b = document.createElement('button');
-    b.type = 'button';
-    b.className = 'chip' + (value === activeTopic ? ' active' : '');
-    b.textContent = label;
-    b.addEventListener('click', function () {
-      activeTopic = value;
-      Array.prototype.forEach.call(chipsBox.children, function (c) { c.classList.remove('active'); });
-      b.classList.add('active');
-      apply();
-    });
-    return b;
-  }
-
-  chipsBox.appendChild(makeChip('Mind', ''));
-  sections.forEach(function (s) {
-    chipsBox.appendChild(makeChip(s.dataset.topic, s.dataset.topic));
-  });
-
-  function apply() {
-    var q = search.value.trim().toLowerCase();
-    var anyVisible = false;
-    sections.forEach(function (s) {
-      var topicOk = !activeTopic || s.dataset.topic === activeTopic;
-      var visibleCards = 0;
-      Array.prototype.forEach.call(s.querySelectorAll('ul.grid > li'), function (li) {
-        var match = !q || li.textContent.toLowerCase().indexOf(q) !== -1;
-        li.style.display = match ? '' : 'none';
-        if (match) visibleCards++;
-      });
-      var show = topicOk && visibleCards > 0;
-      s.style.display = show ? '' : 'none';
-      if (show) anyVisible = true;
-    });
-    empty.style.display = anyVisible ? 'none' : 'block';
-  }
-  search.addEventListener('input', apply);
-</script>
-</body>
-</html>
+const TZ='Europe/Budapest';
+const timeFmt=new Intl.DateTimeFormat('hu-HU',{timeZone:TZ,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+const dateFmt=new Intl.DateTimeFormat('hu-HU',{timeZone:TZ,year:'numeric',month:'long',day:'numeric',weekday:'long'});
+function tick(){const now=new Date();document.getElementById('clock-time').textContent=timeFmt.format(now);document.getElementById('clock-date').textContent=dateFmt.format(now);setTimeout(tick,1000-now.getMilliseconds()+5)}tick();
+document.getElementById('year').textContent=new Date().getFullYear();
+const sections=[...document.querySelectorAll('section.topic')],chipsBox=document.getElementById('chips'),search=document.getElementById('search'),empty=document.getElementById('empty');let activeTopic='';
+function makeChip(label,value){const b=document.createElement('button');b.type='button';b.className='chip'+(value===activeTopic?' active':'');b.textContent=label;b.setAttribute('aria-pressed',String(value===activeTopic));b.addEventListener('click',()=>{activeTopic=value;[...chipsBox.children].forEach(c=>{c.classList.remove('active');c.setAttribute('aria-pressed','false')});b.classList.add('active');b.setAttribute('aria-pressed','true');apply()});return b}
+chipsBox.appendChild(makeChip('Mind',''));sections.forEach(s=>chipsBox.appendChild(makeChip(s.dataset.topic,s.dataset.topic)));
+function apply(){const q=search.value.trim().toLocaleLowerCase('hu-HU');let any=false;sections.forEach(s=>{let visible=0;s.querySelectorAll('.test-card').forEach(card=>{const match=!q||card.textContent.toLocaleLowerCase('hu-HU').includes(q);card.hidden=!match;if(match)visible++});const show=(!activeTopic||s.dataset.topic===activeTopic)&&visible>0;s.hidden=!show;if(show)any=true});empty.style.display=any?'none':'block'}
+search.addEventListener('input',apply);
+</script></body></html>
