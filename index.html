@@ -1,401 +1,2066 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
-
-<!DOCTYPE html>
-
-<!DOCTYPE html>
-
 <html lang="hu">
-<head>
-<meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
-<meta content="#f6f9ff" name="theme-color"/>
-<meta content="SuliTesztek – interaktív gyakorlótesztek és tananyagok 5. osztálytól az érettségiig." name="description"/>
-<title>SuliTesztek – Tanulj. Gyakorolj. Fejlődj.</title>
-<style>
-:root{--ink:#11265b;--muted:#61708d;--blue:#3865ff;--border:#e6ebf6;--bg:#f6f9ff}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55}
-a{color:inherit}.wrap{max-width:1160px;margin:auto;padding:0 22px}
-header{background:#ffffffed;position:sticky;top:0;z-index:5;border-bottom:1px solid var(--border);backdrop-filter:blur(12px)}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:76px}
-.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:clamp(1.25rem,2.7vw,1.9rem);font-weight:900;letter-spacing:-.06em;white-space:nowrap}
-.logo-img{display:block;width:190px;max-width:52vw;height:auto;object-fit:contain}.logo .color{background:linear-gradient(95deg,#ff6c52,#ffac23,#21bc88,#0bbde2,#8254ee);background-clip:text;-webkit-background-clip:text;color:transparent}
-nav{display:flex;gap:20px;align-items:center}nav a{text-decoration:none;font-weight:700;font-size:.91rem}nav a:hover{color:var(--blue)}
-.clock{font-size:.83rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
-.hero{background:radial-gradient(circle at 90% 15%,#f9d9ff 0,transparent 34%),radial-gradient(circle at 6% 70%,#c9f9f7 0,transparent 35%),linear-gradient(120deg,#eef5ff,#fff9f3);padding:70px 0 84px}
-.hero-grid{display:grid;grid-template-columns:1.3fr .7fr;align-items:center;gap:30px}.eyebrow{display:inline-block;background:white;border:1px solid #dce8ff;border-radius:40px;padding:6px 13px;color:#345ee9;font-size:.84rem;font-weight:800}
-h1{font-size:clamp(2.7rem,6vw,5rem);letter-spacing:-.065em;line-height:1.06;margin:20px 0}h1 .color{background:linear-gradient(90deg,#ff655c,#f9a725,#13bba5,#4275ff,#9255ed);background-clip:text;-webkit-background-clip:text;color:transparent}
-.hero p{font-size:1.12rem;color:#4f607e;max-width:620px}.hero-art{font-size:clamp(5rem,13vw,10rem);text-align:center;filter:drop-shadow(0 15px 15px #6172a322)}
-.primary{display:inline-block;border:0;border-radius:13px;padding:13px 20px;background:linear-gradient(100deg,#3269ff,#7947ef);color:white;font-weight:800;text-decoration:none;box-shadow:0 8px 18px #4367df30;cursor:pointer}
-main{padding-top:32px;padding-bottom:60px}.toolbar{background:white;border:1px solid var(--border);border-radius:22px;padding:20px;box-shadow:0 8px 24px #19345a0a}
-.search{width:100%;border:1px solid #dbe4f3;background:#f7faff;border-radius:13px;padding:15px 18px;font:inherit;color:var(--ink)}
-.search:focus{outline:2px solid #7d98ff}.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
-.chip{background:#f3f6ff;border:1px solid #e1e7f6;border-radius:40px;padding:9px 15px;color:var(--ink);cursor:pointer;font-weight:700}
-.chip.active{background:var(--ink);color:white}.chip:hover{border-color:#8c9df6}
-.levels{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0}
-.level{background:white;border:1px solid var(--border);border-radius:19px;padding:20px;text-align:left;box-shadow:0 8px 18px #19345a09}
-.level:nth-child(1){background:#e9f8ff}.level:nth-child(2){background:#f4eaff}.level:nth-child(3){background:#fff1df}
-.level strong{display:block;font-size:1.08rem}.level span{font-size:.9rem;color:#586985}
-.topic{margin-top:42px;scroll-margin-top:100px}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
-.section-head h2{font-size:1.5rem;letter-spacing:-.03em;margin:0}.section-head p{margin:3px 0;color:var(--muted)}.count{font-size:.82rem;background:#e8edff;padding:5px 10px;border-radius:20px;white-space:nowrap}
-.test-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.test-card{background:white;border:1px solid var(--border);border-radius:19px;padding:23px;text-decoration:none;box-shadow:0 7px 22px #263d6b0a;display:flex;flex-direction:column;gap:11px;transition:.18s}
-[hidden]{display:none!important}.test-card:hover{transform:translateY(-4px);border-color:#91a5ff;box-shadow:0 15px 28px #263d6b16}
-.card-icon{font-size:2rem}.test-card strong{font-size:1.08rem}.card-desc{color:var(--muted);font-size:.92rem;flex:1}
-.tag{align-self:flex-start;background:#edf0ff;color:#5b51c9;border-radius:20px;padding:4px 10px;font-size:.76rem;font-weight:750}
-.card-arrow{color:#315fe8;font-weight:800;font-size:.9rem}.empty{display:none;text-align:center;padding:35px;color:var(--muted)}
-footer{text-align:center;padding:32px;color:var(--muted);border-top:1px solid var(--border)}
-@media(max-width:800px){.hero-grid{grid-template-columns:1fr}.hero-art{display:none}.test-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.clock{display:none}nav{gap:10px}}
-@media(max-width:600px){.wrap{padding:0 16px}.nav{flex-wrap:wrap;padding:12px 0;gap:8px}nav{width:100%;justify-content:space-between;font-size:.8rem}.hero{padding:42px 0 52px}.levels,.test-grid{grid-template-columns:1fr}.section-head{align-items:flex-start}.section-head h2{font-size:1.25rem}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.test-card{transition:none}}
-
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <meta content="#f6f9ff" name="theme-color"/>
+        <meta content="SuliTesztek – interaktív gyakorlótesztek és tananyagok 5. osztálytól az érettségiig." name="description"/>
+        <title>SuliTesztek – Tanulj. Gyakorolj. Fejlődj.
+        </title>
+        <style>
+:root {
+--ink:#11265b;
+--muted:#61708d;
+--blue:#3865ff;
+--border:#e6ebf6;
+--bg:#f6f9ff
+}
+* {
+box-sizing:border-box
+}
+html {
+scroll-behavior:smooth
+}
+body {
+margin:0;
+background:var(--bg);
+color:var(--ink);
+font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+line-height:1.55
+}
+a {
+color:inherit
+}
+.wrap {
+max-width:1160px;
+margin:auto;
+padding:0 22px
+}
+header {
+background:#ffffffed;
+position:sticky;
+top:0;
+z-index:5;
+border-bottom:1px solid var(--border);
+backdrop-filter:blur(12px)
+}
+.nav {
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:18px;
+min-height:76px
+}
+.logo {
+display:flex;
+align-items:center;
+gap:10px;
+text-decoration:none;
+font-size:clamp(1.25rem,2.7vw,1.9rem);
+font-weight:900;
+letter-spacing:-.06em;
+white-space:nowrap
+}
+.logo-img {
+display:block;
+width:190px;
+max-width:52vw;
+height:auto;
+object-fit:contain
+}
+.logo .color {
+background:linear-gradient(95deg,#ff6c52,#ffac23,#21bc88,#0bbde2,#8254ee);
+background-clip:text;
+-webkit-background-clip:text;
+color:transparent
+}
+nav {
+display:flex;
+gap:20px;
+align-items:center
+}
+nav a {
+text-decoration:none;
+font-weight:700;
+font-size:.91rem
+}
+nav a:hover {
+color:var(--blue)
+}
+.clock {
+font-size:.83rem;
+color:var(--muted);
+text-align:right;
+font-variant-numeric:tabular-nums
+}
+.hero {
+background:radial-gradient(circle at 90% 15%,#f9d9ff 0,transparent 34%),radial-gradient(circle at 6% 70%,#c9f9f7 0,transparent 35%),linear-gradient(120deg,#eef5ff,#fff9f3);
+padding:70px 0 84px
+}
+.hero-grid {
+display:grid;
+grid-template-columns:1.3fr .7fr;
+align-items:center;
+gap:30px
+}
+.eyebrow {
+display:inline-block;
+background:white;
+border:1px solid #dce8ff;
+border-radius:40px;
+padding:6px 13px;
+color:#345ee9;
+font-size:.84rem;
+font-weight:800
+}
+h1 {
+font-size:clamp(2.7rem,6vw,5rem);
+letter-spacing:-.065em;
+line-height:1.06;
+margin:20px 0
+}
+h1 .color {
+background:linear-gradient(90deg,#ff655c,#f9a725,#13bba5,#4275ff,#9255ed);
+background-clip:text;
+-webkit-background-clip:text;
+color:transparent
+}
+.hero p {
+font-size:1.12rem;
+color:#4f607e;
+max-width:620px
+}
+.hero-art {
+font-size:clamp(5rem,13vw,10rem);
+text-align:center;
+filter:drop-shadow(0 15px 15px #6172a322)
+}
+.primary {
+display:inline-block;
+border:0;
+border-radius:13px;
+padding:13px 20px;
+background:linear-gradient(100deg,#3269ff,#7947ef);
+color:white;
+font-weight:800;
+text-decoration:none;
+box-shadow:0 8px 18px #4367df30;
+cursor:pointer
+}
+main {
+padding-top:32px;
+padding-bottom:60px
+}
+.toolbar {
+background:white;
+border:1px solid var(--border);
+border-radius:22px;
+padding:20px;
+box-shadow:0 8px 24px #19345a0a
+}
+.search {
+width:100%;
+border:1px solid #dbe4f3;
+background:#f7faff;
+border-radius:13px;
+padding:15px 18px;
+font:inherit;
+color:var(--ink)
+}
+.search:focus {
+outline:2px solid #7d98ff
+}
+.chips {
+display:flex;
+flex-wrap:wrap;
+gap:9px;
+margin-top:14px
+}
+.chip {
+background:#f3f6ff;
+border:1px solid #e1e7f6;
+border-radius:40px;
+padding:9px 15px;
+color:var(--ink);
+cursor:pointer;
+font-weight:700
+}
+.chip.active {
+background:var(--ink);
+color:white
+}
+.chip:hover {
+border-color:#8c9df6
+}
+.levels {
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:14px;
+margin:30px 0
+}
+.level {
+background:white;
+border:1px solid var(--border);
+border-radius:19px;
+padding:20px;
+text-align:left;
+box-shadow:0 8px 18px #19345a09
+}
+.level:nth-child(1) {
+background:#e9f8ff
+}
+.level:nth-child(2) {
+background:#f4eaff
+}
+.level:nth-child(3) {
+background:#fff1df
+}
+.level strong {
+display:block;
+font-size:1.08rem
+}
+.level span {
+font-size:.9rem;
+color:#586985
+}
+.topic {
+margin-top:42px;
+scroll-margin-top:100px
+}
+.section-head {
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+margin-bottom:17px
+}
+.section-head h2 {
+font-size:1.5rem;
+letter-spacing:-.03em;
+margin:0
+}
+.section-head p {
+margin:3px 0;
+color:var(--muted)
+}
+.count {
+font-size:.82rem;
+background:#e8edff;
+padding:5px 10px;
+border-radius:20px;
+white-space:nowrap
+}
+.test-grid {
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:16px
+}
+.test-card {
+background:white;
+border:1px solid var(--border);
+border-radius:19px;
+padding:23px;
+text-decoration:none;
+box-shadow:0 7px 22px #263d6b0a;
+display:flex;
+flex-direction:column;
+gap:11px;
+transition:.18s
+}
+[hidden] {
+display:none!important
+}
+.test-card:hover {
+transform:translateY(-4px);
+border-color:#91a5ff;
+box-shadow:0 15px 28px #263d6b16
+}
+.card-icon {
+font-size:2rem
+}
+.test-card strong {
+font-size:1.08rem
+}
+.card-desc {
+color:var(--muted);
+font-size:.92rem;
+flex:1
+}
+.tag {
+align-self:flex-start;
+background:#edf0ff;
+color:#5b51c9;
+border-radius:20px;
+padding:4px 10px;
+font-size:.76rem;
+font-weight:750
+}
+.card-arrow {
+color:#315fe8;
+font-weight:800;
+font-size:.9rem
+}
+.empty {
+display:none;
+text-align:center;
+padding:35px;
+color:var(--muted)
+}
+footer {
+text-align:center;
+padding:32px;
+color:var(--muted);
+border-top:1px solid var(--border)
+}
+@media(max-width:800px) {
+.hero-grid {
+grid-template-columns:1fr
+}
+.hero-art {
+display:none
+}
+.test-grid {
+grid-template-columns:repeat(2,minmax(0,1fr))
+}
+.clock {
+display:none
+}
+nav {
+gap:10px
+}
+}
+@media(max-width:600px) {
+.wrap {
+padding:0 16px
+}
+.nav {
+flex-wrap:wrap;
+padding:12px 0;
+gap:8px
+}
+nav {
+width:100%;
+justify-content:space-between;
+font-size:.8rem
+}
+.hero {
+padding:42px 0 52px
+}
+.levels,.test-grid {
+grid-template-columns:1fr
+}
+.section-head {
+align-items:flex-start
+}
+.section-head h2 {
+font-size:1.25rem
+}
+}
+@media(prefers-reduced-motion:reduce) {
+html {
+scroll-behavior:auto
+}
+.test-card {
+transition:none
+}
+}
 /* Kompakt nézet – az eredeti funkciók változatlanok */
-.nav{min-height:58px;gap:12px}.logo-img{width:145px;max-width:42vw}header nav{gap:16px}
-.hero{padding:24px 0 28px}.hero-grid{grid-template-columns:1fr;gap:0}.hero-art{display:none}
-.eyebrow{font-size:.75rem;padding:3px 10px}h1{font-size:clamp(1.65rem,3.5vw,2.7rem);line-height:1.12;margin:9px 0}
-.hero p{font-size:.96rem;margin:7px 0 12px;max-width:none}.primary{padding:9px 14px;border-radius:10px;font-size:.88rem}
-main{padding-top:14px;padding-bottom:30px}.levels{margin:8px 0 16px;gap:9px}.level{padding:11px 14px;border-radius:13px}
-.level strong{font-size:.94rem}.level span{font-size:.79rem}.toolbar{padding:12px 14px;border-radius:14px}
-.search{padding:10px 12px;border-radius:9px;font-size:.92rem}.chips{margin-top:9px;gap:6px}.chip{padding:5px 10px;font-size:.79rem}
-.topic{margin-top:22px;scroll-margin-top:75px}.section-head{margin-bottom:9px}.section-head h2{font-size:1.2rem}
-.section-head p{font-size:.84rem;margin:1px 0}.test-grid{gap:10px}.test-card{padding:14px 15px;border-radius:13px;gap:6px}
-.card-icon{font-size:1.35rem}.test-card strong{font-size:.98rem;line-height:1.3}.card-desc{font-size:.82rem;line-height:1.4}
-.tag{font-size:.7rem;padding:2px 8px}.card-arrow{font-size:.78rem}footer{padding:18px}
-@media(max-width:800px){.test-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.nav{min-height:52px}.logo-img{width:125px}.hero{padding:18px 0 20px}.hero p{font-size:.89rem}
-.levels{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.level{padding:9px;border-radius:10px}.level strong{font-size:.77rem}
-.level span{font-size:.68rem}.test-grid{grid-template-columns:1fr}.section-head h2{font-size:1.1rem}.count{font-size:.7rem}}
-
-.levels-bottom{margin:10px auto 18px}
-.levels-bottom .levels{margin:0}
-.back-top-wrap{text-align:center;padding:0 16px 24px}
-.back-top{display:inline-block;background:#11265b;color:white;text-decoration:none;border-radius:999px;padding:10px 20px;font-weight:750}
-.back-top:hover,.back-top:focus-visible{background:#3865ff}
-
+.nav {
+min-height:58px;
+gap:12px
+}
+.logo-img {
+width:145px;
+max-width:42vw
+}
+header nav {
+gap:16px
+}
+.hero {
+padding:24px 0 28px
+}
+.hero-grid {
+grid-template-columns:1fr;
+gap:0
+}
+.hero-art {
+display:none
+}
+.eyebrow {
+font-size:.75rem;
+padding:3px 10px
+}
+h1 {
+font-size:clamp(1.65rem,3.5vw,2.7rem);
+line-height:1.12;
+margin:9px 0
+}
+.hero p {
+font-size:.96rem;
+margin:7px 0 12px;
+max-width:none
+}
+.primary {
+padding:9px 14px;
+border-radius:10px;
+font-size:.88rem
+}
+main {
+padding-top:14px;
+padding-bottom:30px
+}
+.levels {
+margin:8px 0 16px;
+gap:9px
+}
+.level {
+padding:11px 14px;
+border-radius:13px
+}
+.level strong {
+font-size:.94rem
+}
+.level span {
+font-size:.79rem
+}
+.toolbar {
+padding:12px 14px;
+border-radius:14px
+}
+.search {
+padding:10px 12px;
+border-radius:9px;
+font-size:.92rem
+}
+.chips {
+margin-top:9px;
+gap:6px
+}
+.chip {
+padding:5px 10px;
+font-size:.79rem
+}
+.topic {
+margin-top:22px;
+scroll-margin-top:75px
+}
+.section-head {
+margin-bottom:9px
+}
+.section-head h2 {
+font-size:1.2rem
+}
+.section-head p {
+font-size:.84rem;
+margin:1px 0
+}
+.test-grid {
+gap:10px
+}
+.test-card {
+padding:14px 15px;
+border-radius:13px;
+gap:6px
+}
+.card-icon {
+font-size:1.35rem
+}
+.test-card strong {
+font-size:.98rem;
+line-height:1.3
+}
+.card-desc {
+font-size:.82rem;
+line-height:1.4
+}
+.tag {
+font-size:.7rem;
+padding:2px 8px
+}
+.card-arrow {
+font-size:.78rem
+}
+footer {
+padding:18px
+}
+@media(max-width:800px) {
+.test-grid {
+grid-template-columns:repeat(2,minmax(0,1fr))
+}
+}
+@media(max-width:600px) {
+.nav {
+min-height:52px
+}
+.logo-img {
+width:125px
+}
+.hero {
+padding:18px 0 20px
+}
+.hero p {
+font-size:.89rem
+}
+.levels {
+grid-template-columns:repeat(3,minmax(0,1fr));
+gap:6px
+}
+.level {
+padding:9px;
+border-radius:10px
+}
+.level strong {
+font-size:.77rem
+}
+.level span {
+font-size:.68rem
+}
+.test-grid {
+grid-template-columns:1fr
+}
+.section-head h2 {
+font-size:1.1rem
+}
+.count {
+font-size:.7rem
+}
+}
+.levels-bottom {
+margin:10px auto 18px
+}
+.levels-bottom .levels {
+margin:0
+}
+.back-top-wrap {
+text-align:center;
+padding:0 16px 24px
+}
+.back-top {
+display:inline-block;
+background:#11265b;
+color:white;
+text-decoration:none;
+border-radius:999px;
+padding:10px 20px;
+font-weight:750
+}
+.back-top:hover,.back-top:focus-visible {
+background:#3865ff
+}
 /* Kiegyensúlyozott kéthasábos főrész */
-.nav-brand{font-size:1.12rem;letter-spacing:-.045em}
-.hero{padding:18px 0 22px}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,1.1fr);align-items:center;gap:22px}
-.hero-copy{min-width:0}
-.hero-logo{display:block;width:clamp(170px,24vw,265px);max-width:100%;height:auto;object-fit:contain;margin:-5px 0 5px}
-.hero h1{font-size:clamp(1.55rem,2.7vw,2.45rem);margin:7px 0;letter-spacing:-.045em;line-height:1.15}
-.hero p{font-size:.91rem;line-height:1.45;margin:7px 0 11px;max-width:430px}
-.hero .eyebrow{font-size:.74rem}
-.hero .toolbar{align-self:center;padding:15px 17px;border-radius:16px;box-shadow:0 10px 25px #1b356014}
-.hero .toolbar label{font-size:.95rem}
-.hero .search{margin-top:5px;font-size:.89rem;padding:10px 12px}
-.hero .chips{gap:6px}
-.hero .chip{font-size:.75rem;padding:5px 9px}
-main{padding-top:8px}
-@media(max-width:790px){
- .hero-grid{grid-template-columns:1fr;gap:15px}
- .hero-logo{width:200px}
- .hero .toolbar{width:100%}
+.nav-brand {
+font-size:1.12rem;
+letter-spacing:-.045em
 }
-@media(max-width:600px){
- .hero{padding:14px 0 17px}
- .hero h1{font-size:1.65rem}
- .hero-logo{width:170px}
- .hero p{font-size:.86rem}
+.hero {
+padding:18px 0 22px
 }
-
+.hero-grid {
+display:grid;
+grid-template-columns:minmax(0,1fr) minmax(340px,1.1fr);
+align-items:center;
+gap:22px
+}
+.hero-copy {
+min-width:0
+}
+.hero-logo {
+display:block;
+width:clamp(170px,24vw,265px);
+max-width:100%;
+height:auto;
+object-fit:contain;
+margin:-5px 0 5px
+}
+.hero h1 {
+font-size:clamp(1.55rem,2.7vw,2.45rem);
+margin:7px 0;
+letter-spacing:-.045em;
+line-height:1.15
+}
+.hero p {
+font-size:.91rem;
+line-height:1.45;
+margin:7px 0 11px;
+max-width:430px
+}
+.hero .eyebrow {
+font-size:.74rem
+}
+.hero .toolbar {
+align-self:center;
+padding:15px 17px;
+border-radius:16px;
+box-shadow:0 10px 25px #1b356014
+}
+.hero .toolbar label {
+font-size:.95rem
+}
+.hero .search {
+margin-top:5px;
+font-size:.89rem;
+padding:10px 12px
+}
+.hero .chips {
+gap:6px
+}
+.hero .chip {
+font-size:.75rem;
+padding:5px 9px
+}
+main {
+padding-top:8px
+}
+@media(max-width:790px) {
+.hero-grid {
+grid-template-columns:1fr;
+gap:15px
+}
+.hero-logo {
+width:200px
+}
+.hero .toolbar {
+width:100%
+}
+}
+@media(max-width:600px) {
+.hero {
+padding:14px 0 17px
+}
+.hero h1 {
+font-size:1.65rem
+}
+.hero-logo {
+width:170px
+}
+.hero p {
+font-size:.86rem
+}
+}
 /* Játékos Klébi felirat és egységes magasságú tesztkártyák */
-.klebi{display:inline-flex;align-items:center;gap:2px;margin-right:auto;font-family:"Trebuchet MS","Comic Sans MS",system-ui,sans-serif;font-size:clamp(1.12rem,2.2vw,1.5rem);font-weight:900;letter-spacing:-.045em;color:#7b43df;transform:rotate(-3deg);text-shadow:1px 2px 0 #f0ddff;white-space:nowrap}
-.klebi-star{color:#ffad2b;font-size:.78em;transform:rotate(16deg);margin-left:1px}
-.nav{gap:16px}
-.test-grid{align-items:stretch;grid-auto-rows:1fr}
-.test-card{height:100%;min-height:196px;justify-content:flex-start}
-.test-card .card-desc{flex:1}
-.test-card .card-arrow{margin-top:auto}
-@media(max-width:600px){.nav{gap:8px}.klebi{font-size:1.15rem}.test-grid{grid-auto-rows:auto}.test-card{min-height:172px}}
-
+.klebi {
+display:inline-flex;
+align-items:center;
+gap:2px;
+margin-right:auto;
+font-family:"Trebuchet MS","Comic Sans MS",system-ui,sans-serif;
+font-size:clamp(1.12rem,2.2vw,1.5rem);
+font-weight:900;
+letter-spacing:-.045em;
+color:#7b43df;
+transform:rotate(-3deg);
+text-shadow:1px 2px 0 #f0ddff;
+white-space:nowrap
+}
+.klebi-star {
+color:#ffad2b;
+font-size:.78em;
+transform:rotate(16deg);
+margin-left:1px
+}
+.nav {
+gap:16px
+}
+.test-grid {
+align-items:stretch;
+grid-auto-rows:1fr
+}
+.test-card {
+height:100%;
+min-height:196px;
+justify-content:flex-start
+}
+.test-card .card-desc {
+flex:1
+}
+.test-card .card-arrow {
+margin-top:auto
+}
+@media(max-width:600px) {
+.nav {
+gap:8px
+}
+.klebi {
+font-size:1.15rem
+}
+.test-grid {
+grid-auto-rows:auto
+}
+.test-card {
+min-height:172px
+}
+}
 /* Mélyebb, meleg pasztell arculat – a világos felület megtartásával */
-:root{--ink:#233052;--muted:#52617a;--blue:#5064ae;--border:#cbd3e3;--bg:#e6e8f1}
-body{background:var(--bg)}
-header{background:#d7ddef; border-bottom:1px solid #bfc9dd}
-nav a{color:#273657}
-.hero{background:linear-gradient(115deg,#cad8e7 0%,#ddd1e8 50%,#e9d4d1 100%)}
-.hero .eyebrow{background:#e6e0f3;border-color:#c8bada;color:#493c83}
-.hero p{color:#465571}
-.hero .toolbar{background:#dce0ed;border:1px solid #bbc7db;box-shadow:0 6px 20px #34486c1a}
-.hero .search{background:#f0f1f7;border:1px solid #b8c4d9;color:#233052}
-.hero .search::placeholder{color:#687795}
-.hero .chip{background:#c9d3e7;border-color:#b4c1db;color:#26375c}
-.hero .chip.active{background:#4d578c;color:#fff;border-color:#4d578c}
-.hero .chip:hover{border-color:#6679b5}
-.primary{background:linear-gradient(100deg,#526bb1,#8161a4);box-shadow:0 6px 14px #465e8b2e}
-.test-card{background:#d8e2ed;border-color:#becde0;box-shadow:0 5px 16px #374a6b16}
-.topic:nth-of-type(5n + 1) .test-card{background:#d7e1eb;border-color:#b9c9dd}
-.topic:nth-of-type(5n + 2) .test-card{background:#e0d8ec;border-color:#cbbde0}
-.topic:nth-of-type(5n + 3) .test-card{background:#e7dbcf;border-color:#d8c5b4}
-.topic:nth-of-type(5n + 4) .test-card{background:#d2e3df;border-color:#b7d2cc}
-.topic:nth-of-type(5n + 5) .test-card{background:#e6d8df;border-color:#d4bec9}
-.test-card:hover{border-color:#7c82b7;box-shadow:0 9px 22px #35446624}
-.test-card strong{color:#243558}
-.card-desc{color:#4c5c74}
-.tag{background:#c3cce7;color:#37487d}
-.card-arrow{color:#354d92}
-.count{background:#cfd7e9;color:#354667}
-.levels-bottom .level:nth-child(1){background:#c7dce9;border-color:#b4cada}
-.levels-bottom .level:nth-child(2){background:#d9c9e8;border-color:#cbb7dd}
-.levels-bottom .level:nth-child(3){background:#ead7bf;border-color:#dec9ac}
-.level span{color:#4c5c73}
-.back-top{background:#4a5786}
-footer{border-top-color:#c3cbe0;color:#4f5c75}
-
-
+:root {
+--ink:#233052;
+--muted:#52617a;
+--blue:#5064ae;
+--border:#cbd3e3;
+--bg:#e6e8f1
+}
+body {
+background:var(--bg)
+}
+header {
+background:#d7ddef;
+border-bottom:1px solid #bfc9dd
+}
+nav a {
+color:#273657
+}
+.hero {
+background:linear-gradient(115deg,#cad8e7 0%,#ddd1e8 50%,#e9d4d1 100%)
+}
+.hero .eyebrow {
+background:#e6e0f3;
+border-color:#c8bada;
+color:#493c83
+}
+.hero p {
+color:#465571
+}
+.hero .toolbar {
+background:#dce0ed;
+border:1px solid #bbc7db;
+box-shadow:0 6px 20px #34486c1a
+}
+.hero .search {
+background:#f0f1f7;
+border:1px solid #b8c4d9;
+color:#233052
+}
+.hero .search::placeholder {
+color:#687795
+}
+.hero .chip {
+background:#c9d3e7;
+border-color:#b4c1db;
+color:#26375c
+}
+.hero .chip.active {
+background:#4d578c;
+color:#fff;
+border-color:#4d578c
+}
+.hero .chip:hover {
+border-color:#6679b5
+}
+.primary {
+background:linear-gradient(100deg,#526bb1,#8161a4);
+box-shadow:0 6px 14px #465e8b2e
+}
+.test-card {
+background:#d8e2ed;
+border-color:#becde0;
+box-shadow:0 5px 16px #374a6b16
+}
+.topic:nth-of-type(5n + 1) .test-card {
+background:#d7e1eb;
+border-color:#b9c9dd
+}
+.topic:nth-of-type(5n + 2) .test-card {
+background:#e0d8ec;
+border-color:#cbbde0
+}
+.topic:nth-of-type(5n + 3) .test-card {
+background:#e7dbcf;
+border-color:#d8c5b4
+}
+.topic:nth-of-type(5n + 4) .test-card {
+background:#d2e3df;
+border-color:#b7d2cc
+}
+.topic:nth-of-type(5n + 5) .test-card {
+background:#e6d8df;
+border-color:#d4bec9
+}
+.test-card:hover {
+border-color:#7c82b7;
+box-shadow:0 9px 22px #35446624
+}
+.test-card strong {
+color:#243558
+}
+.card-desc {
+color:#4c5c74
+}
+.tag {
+background:#c3cce7;
+color:#37487d
+}
+.card-arrow {
+color:#354d92
+}
+.count {
+background:#cfd7e9;
+color:#354667
+}
+.levels-bottom .level:nth-child(1) {
+background:#c7dce9;
+border-color:#b4cada
+}
+.levels-bottom .level:nth-child(2) {
+background:#d9c9e8;
+border-color:#cbb7dd
+}
+.levels-bottom .level:nth-child(3) {
+background:#ead7bf;
+border-color:#dec9ac
+}
+.level span {
+color:#4c5c73
+}
+.back-top {
+background:#4a5786
+}
+footer {
+border-top-color:#c3cbe0;
+color:#4f5c75
+}
 /* Extra kompakt, sűrűbb elrendezés */
-.wrap{max-width:1240px;padding-left:17px;padding-right:17px}
-.nav{min-height:50px}
-.hero{padding:10px 0 13px}
-.hero-grid{grid-template-columns:minmax(0,1fr) minmax(360px,1.08fr);gap:18px;align-items:center}
-.hero-logo{width:175px;margin:-7px 0 -5px}
-.hero h1{font-size:clamp(1.3rem,2.15vw,1.9rem);line-height:1.18;margin:5px 0}
-.hero .eyebrow{font-size:.69rem;padding:2px 8px}
-.hero p{font-size:.81rem;margin:4px 0 8px;max-width:480px}
-.hero .primary{padding:7px 12px;font-size:.78rem}
-.hero .toolbar{padding:10px 12px;border-radius:12px}
-.hero .toolbar label{font-size:.83rem}
-.hero .search{margin-top:4px;padding:7px 10px;font-size:.82rem}
-.hero .chips{margin-top:7px;gap:5px}
-.hero .chip{padding:4px 8px;font-size:.72rem}
-main{padding-top:3px;padding-bottom:18px}
-.topic{margin-top:14px;scroll-margin-top:65px}
-.section-head{margin-bottom:6px;gap:8px;align-items:center}
-.section-head>div{display:flex;align-items:baseline;gap:11px;flex-wrap:wrap}
-.section-head h2{font-size:1.06rem;white-space:nowrap}
-.section-head p{font-size:.77rem;margin:0}
-.count{font-size:.69rem;padding:2px 7px}
-.test-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;grid-auto-rows:auto}
-.test-card{padding:10px 11px;border-radius:10px;gap:4px;min-height:124px;height:100%}
-.card-title{display:flex;align-items:flex-start;gap:7px;min-height:0}
-.card-icon{font-size:1.1rem;line-height:1.3;flex:none}
-.test-card strong{font-size:.87rem;line-height:1.24}
-.card-desc{font-size:.76rem;line-height:1.33;flex:1}
-.tag{font-size:.66rem;padding:2px 7px}
-.card-arrow{font-size:.72rem;margin-top:auto}
-.levels-bottom{margin:8px auto 10px}
-.levels{gap:8px}
-.level{padding:9px 11px}
-.level strong{font-size:.86rem}
-.level span{font-size:.73rem}
-.back-top-wrap{padding-bottom:13px}
-.back-top{padding:7px 14px;font-size:.8rem}
-footer{padding:12px}
-@media(max-width:1050px){.test-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:790px){
- .hero-grid{grid-template-columns:1fr;gap:9px}
- .hero-logo{width:155px}
- .test-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
- .section-head>div{gap:5px}
+.wrap {
+max-width:1240px;
+padding-left:17px;
+padding-right:17px
 }
-@media(max-width:560px){
- .wrap{padding-left:12px;padding-right:12px}
- .hero{padding:10px 0}
- .hero-logo{width:140px}
- .hero h1{font-size:1.42rem}
- .hero p{font-size:.79rem}
- .test-grid{grid-template-columns:1fr;gap:7px}
- .test-card{min-height:0;padding:10px 11px}
- .section-head h2{font-size:1rem}
- .section-head p{font-size:.72rem}
- .levels{grid-template-columns:repeat(3,minmax(0,1fr))}
+.nav {
+min-height:50px
 }
-
-
+.hero {
+padding:10px 0 13px
+}
+.hero-grid {
+grid-template-columns:minmax(0,1fr) minmax(360px,1.08fr);
+gap:18px;
+align-items:center
+}
+.hero-logo {
+width:175px;
+margin:-7px 0 -5px
+}
+.hero h1 {
+font-size:clamp(1.3rem,2.15vw,1.9rem);
+line-height:1.18;
+margin:5px 0
+}
+.hero .eyebrow {
+font-size:.69rem;
+padding:2px 8px
+}
+.hero p {
+font-size:.81rem;
+margin:4px 0 8px;
+max-width:480px
+}
+.hero .primary {
+padding:7px 12px;
+font-size:.78rem
+}
+.hero .toolbar {
+padding:10px 12px;
+border-radius:12px
+}
+.hero .toolbar label {
+font-size:.83rem
+}
+.hero .search {
+margin-top:4px;
+padding:7px 10px;
+font-size:.82rem
+}
+.hero .chips {
+margin-top:7px;
+gap:5px
+}
+.hero .chip {
+padding:4px 8px;
+font-size:.72rem
+}
+main {
+padding-top:3px;
+padding-bottom:18px
+}
+.topic {
+margin-top:14px;
+scroll-margin-top:65px
+}
+.section-head {
+margin-bottom:6px;
+gap:8px;
+align-items:center
+}
+.section-head>div {
+display:flex;
+align-items:baseline;
+gap:11px;
+flex-wrap:wrap
+}
+.section-head h2 {
+font-size:1.06rem;
+white-space:nowrap
+}
+.section-head p {
+font-size:.77rem;
+margin:0
+}
+.count {
+font-size:.69rem;
+padding:2px 7px
+}
+.test-grid {
+grid-template-columns:repeat(4,minmax(0,1fr));
+gap:8px;
+grid-auto-rows:auto
+}
+.test-card {
+padding:10px 11px;
+border-radius:10px;
+gap:4px;
+min-height:124px;
+height:100%
+}
+.card-title {
+display:flex;
+align-items:flex-start;
+gap:7px;
+min-height:0
+}
+.card-icon {
+font-size:1.1rem;
+line-height:1.3;
+flex:none
+}
+.test-card strong {
+font-size:.87rem;
+line-height:1.24
+}
+.card-desc {
+font-size:.76rem;
+line-height:1.33;
+flex:1
+}
+.tag {
+font-size:.66rem;
+padding:2px 7px
+}
+.card-arrow {
+font-size:.72rem;
+margin-top:auto
+}
+.levels-bottom {
+margin:8px auto 10px
+}
+.levels {
+gap:8px
+}
+.level {
+padding:9px 11px
+}
+.level strong {
+font-size:.86rem
+}
+.level span {
+font-size:.73rem
+}
+.back-top-wrap {
+padding-bottom:13px
+}
+.back-top {
+padding:7px 14px;
+font-size:.8rem
+}
+footer {
+padding:12px
+}
+@media(max-width:1050px) {
+.test-grid {
+grid-template-columns:repeat(3,minmax(0,1fr))
+}
+}
+@media(max-width:790px) {
+.hero-grid {
+grid-template-columns:1fr;
+gap:9px
+}
+.hero-logo {
+width:155px
+}
+.test-grid {
+grid-template-columns:repeat(2,minmax(0,1fr))
+}
+.section-head>div {
+gap:5px
+}
+}
+@media(max-width:560px) {
+.wrap {
+padding-left:12px;
+padding-right:12px
+}
+.hero {
+padding:10px 0
+}
+.hero-logo {
+width:140px
+}
+.hero h1 {
+font-size:1.42rem
+}
+.hero p {
+font-size:.79rem
+}
+.test-grid {
+grid-template-columns:1fr;
+gap:7px
+}
+.test-card {
+min-height:0;
+padding:10px 11px
+}
+.section-head h2 {
+font-size:1rem
+}
+.section-head p {
+font-size:.72rem
+}
+.levels {
+grid-template-columns:repeat(3,minmax(0,1fr))
+}
+}
 /* Kisegítő megjelenítési beállítások */
-.access-tools{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.access-tools button{font:inherit;font-size:.77rem;font-weight:750;padding:6px 9px;border:1.5px solid #61708d;background:#fff;color:#11265b;border-radius:9px;cursor:pointer}
-.access-tools button[aria-pressed="true"]{background:#11265b;color:white}
-.access-tools button:focus-visible,a:focus-visible,input:focus-visible,.chip:focus-visible{outline:3px solid #d55200;outline-offset:3px}
-body.large-text{font-size:19px}
-body.large-text .nav-brand{font-size:1.35rem}
-body.large-text .klebi{font-size:1.45rem}
-body.large-text nav a,body.large-text .access-tools button{font-size:1rem}
-body.large-text .hero h1{font-size:clamp(1.85rem,3vw,2.5rem)}
-body.large-text .hero p,body.large-text .section-head p,body.large-text .level span{font-size:1rem}
-body.large-text .eyebrow,body.large-text .hero .eyebrow{font-size:.91rem}
-body.large-text .toolbar label,body.large-text .hero .toolbar label{font-size:1.05rem}
-body.large-text .search,body.large-text .hero .search{font-size:1rem}
-body.large-text .chip,body.large-text .hero .chip{font-size:.96rem;padding:7px 11px}
-body.large-text .section-head h2{font-size:1.35rem}
-body.large-text .test-card strong{font-size:1.13rem}
-body.large-text .card-desc{font-size:1rem}
-body.large-text .tag,body.large-text .card-arrow,body.large-text .count{font-size:.9rem}
-body.large-text .level strong{font-size:1.1rem}
-body.large-text .test-card{min-height:160px}
-body.large-text .test-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-body.high-contrast{--ink:#06183a;--muted:#152947;--border:#203b65;--bg:#e7edf7;background:#e7edf7;color:#06183a}
-body.high-contrast header{background:#fff;border-bottom:2px solid #06183a}
-body.high-contrast .hero{background:#dce5f4}
-body.high-contrast .toolbar,body.high-contrast .hero .toolbar{background:#fff;border:2px solid #06183a;box-shadow:none}
-body.high-contrast .search{background:#fff;border:2px solid #152947;color:#06183a}
-body.high-contrast .chip{background:#fff;color:#06183a;border:2px solid #06183a}
-body.high-contrast .chip.active{background:#06183a;color:#fff}
-body.high-contrast .test-card,body.high-contrast .topic:nth-of-type(n) .test-card{background:#fff;border:2px solid #203b65;box-shadow:none}
-body.high-contrast .test-card strong,body.high-contrast .card-desc,body.high-contrast .section-head p,body.high-contrast .hero p{color:#06183a}
-body.high-contrast .tag{background:#dce6ff;color:#06183a;border:1px solid #203b65}
-body.high-contrast .card-arrow{color:#092f83;text-decoration:underline}
-body.high-contrast .level,body.high-contrast .level:nth-child(n){background:#fff;border:2px solid #203b65}
-body.high-contrast .eyebrow{color:#06183a;border:1px solid #203b65}
-body.high-contrast .hero h1 .color{background:none;color:#06183a}
-body.high-contrast .primary,body.high-contrast .back-top{background:#06183a;color:#fff}
-body.high-contrast .access-tools button{border-color:#06183a}
-@media(max-width:900px){.access-tools{order:4}.nav{flex-wrap:wrap}}
-@media(max-width:790px){body.large-text .test-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:560px){body.large-text .test-grid{grid-template-columns:1fr}.access-tools{width:100%;justify-content:flex-end}}
-
+.access-tools {
+display:flex;
+align-items:center;
+gap:5px;
+flex-wrap:wrap
+}
+.access-tools button {
+font:inherit;
+font-size:.77rem;
+font-weight:750;
+padding:6px 9px;
+border:1.5px solid #61708d;
+background:#fff;
+color:#11265b;
+border-radius:9px;
+cursor:pointer
+}
+.access-tools button[aria-pressed="true"] {
+background:#11265b;
+color:white
+}
+.access-tools button:focus-visible,a:focus-visible,input:focus-visible,.chip:focus-visible {
+outline:3px solid #d55200;
+outline-offset:3px
+}
+body.large-text {
+font-size:19px
+}
+body.large-text .nav-brand {
+font-size:1.35rem
+}
+body.large-text .klebi {
+font-size:1.45rem
+}
+body.large-text nav a,body.large-text .access-tools button {
+font-size:1rem
+}
+body.large-text .hero h1 {
+font-size:clamp(1.85rem,3vw,2.5rem)
+}
+body.large-text .hero p,body.large-text .section-head p,body.large-text .level span {
+font-size:1rem
+}
+body.large-text .eyebrow,body.large-text .hero .eyebrow {
+font-size:.91rem
+}
+body.large-text .toolbar label,body.large-text .hero .toolbar label {
+font-size:1.05rem
+}
+body.large-text .search,body.large-text .hero .search {
+font-size:1rem
+}
+body.large-text .chip,body.large-text .hero .chip {
+font-size:.96rem;
+padding:7px 11px
+}
+body.large-text .section-head h2 {
+font-size:1.35rem
+}
+body.large-text .test-card strong {
+font-size:1.13rem
+}
+body.large-text .card-desc {
+font-size:1rem
+}
+body.large-text .tag,body.large-text .card-arrow,body.large-text .count {
+font-size:.9rem
+}
+body.large-text .level strong {
+font-size:1.1rem
+}
+body.large-text .test-card {
+min-height:160px
+}
+body.large-text .test-grid {
+grid-template-columns:repeat(3,minmax(0,1fr))
+}
+body.high-contrast {
+--ink:#06183a;
+--muted:#152947;
+--border:#203b65;
+--bg:#e7edf7;
+background:#e7edf7;
+color:#06183a
+}
+body.high-contrast header {
+background:#fff;
+border-bottom:2px solid #06183a
+}
+body.high-contrast .hero {
+background:#dce5f4
+}
+body.high-contrast .toolbar,body.high-contrast .hero .toolbar {
+background:#fff;
+border:2px solid #06183a;
+box-shadow:none
+}
+body.high-contrast .search {
+background:#fff;
+border:2px solid #152947;
+color:#06183a
+}
+body.high-contrast .chip {
+background:#fff;
+color:#06183a;
+border:2px solid #06183a
+}
+body.high-contrast .chip.active {
+background:#06183a;
+color:#fff
+}
+body.high-contrast .test-card,body.high-contrast .topic:nth-of-type(n) .test-card {
+background:#fff;
+border:2px solid #203b65;
+box-shadow:none
+}
+body.high-contrast .test-card strong,body.high-contrast .card-desc,body.high-contrast .section-head p,body.high-contrast .hero p {
+color:#06183a
+}
+body.high-contrast .tag {
+background:#dce6ff;
+color:#06183a;
+border:1px solid #203b65
+}
+body.high-contrast .card-arrow {
+color:#092f83;
+text-decoration:underline
+}
+body.high-contrast .level,body.high-contrast .level:nth-child(n) {
+background:#fff;
+border:2px solid #203b65
+}
+body.high-contrast .eyebrow {
+color:#06183a;
+border:1px solid #203b65
+}
+body.high-contrast .hero h1 .color {
+background:none;
+color:#06183a
+}
+body.high-contrast .primary,body.high-contrast .back-top {
+background:#06183a;
+color:#fff
+}
+body.high-contrast .access-tools button {
+border-color:#06183a
+}
+@media(max-width:900px) {
+.access-tools {
+order:4
+}
+.nav {
+flex-wrap:wrap
+}
+}
+@media(max-width:790px) {
+body.large-text .test-grid {
+grid-template-columns:repeat(2,minmax(0,1fr))
+}
+}
+@media(max-width:560px) {
+body.large-text .test-grid {
+grid-template-columns:1fr
+}
+.access-tools {
+width:100%;
+justify-content:flex-end
+}
+}
 /* Egy órán belül megnyitott tesztek, a kedvencek megőrzésével */
-.card-wrap.recently-opened .test-card{background:#d9d7df!important;border-color:#8b8497!important;box-shadow:inset 0 0 0 1px #9c96a5!important}
-.card-wrap.recently-opened .test-card strong{color:#283044}
-.recent-label{display:block;align-self:flex-start;margin-top:3px;border:1px solid #777080;background:#f1eff4;color:#30303e;border-radius:6px;padding:2px 6px;font-size:.7rem;font-weight:750}
-body.high-contrast .card-wrap.recently-opened .test-card{background:#c6ccd6!important;border:3px dashed #06183a!important}
-body.high-contrast .recent-label{background:#06183a;color:#fff;border-color:#06183a}
-body.large-text .recent-label{font-size:.9rem}
-
+.card-wrap.recently-opened .test-card {
+background:#d9d7df!important;
+border-color:#8b8497!important;
+box-shadow:inset 0 0 0 1px #9c96a5!important
+}
+.card-wrap.recently-opened .test-card strong {
+color:#283044
+}
+.recent-label {
+display:block;
+align-self:flex-start;
+margin-top:3px;
+border:1px solid #777080;
+background:#f1eff4;
+color:#30303e;
+border-radius:6px;
+padding:2px 6px;
+font-size:.7rem;
+font-weight:750
+}
+body.high-contrast .card-wrap.recently-opened .test-card {
+background:#c6ccd6!important;
+border:3px dashed #06183a!important
+}
+body.high-contrast .recent-label {
+background:#06183a;
+color:#fff;
+border-color:#06183a
+}
+body.large-text .recent-label {
+font-size:.9rem
+}
 /* Egységes, kétszínű tipográfiai paletta: tintakék és tompa ibolya */
-.logo .color,.nav-brand .color{background:none!important;-webkit-background-clip:initial!important;background-clip:initial!important;color:#62518c!important}
-.nav-brand{color:#253658!important}
-.hero h1{color:#253658}
-.hero h1 .color{background:none!important;-webkit-background-clip:initial!important;background-clip:initial!important;color:#62518c!important}
-.klebi{color:#62518c;text-shadow:1px 2px 0 #d9cde7}
-.klebi-star{color:#8c75ad}
-body.high-contrast .nav-brand,body.high-contrast .nav-brand .color,body.high-contrast .hero h1,body.high-contrast .hero h1 .color,body.high-contrast .klebi{color:#06183a!important;background:none!important}
+.logo .color,.nav-brand .color {
+background:none!important;
+-webkit-background-clip:initial!important;
+background-clip:initial!important;
+color:#62518c!important
+}
+.nav-brand {
+color:#253658!important
+}
+.hero h1 {
+color:#253658
+}
+.hero h1 .color {
+background:none!important;
+-webkit-background-clip:initial!important;
+background-clip:initial!important;
+color:#62518c!important
+}
+.klebi {
+color:#62518c;
+text-shadow:1px 2px 0 #d9cde7
+}
+.klebi-star {
+color:#8c75ad
+}
+body.high-contrast .nav-brand,body.high-contrast .nav-brand .color,body.high-contrast .hero h1,body.high-contrast .hero h1 .color,body.high-contrast .klebi {
+color:#06183a!important;
+background:none!important
+}
 </style>
-<style>
+        <style>
 /* Szűrők és kedvencek: tömör, billentyűzettel is kezelhető */
-.extra-filters{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin-top:9px}
-.extra-filters label{font-size:.79rem;font-weight:750;display:flex;flex-direction:column;gap:3px}
-.extra-filters select{font:inherit;font-size:.83rem;color:#11265b;background:#fff;border:1.5px solid #7585a3;border-radius:8px;padding:6px 8px;max-width:190px}
-.extra-filters .favorite-only{flex-direction:row;align-items:center;gap:5px;padding:6px 0}
-.reset-filters{border:1px solid #66758a;border-radius:8px;background:#fff;color:#11265b;padding:7px 10px;font-weight:750;cursor:pointer;font-size:.77rem}
-.card-wrap{position:relative;min-width:0;display:flex}
-.card-wrap .test-card{width:100%;padding-right:35px}
-.favorite{position:absolute;right:6px;top:5px;z-index:1;border:1px solid #536584;background:#fff;color:#283a68;border-radius:9px;min-width:28px;min-height:28px;cursor:pointer;font-size:1.1rem;line-height:1}
-.favorite[aria-pressed=true]{background:#e9d8ff;color:#4b2580}
-.card-meta{font-size:.7rem;color:#263a60;font-weight:750}
-body.large-text .extra-filters label,body.large-text .extra-filters select,body.large-text .reset-filters{font-size:1rem}
-body.large-text .card-meta{font-size:.88rem}
-body.high-contrast .favorite,body.high-contrast .extra-filters select,body.high-contrast .reset-filters{border:2px solid #06183a;background:#fff;color:#06183a}
-body.high-contrast .favorite[aria-pressed=true]{background:#06183a;color:white}
-.extra-filters select:focus-visible,.favorite:focus-visible,.reset-filters:focus-visible{outline:3px solid #d55200;outline-offset:2px}
-@media(max-width:560px){.extra-filters label{flex:1 1 135px}.extra-filters .favorite-only{flex:0 0 auto}}
-
+.extra-filters {
+display:flex;
+align-items:end;
+gap:8px;
+flex-wrap:wrap;
+margin-top:9px
+}
+.extra-filters label {
+font-size:.79rem;
+font-weight:750;
+display:flex;
+flex-direction:column;
+gap:3px
+}
+.extra-filters select {
+font:inherit;
+font-size:.83rem;
+color:#11265b;
+background:#fff;
+border:1.5px solid #7585a3;
+border-radius:8px;
+padding:6px 8px;
+max-width:190px
+}
+.extra-filters .favorite-only {
+flex-direction:row;
+align-items:center;
+gap:5px;
+padding:6px 0
+}
+.reset-filters {
+border:1px solid #66758a;
+border-radius:8px;
+background:#fff;
+color:#11265b;
+padding:7px 10px;
+font-weight:750;
+cursor:pointer;
+font-size:.77rem
+}
+.card-wrap {
+position:relative;
+min-width:0;
+display:flex
+}
+.card-wrap .test-card {
+width:100%;
+padding-right:35px
+}
+.favorite {
+position:absolute;
+right:6px;
+top:5px;
+z-index:1;
+border:1px solid #536584;
+background:#fff;
+color:#283a68;
+border-radius:9px;
+min-width:28px;
+min-height:28px;
+cursor:pointer;
+font-size:1.1rem;
+line-height:1
+}
+.favorite[aria-pressed=true] {
+background:#e9d8ff;
+color:#4b2580
+}
+.card-meta {
+font-size:.7rem;
+color:#263a60;
+font-weight:750
+}
+body.large-text .extra-filters label,body.large-text .extra-filters select,body.large-text .reset-filters {
+font-size:1rem
+}
+body.large-text .card-meta {
+font-size:.88rem
+}
+body.high-contrast .favorite,body.high-contrast .extra-filters select,body.high-contrast .reset-filters {
+border:2px solid #06183a;
+background:#fff;
+color:#06183a
+}
+body.high-contrast .favorite[aria-pressed=true] {
+background:#06183a;
+color:white
+}
+.extra-filters select:focus-visible,.favorite:focus-visible,.reset-filters:focus-visible {
+outline:3px solid #d55200;
+outline-offset:2px
+}
+@media(max-width:560px) {
+.extra-filters label {
+flex:1 1 135px
+}
+.extra-filters .favorite-only {
+flex:0 0 auto
+}
+}
 /* Egy órán belül megnyitott tesztek, a kedvencek megőrzésével */
-.card-wrap.recently-opened .test-card{background:#d9d7df!important;border-color:#8b8497!important;box-shadow:inset 0 0 0 1px #9c96a5!important}
-.card-wrap.recently-opened .test-card strong{color:#283044}
-.recent-label{display:block;align-self:flex-start;margin-top:3px;border:1px solid #777080;background:#f1eff4;color:#30303e;border-radius:6px;padding:2px 6px;font-size:.7rem;font-weight:750}
-body.high-contrast .card-wrap.recently-opened .test-card{background:#c6ccd6!important;border:3px dashed #06183a!important}
-body.high-contrast .recent-label{background:#06183a;color:#fff;border-color:#06183a}
-body.large-text .recent-label{font-size:.9rem}
-
+.card-wrap.recently-opened .test-card {
+background:#d9d7df!important;
+border-color:#8b8497!important;
+box-shadow:inset 0 0 0 1px #9c96a5!important
+}
+.card-wrap.recently-opened .test-card strong {
+color:#283044
+}
+.recent-label {
+display:block;
+align-self:flex-start;
+margin-top:3px;
+border:1px solid #777080;
+background:#f1eff4;
+color:#30303e;
+border-radius:6px;
+padding:2px 6px;
+font-size:.7rem;
+font-weight:750
+}
+body.high-contrast .card-wrap.recently-opened .test-card {
+background:#c6ccd6!important;
+border:3px dashed #06183a!important
+}
+body.high-contrast .recent-label {
+background:#06183a;
+color:#fff;
+border-color:#06183a
+}
+body.large-text .recent-label {
+font-size:.9rem
+}
 /* Egységes, kétszínű tipográfiai paletta: tintakék és tompa ibolya */
-.logo .color,.nav-brand .color{background:none!important;-webkit-background-clip:initial!important;background-clip:initial!important;color:#62518c!important}
-.nav-brand{color:#253658!important}
-.hero h1{color:#253658}
-.hero h1 .color{background:none!important;-webkit-background-clip:initial!important;background-clip:initial!important;color:#62518c!important}
-.klebi{color:#62518c;text-shadow:1px 2px 0 #d9cde7}
-.klebi-star{color:#8c75ad}
-body.high-contrast .nav-brand,body.high-contrast .nav-brand .color,body.high-contrast .hero h1,body.high-contrast .hero h1 .color,body.high-contrast .klebi{color:#06183a!important;background:none!important}
-</style><style>html{background:#f6f5f9}body{background:transparent!important;position:relative;isolation:isolate}body::before{content:"";position:fixed;inset:0;background:#f7f7fa url('background.svg') center center / cover no-repeat;z-index:-1;pointer-events:none}header{background:#f6f4f9e8!important;backdrop-filter:blur(8px)}.hero{background:linear-gradient(115deg,#f4f2faeb,#eceaf6d9)!important}.topic .test-card{backdrop-filter:blur(3px)}body.high-contrast::before{background:#e5eaf3!important}body.high-contrast .hero{background:#dce5f4!important}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
-  header .nav{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:8px 0}.header-brand-group{display:flex;align-items:center;gap:10px;margin-right:auto;min-width:0}.header-mark{width:88px;height:75px;object-fit:contain;flex:none}.brandtext{display:flex;flex-wrap:wrap;align-items:baseline;gap:0 12px}.brandtext .nav-brand{font-size:clamp(1.45rem,2.6vw,2.2rem)}.brandtext .klebi{font-size:clamp(.95rem,1.5vw,1.35rem)}.brand-motto{flex-basis:100%;color:#5c6288;font-size:.83rem;font-weight:650}header nav{display:none!important}.hero{padding:10px 0 14px!important}.modern-hero-grid{display:block!important}.modern-toolbar{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;background:#e5def0dd!important;border-radius:15px!important;padding:12px!important}.modern-toolbar .search{margin:0!important;width:100%;background:#fff!important;border-radius:30px!important;padding:11px 16px!important}.modern-toolbar .extra-filters{margin-top:0;display:flex;align-items:center;gap:10px}.modern-toolbar .extra-filters label{flex-direction:row;align-items:center;gap:6px;font-size:.83rem}.modern-toolbar .extra-filters select{border-radius:25px;background:#f9f9fd;padding:8px 11px;max-width:220px}.modern-toolbar .favorite-only{margin-left:auto}.modern-toolbar .reset-filters{border-radius:25px}.topic-details{padding:0 4px;color:#28395f;font-size:.8rem}.topic-details summary{cursor:pointer;font-weight:700}.topic-details .chips{margin-top:8px}.modern-toolbar .chip{border-radius:22px}main{padding-top:18px!important}.topic{margin-bottom:20px!important}.section-head{margin-bottom:9px!important}.test-grid{gap:10px!important}.test-card{border-radius:14px!important}.levels-bottom{margin-top:10px!important}@media(max-width:850px){.header-mark{width:68px;height:62px}.modern-toolbar .extra-filters{flex-wrap:wrap}.modern-toolbar .favorite-only{margin-left:0}}@media(max-width:560px){.brand-motto{font-size:.74rem}.header-mark{width:54px;height:54px}.modern-toolbar .extra-filters label{flex:1 1 150px}.modern-toolbar .extra-filters .favorite-only{flex:1 1 150px}.modern-toolbar .extra-filters select{max-width:100%}}body.high-contrast .modern-toolbar{background:#fff!important}</style><style>
+.logo .color,.nav-brand .color {
+background:none!important;
+-webkit-background-clip:initial!important;
+background-clip:initial!important;
+color:#62518c!important
+}
+.nav-brand {
+color:#253658!important
+}
+.hero h1 {
+color:#253658
+}
+.hero h1 .color {
+background:none!important;
+-webkit-background-clip:initial!important;
+background-clip:initial!important;
+color:#62518c!important
+}
+.klebi {
+color:#62518c;
+text-shadow:1px 2px 0 #d9cde7
+}
+.klebi-star {
+color:#8c75ad
+}
+body.high-contrast .nav-brand,body.high-contrast .nav-brand .color,body.high-contrast .hero h1,body.high-contrast .hero h1 .color,body.high-contrast .klebi {
+color:#06183a!important;
+background:none!important
+}
+</style>
+        <style>
+html {
+background:#f6f5f9
+}
+body {
+background:transparent!important;
+position:relative;
+isolation:isolate
+}
+body::before {
+content:"";
+position:fixed;
+inset:0;
+background:#f7f7fa url('background.svg') center center / cover no-repeat;
+z-index:-1;
+pointer-events:none
+}
+header {
+background:#f6f4f9e8!important;
+backdrop-filter:blur(8px)
+}
+.hero {
+background:linear-gradient(115deg,#f4f2faeb,#eceaf6d9)!important
+}
+.topic .test-card {
+backdrop-filter:blur(3px)
+}
+body.high-contrast::before {
+background:#e5eaf3!important
+}
+body.high-contrast .hero {
+background:#dce5f4!important
+}
+@media(prefers-reduced-motion:reduce) {
+* {
+scroll-behavior:auto!important
+}
+}
+header .nav {
+display:flex;
+align-items:center;
+gap:14px;
+flex-wrap:wrap;
+padding:8px 0
+}
+.header-brand-group {
+display:flex;
+align-items:center;
+gap:10px;
+margin-right:auto;
+min-width:0
+}
+.header-mark {
+width:88px;
+height:75px;
+object-fit:contain;
+flex:none
+}
+.brandtext {
+display:flex;
+flex-wrap:wrap;
+align-items:baseline;
+gap:0 12px
+}
+.brandtext .nav-brand {
+font-size:clamp(1.45rem,2.6vw,2.2rem)
+}
+.brandtext .klebi {
+font-size:clamp(.95rem,1.5vw,1.35rem)
+}
+.brand-motto {
+flex-basis:100%;
+color:#5c6288;
+font-size:.83rem;
+font-weight:650
+}
+header nav {
+display:none!important
+}
+.hero {
+padding:10px 0 14px!important
+}
+.modern-hero-grid {
+display:block!important
+}
+.modern-toolbar {
+display:grid;
+grid-template-columns:minmax(0,1fr);
+gap:7px;
+background:#e5def0dd!important;
+border-radius:15px!important;
+padding:12px!important
+}
+.modern-toolbar .search {
+margin:0!important;
+width:100%;
+background:#fff!important;
+border-radius:30px!important;
+padding:11px 16px!important
+}
+.modern-toolbar .extra-filters {
+margin-top:0;
+display:flex;
+align-items:center;
+gap:10px
+}
+.modern-toolbar .extra-filters label {
+flex-direction:row;
+align-items:center;
+gap:6px;
+font-size:.83rem
+}
+.modern-toolbar .extra-filters select {
+border-radius:25px;
+background:#f9f9fd;
+padding:8px 11px;
+max-width:220px
+}
+.modern-toolbar .favorite-only {
+margin-left:auto
+}
+.modern-toolbar .reset-filters {
+border-radius:25px
+}
+.topic-details {
+padding:0 4px;
+color:#28395f;
+font-size:.8rem
+}
+.topic-details summary {
+cursor:pointer;
+font-weight:700
+}
+.topic-details .chips {
+margin-top:8px
+}
+.modern-toolbar .chip {
+border-radius:22px
+}
+main {
+padding-top:18px!important
+}
+.topic {
+margin-bottom:20px!important
+}
+.section-head {
+margin-bottom:9px!important
+}
+.test-grid {
+gap:10px!important
+}
+.test-card {
+border-radius:14px!important
+}
+.levels-bottom {
+margin-top:10px!important
+}
+@media(max-width:850px) {
+.header-mark {
+width:68px;
+height:62px
+}
+.modern-toolbar .extra-filters {
+flex-wrap:wrap
+}
+.modern-toolbar .favorite-only {
+margin-left:0
+}
+}
+@media(max-width:560px) {
+.brand-motto {
+font-size:.74rem
+}
+.header-mark {
+width:54px;
+height:54px
+}
+.modern-toolbar .extra-filters label {
+flex:1 1 150px
+}
+.modern-toolbar .extra-filters .favorite-only {
+flex:1 1 150px
+}
+.modern-toolbar .extra-filters select {
+max-width:100%
+}
+}
+body.high-contrast .modern-toolbar {
+background:#fff!important
+}
+</style>
+        <style>
 /* Pasztell, telített, de jól olvasható alapszínek; a növényes háttér marad. */
-:root{--ink:#1d2c4d;--muted:#344763;--bg:#cbd1e0;--border:#a9b7cc}
-html{background:#cbd1e0!important}
-body::before{background-color:#cbd1e0!important;background-image:linear-gradient(115deg,rgba(194,204,222,.58),rgba(211,197,221,.48),rgba(196,215,207,.4)),url('background.svg')!important;background-position:center center!important;background-size:cover!important}
-header{background:#cbd0e2ef!important;border-bottom:1px solid #a9b5ce}
-.hero{background:linear-gradient(110deg,#c5cde0ed,#d4c5e0e8,#c8d5d4e8)!important}
-.modern-toolbar{background:#c9bedbed!important;border:1px solid #a79bbf!important;box-shadow:0 5px 16px #27385b18!important}
-.modern-toolbar .search{background:#e9e9f2!important;color:#172848!important;border:1px solid #a6aec6!important}
-.modern-toolbar .search::placeholder{color:#50607c!important;opacity:1}
-.modern-toolbar .extra-filters select,.modern-toolbar .reset-filters{background:#e1e4f0!important;color:#1e3052!important;border:1.5px solid #8493b1!important}
-.modern-toolbar .extra-filters label,.topic-filter-title{color:#1b2b4c!important}
-.topic-filters{padding:8px 2px 2px}
-.topic-filter-title{font-size:.86rem;font-weight:850;margin-bottom:8px}
-.topic-filters .chips{display:flex;flex-wrap:wrap;gap:7px;margin:0!important}
-.topic-filters .chip{background:#c1cce2!important;color:#1c3155!important;border:1px solid #9badd0!important;font-size:.79rem!important;font-weight:750!important;padding:7px 12px!important}
-.topic-filters .chip.active{background:#465b8c!important;color:white!important;border-color:#465b8c!important}
-.topic-overflow{margin-top:9px}
-.topic-overflow summary{cursor:pointer;width:max-content;max-width:100%;font-weight:800;color:#20345a;padding:6px 11px;background:#c3c7df;border:1px solid #9faaca;border-radius:10px}
-.topic-overflow .overflow-chips{margin-top:8px!important}
-.topic-overflow[hidden]{display:none!important}
-.section-head h2,.section-head p,.card-desc,.test-card strong,.level strong,.level span{color:#203352!important}
-.topic .test-card{box-shadow:0 4px 13px #24335421}
-.favorite{background:#e8e8f1!important;color:#23385e!important}
-.favorite[aria-pressed=true]{background:#d6c5e5!important;color:#37245d!important}
-.card-meta,.tag,.count{color:#25395d!important}
-.empty{background:#d4d5e5;color:#1e3152;border-radius:12px}
-footer{color:#243657!important}
+:root {
+--ink:#1d2c4d;
+--muted:#344763;
+--bg:#cbd1e0;
+--border:#a9b7cc
+}
+html {
+background:#cbd1e0!important
+}
+body::before {
+background-color:#cbd1e0!important;
+background-image:linear-gradient(115deg,rgba(194,204,222,.58),rgba(211,197,221,.48),rgba(196,215,207,.4)),url('background.svg')!important;
+background-position:center center!important;
+background-size:cover!important
+}
+header {
+background:#cbd0e2ef!important;
+border-bottom:1px solid #a9b5ce
+}
+.hero {
+background:linear-gradient(110deg,#c5cde0ed,#d4c5e0e8,#c8d5d4e8)!important
+}
+.modern-toolbar {
+background:#c9bedbed!important;
+border:1px solid #a79bbf!important;
+box-shadow:0 5px 16px #27385b18!important
+}
+.modern-toolbar .search {
+background:#e9e9f2!important;
+color:#172848!important;
+border:1px solid #a6aec6!important
+}
+.modern-toolbar .search::placeholder {
+color:#50607c!important;
+opacity:1
+}
+.modern-toolbar .extra-filters select,.modern-toolbar .reset-filters {
+background:#e1e4f0!important;
+color:#1e3052!important;
+border:1.5px solid #8493b1!important
+}
+.modern-toolbar .extra-filters label,.topic-filter-title {
+color:#1b2b4c!important
+}
+.topic-filters {
+padding:8px 2px 2px
+}
+.topic-filter-title {
+font-size:.86rem;
+font-weight:850;
+margin-bottom:8px
+}
+.topic-filters .chips {
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin:0!important
+}
+.topic-filters .chip {
+background:#c1cce2!important;
+color:#1c3155!important;
+border:1px solid #9badd0!important;
+font-size:.79rem!important;
+font-weight:750!important;
+padding:7px 12px!important
+}
+.topic-filters .chip.active {
+background:#465b8c!important;
+color:white!important;
+border-color:#465b8c!important
+}
+.topic-overflow {
+margin-top:9px
+}
+.topic-overflow summary {
+cursor:pointer;
+width:max-content;
+max-width:100%;
+font-weight:800;
+color:#20345a;
+padding:6px 11px;
+background:#c3c7df;
+border:1px solid #9faaca;
+border-radius:10px
+}
+.topic-overflow .overflow-chips {
+margin-top:8px!important
+}
+.topic-overflow[hidden] {
+display:none!important
+}
+.section-head h2,.section-head p,.card-desc,.test-card strong,.level strong,.level span {
+color:#203352!important
+}
+.topic .test-card {
+box-shadow:0 4px 13px #24335421
+}
+.favorite {
+background:#e8e8f1!important;
+color:#23385e!important
+}
+.favorite[aria-pressed=true] {
+background:#d6c5e5!important;
+color:#37245d!important
+}
+.card-meta,.tag,.count {
+color:#25395d!important
+}
+.empty {
+background:#d4d5e5;
+color:#1e3152;
+border-radius:12px
+}
+footer {
+color:#243657!important
+}
 /* Kontrasztos nézet elsőbbsége. */
-body.high-contrast::before{background:#e5eaf3!important}
-body.high-contrast header{background:#fff!important}
-body.high-contrast .hero{background:#dce5f4!important}
-body.high-contrast .modern-toolbar{background:#fff!important;border:2px solid #06183a!important}
-body.high-contrast .modern-toolbar .search,body.high-contrast .modern-toolbar .extra-filters select,body.high-contrast .modern-toolbar .reset-filters{background:#fff!important;color:#06183a!important;border:2px solid #06183a!important}
-body.high-contrast .topic-filters .chip{background:#fff!important;color:#06183a!important;border:2px solid #06183a!important}
-body.high-contrast .topic-filters .chip.active{background:#06183a!important;color:#fff!important}
-body.high-contrast .topic-overflow summary{background:#fff;color:#06183a;border:2px solid #06183a}
-body.high-contrast .topic .test-card{background:#fff!important}
-body.high-contrast .favorite{background:#fff!important;color:#06183a!important}
-body.high-contrast .favorite[aria-pressed=true]{background:#06183a!important;color:#fff!important}
-body.high-contrast .section-head h2,body.high-contrast .section-head p,body.high-contrast .card-desc,body.high-contrast .test-card strong,body.high-contrast .level strong,body.high-contrast .level span{color:#06183a!important}
-@media(max-width:580px){.topic-filters .chip{font-size:.76rem!important;padding:6px 9px!important}}
-</style><style>
+body.high-contrast::before {
+background:#e5eaf3!important
+}
+body.high-contrast header {
+background:#fff!important
+}
+body.high-contrast .hero {
+background:#dce5f4!important
+}
+body.high-contrast .modern-toolbar {
+background:#fff!important;
+border:2px solid #06183a!important
+}
+body.high-contrast .modern-toolbar .search,body.high-contrast .modern-toolbar .extra-filters select,body.high-contrast .modern-toolbar .reset-filters {
+background:#fff!important;
+color:#06183a!important;
+border:2px solid #06183a!important
+}
+body.high-contrast .topic-filters .chip {
+background:#fff!important;
+color:#06183a!important;
+border:2px solid #06183a!important
+}
+body.high-contrast .topic-filters .chip.active {
+background:#06183a!important;
+color:#fff!important
+}
+body.high-contrast .topic-overflow summary {
+background:#fff;
+color:#06183a;
+border:2px solid #06183a
+}
+body.high-contrast .topic .test-card {
+background:#fff!important
+}
+body.high-contrast .favorite {
+background:#fff!important;
+color:#06183a!important
+}
+body.high-contrast .favorite[aria-pressed=true] {
+background:#06183a!important;
+color:#fff!important
+}
+body.high-contrast .section-head h2,body.high-contrast .section-head p,body.high-contrast .card-desc,body.high-contrast .test-card strong,body.high-contrast .level strong,body.high-contrast .level span {
+color:#06183a!important
+}
+@media(max-width:580px) {
+.topic-filters .chip {
+font-size:.76rem!important;
+padding:6px 9px!important
+}
+}
+</style>
+        <style>
 /* Visszafogottabb lila: kékesszürke és zsályazöld felületek */
-:root{--bg:#c6d2d6!important;--border:#a2b5bc!important;--muted:#34495c!important}
-html{background:#c6d2d6!important}
-body::before{background-color:#c6d2d6!important;background-image:linear-gradient(115deg,rgba(181,202,207,.42),rgba(198,213,204,.38),rgba(207,213,216,.34)),url('background.svg')!important}
-header{background:#c3d2d7ef!important;border-bottom-color:#9cafb8!important}
-.hero{background:linear-gradient(112deg,#bacdd5ed,#c8d8d0eb,#ced6d9ed)!important}
-.modern-toolbar{background:#b9cdd0ed!important;border-color:#90aeb5!important}
-.modern-toolbar .search{background:#e1e9e8!important;border-color:#8da9ae!important}
-.modern-toolbar .extra-filters select,.modern-toolbar .reset-filters{background:#dce7e4!important;border-color:#849ea5!important}
-.topic-filters .chip{background:#cedfdb!important;border-color:#9eb7b3!important;color:#203950!important}
-.topic-filters .chip.active{background:#3c6475!important;border-color:#3c6475!important;color:#fff!important}
-.topic-overflow summary{background:#c4d7d4!important;border-color:#92b0ad!important}
-.favorite{background:#e0e9e6!important}.favorite[aria-pressed=true]{background:#e3d7b7!important;color:#3d3723!important}
-.empty{background:#c9d8d6!important}
+:root {
+--bg:#c6d2d6!important;
+--border:#a2b5bc!important;
+--muted:#34495c!important
+}
+html {
+background:#c6d2d6!important
+}
+body::before {
+background-color:#c6d2d6!important;
+background-image:linear-gradient(115deg,rgba(181,202,207,.42),rgba(198,213,204,.38),rgba(207,213,216,.34)),url('background.svg')!important
+}
+header {
+background:#c3d2d7ef!important;
+border-bottom-color:#9cafb8!important
+}
+.hero {
+background:linear-gradient(112deg,#bacdd5ed,#c8d8d0eb,#ced6d9ed)!important
+}
+.modern-toolbar {
+background:#b9cdd0ed!important;
+border-color:#90aeb5!important
+}
+.modern-toolbar .search {
+background:#e1e9e8!important;
+border-color:#8da9ae!important
+}
+.modern-toolbar .extra-filters select,.modern-toolbar .reset-filters {
+background:#dce7e4!important;
+border-color:#849ea5!important
+}
+.topic-filters .chip {
+background:#cedfdb!important;
+border-color:#9eb7b3!important;
+color:#203950!important
+}
+.topic-filters .chip.active {
+background:#3c6475!important;
+border-color:#3c6475!important;
+color:#fff!important
+}
+.topic-overflow summary {
+background:#c4d7d4!important;
+border-color:#92b0ad!important
+}
+.favorite {
+background:#e0e9e6!important
+}
+.favorite[aria-pressed=true] {
+background:#e3d7b7!important;
+color:#3d3723!important
+}
+.empty {
+background:#c9d8d6!important
+}
 /* Eltérő kártyaszínek, az ibolya csak finom akcentus marad */
-.topic:nth-of-type(5n + 1) .test-card{background:#d9e7e9!important;border-color:#adc4c9!important}
-.topic:nth-of-type(5n + 2) .test-card{background:#d9e6dc!important;border-color:#b1c8b7!important}
-.topic:nth-of-type(5n + 3) .test-card{background:#e8dfd3!important;border-color:#d0bcaa!important}
-.topic:nth-of-type(5n + 4) .test-card{background:#e1dfeb!important;border-color:#bcb9d0!important}
-.topic:nth-of-type(5n + 5) .test-card{background:#d8e3e3!important;border-color:#b0c6c4!important}
-.level:nth-child(1){background:#d3e4e7!important}.level:nth-child(2){background:#d4e5d8!important}.level:nth-child(3){background:#e9dfcf!important}
-.card-wrap.recently-opened .test-card{background:#c6cbd0!important;border-color:#858e98!important}
-body.high-contrast .topic .test-card{background:#fff!important;border-color:#06183a!important}
-body.high-contrast .card-wrap.recently-opened .test-card{background:#c6ccd6!important;border:3px dashed #06183a!important}
-body.high-contrast .modern-toolbar,body.high-contrast header{background:#fff!important}
-body.high-contrast .hero{background:#dce5f4!important}
-body.high-contrast .topic-filters .chip{background:#fff!important;color:#06183a!important;border:2px solid #06183a!important}
-body.high-contrast .topic-filters .chip.active{background:#06183a!important;color:#fff!important}
-
+.topic:nth-of-type(5n + 1) .test-card {
+background:#d9e7e9!important;
+border-color:#adc4c9!important
+}
+.topic:nth-of-type(5n + 2) .test-card {
+background:#d9e6dc!important;
+border-color:#b1c8b7!important
+}
+.topic:nth-of-type(5n + 3) .test-card {
+background:#e8dfd3!important;
+border-color:#d0bcaa!important
+}
+.topic:nth-of-type(5n + 4) .test-card {
+background:#e1dfeb!important;
+border-color:#bcb9d0!important
+}
+.topic:nth-of-type(5n + 5) .test-card {
+background:#d8e3e3!important;
+border-color:#b0c6c4!important
+}
+.level:nth-child(1) {
+background:#d3e4e7!important
+}
+.level:nth-child(2) {
+background:#d4e5d8!important
+}
+.level:nth-child(3) {
+background:#e9dfcf!important
+}
+.card-wrap.recently-opened .test-card {
+background:#c6cbd0!important;
+border-color:#858e98!important
+}
+body.high-contrast .topic .test-card {
+background:#fff!important;
+border-color:#06183a!important
+}
+body.high-contrast .card-wrap.recently-opened .test-card {
+background:#c6ccd6!important;
+border:3px dashed #06183a!important
+}
+body.high-contrast .modern-toolbar,body.high-contrast header {
+background:#fff!important
+}
+body.high-contrast .hero {
+background:#dce5f4!important
+}
+body.high-contrast .topic-filters .chip {
+background:#fff!important;
+color:#06183a!important;
+border:2px solid #06183a!important
+}
+body.high-contrast .topic-filters .chip.active {
+background:#06183a!important;
+color:#fff!important
+}
 /* Világos, de nem fehér tesztkártyák; a háttér színei változatlanok. */
-body:not(.high-contrast) .topic:nth-of-type(5n + 1) .test-card{background:#ECF4F4!important;border-color:#B6CDD0!important}
-body:not(.high-contrast) .topic:nth-of-type(5n + 2) .test-card{background:#EDF5EE!important;border-color:#BDD3C4!important}
-body:not(.high-contrast) .topic:nth-of-type(5n + 3) .test-card{background:#F6F0E7!important;border-color:#D8C8B5!important}
-body:not(.high-contrast) .topic:nth-of-type(5n + 4) .test-card{background:#F1EFF7!important;border-color:#CBC6DC!important}
-body:not(.high-contrast) .topic:nth-of-type(5n + 5) .test-card{background:#EAF3F1!important;border-color:#B6D0C9!important}
+body:not(.high-contrast) .topic:nth-of-type(5n + 1) .test-card {
+background:#ECF4F4!important;
+border-color:#B6CDD0!important
+}
+body:not(.high-contrast) .topic:nth-of-type(5n + 2) .test-card {
+background:#EDF5EE!important;
+border-color:#BDD3C4!important
+}
+body:not(.high-contrast) .topic:nth-of-type(5n + 3) .test-card {
+background:#F6F0E7!important;
+border-color:#D8C8B5!important
+}
+body:not(.high-contrast) .topic:nth-of-type(5n + 4) .test-card {
+background:#F1EFF7!important;
+border-color:#CBC6DC!important
+}
+body:not(.high-contrast) .topic:nth-of-type(5n + 5) .test-card {
+background:#EAF3F1!important;
+border-color:#B6D0C9!important
+}
 /* A megnyitott kártya szürkés jelzése maradjon jól megkülönböztethető. */
-body:not(.high-contrast) .card-wrap.recently-opened .test-card{background:#D8DEE1!important;border-color:#899BA4!important}
-body:not(.high-contrast) .test-card strong,body:not(.high-contrast) .card-desc,body:not(.high-contrast) .card-arrow{color:#20324B!important}
-</style></head>
-<body>
-<header><div class="wrap nav"><div class="header-brand-group"><img alt="SuliTesztek logó" class="header-mark" src="logo.png"/><div class="brandtext"><a aria-label="SuliTesztek kezdőlap" class="logo" href="#top"><span class="nav-brand">Suli<span class="color">Tesztek</span></span></a><span aria-label="Klébi" class="klebi">Klébi<span aria-hidden="true" class="klebi-star">✦</span></span><div class="brand-motto">Tanulj. Gyakorolj. Fejlődj.</div></div></div><nav aria-label="Fő navigáció"><a href="#tesztek">Tesztek</a><a href="#evfolyamok">Évfolyamok</a><a href="#topic-2">Érettségi</a></nav><div aria-label="Megjelenítési beállítások" class="access-tools" role="group"><button aria-pressed="false" id="contrast-toggle" title="Kontrasztos megjelenítés" type="button">◐ Kontraszt</button><button aria-pressed="false" id="font-toggle" title="Nagyobb betűméret" type="button">A+ Betűméret</button></div><div class="clock"><div id="clock-time"></div><div id="clock-date"></div></div></div></header>
-<div class="hero" id="top"><div class="wrap hero-grid modern-hero-grid"><div class="toolbar modern-toolbar" id="tesztek"><input aria-label="Keresés a tesztek között" autocomplete="off" class="search" id="search" placeholder="Keress tantárgyra, témára vagy kulcsszóra…" type="search"/><div class="extra-filters"><label>Évfolyam <select aria-label="Évfolyam szerinti szűrés" id="grade-filter"><option value="">Mindegyik</option><option value="5-8">5–8. osztály</option><option value="9-12">9–12. osztály</option><option value="erettsegi">Érettségi</option><option value="nem-jelolt">Még nincs besorolva</option></select></label>
-<label>Nehézség <select aria-label="Nehézségi szint szerinti szűrés" id="difficulty-filter"><option value="">Mindegyik</option><option value="kezdo">Kezdő</option><option value="kezdo-kozep">Kezdő–középhaladó</option><option value="kozep">Középhaladó</option><option value="nem-jelolt">Nincs megadva</option></select></label>
-<label class="favorite-only"><input id="favorites-only" type="checkbox"/> ★ Csak kedvencek</label>
-<button class="reset-filters" id="reset-filters" type="button">Szűrők törlése</button></div><section aria-label="Témakörök szűrése" class="topic-filters"><div class="topic-filter-title">Témakörök szűrése</div><div aria-label="Témakör szűrők" class="chips" id="chips"></div><details class="topic-overflow" id="topic-overflow"><summary>További témakörök</summary><div aria-label="További témakörök" class="chips overflow-chips" id="overflow-chips"></div></details></section></div></div></div>
-<main class="wrap">
-<section class="topic" data-topic="Python – alapok" id="topic-0"><div class="section-head"><div><h2>🐍 Python – alapok</h2><p>Az első lépések: alapfogalmak, eljárások és függvények.</p></div><span class="count">3 teszt</span></div><div class="test-grid"><div class="card-wrap"><a class="test-card" data-difficulty="kezdo" data-grade="nem-jelolt" href="python_alapok_teszt_google_sheets.html"><span class="card-title"><span class="card-icon">🐍</span><strong>Python alapok teszt</strong></span><span class="card-desc">Google Sheets kapcsolattal, hibavisszajelzéssel</span><span class="tag">Google Sheets · Hibavisszajelzés</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python alapok teszt" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div><div class="card-wrap"><a class="test-card" data-difficulty="kezdo" data-grade="nem-jelolt" href="python_fuggvenyek_eljarasok_onjavito_teszt.html"><span class="card-title"><span class="card-icon">🐍</span><strong>Python függvények, eljárások alapok</strong></span><span class="card-desc">Önjavító teszt hibavisszajelzéssel</span><span class="tag">Önjavító</span><span class="card-meta">Önjavító</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python függvények, eljárások alapok" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div><div class="card-wrap"><a class="test-card" data-difficulty="kezdo" data-grade="nem-jelolt" href="python_eljarasok_onjavito_teszt.html"><span class="card-title"><span class="card-icon">🐍</span><strong>Python eljárások (és függvények) – alapok</strong></span><span class="card-desc">Eljárások gyakorlása</span><span class="tag">Önjavító</span><span class="card-meta">Önjavító</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python eljárások (és függvények) – alapok" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div></div></section>
-<section class="topic" data-topic="Python – gyakorló kvízek" id="topic-1"><div class="section-head"><div><h2>🧠 Python – gyakorló kvízek</h2><p>Érettségi stílusú feladatok, eredménytárolással.</p></div><span class="count">3 teszt</span></div><div class="test-grid"><div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="erettsegi" href="python_fuggvenygyakorló_erettsegi_kviz_kodos.html"><span class="card-title"><span class="card-icon">🧠</span><strong>Python gyakorló (függvényes) kvíz</strong></span><span class="card-desc">Kóddal védett teszt (kód: alma). Témák: range, listák, enumerate, zip, szövegkezelés.</span><span class="tag">Kóddal védett · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python gyakorló (függvényes) kvíz" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div><div class="card-wrap"><a class="test-card" data-difficulty="kezdo-kozep" data-grade="erettsegi" href="python_erettsegi_kviz_kezdo_kozephalado.html"><span class="card-title"><span class="card-icon">🧠</span><strong>Python kvíz – kezdő és középhaladó</strong></span><span class="card-desc">Kóddal védett teszt (kód: alma). Ciklusok, elágazások, algoritmusok.</span><span class="tag">Kóddal védett · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python kvíz – kezdő és középhaladó" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div><div class="card-wrap"><a class="test-card" data-difficulty="kozep" data-grade="erettsegi" href="python_erettsegi_kviz_kozephalado_korai%20verzio.html"><span class="card-title"><span class="card-icon">🧠</span><strong>Python kvíz középhaladóknak</strong></span><span class="card-desc">Komplex, többlépéses feladatok (kód: alma).</span><span class="tag">Középhaladó</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python kvíz középhaladóknak" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div></div></section>
-<section class="topic" data-topic="Érettségi" id="topic-2"><div class="section-head"><div><h2>🎓 Érettségi</h2><p>Felkészülés a vizsgára.</p></div><span class="count">1 teszt</span></div><div class="test-grid"><div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="erettsegi" href="erettsegire_keszules_jav.html"><span class="card-title"><span class="card-icon">🎓</span><strong>Érettségire készülés</strong></span><span class="card-desc">Gyakorlófeladatok az érettségire.</span><span class="tag">Érettségi</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Érettségire készülés" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div></div></section>
-<section class="topic" data-topic="Gépírás" id="topic-3"><div class="section-head"><div><h2>⌨️ Gépírás</h2><p>Gyakorlás időméréssel és hibaszámlálással.</p></div><span class="count">1 teszt</span></div><div class="test-grid"><div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="nem-jelolt" href="https://blankagyorffi.github.io/gepiras/"><span class="card-title"><span class="card-icon">⌨️</span><strong>Gépírás gyakorlatok visszajelzéssel</strong></span><span class="card-desc">Eredmények tárolásával, idő- és hibaszámlálással.</span><span class="tag">Időmérés · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Gépírás gyakorlatok visszajelzéssel" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div></div></section>
-<section class="topic" data-topic="Egyéb" id="topic-4"><div class="section-head"><div><h2>📁 Egyéb</h2><p>További tesztek és tananyagok.</p></div><span class="count">2 teszt</span></div><div class="test-grid"><div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="nem-jelolt" href="masik_teszt.html"><span class="card-title"><span class="card-icon">📁</span><strong>Másik teszt</strong></span><span class="card-desc">Google Sheets kapcsolattal, hibavisszajelzéssel.</span><span class="tag">Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Másik teszt" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div><div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="5-8" href="digikult_5_kviz.html"><span class="card-title"><span class="card-icon">📁</span><strong>5. osztályos Kvíz 1</strong></span><span class="card-desc">Digitális kultúra: operációs rendszer, fájlok, képernyőkép, levelezés. 30 kérdés.</span><span class="tag">5. osztály · Gyakorlás</span><span class="card-meta">30 kérdés</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: 5. osztályos Kvíz 1" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button></div></div></section>
-<p class="empty" id="empty" role="status">Nincs találat a keresésre.</p></main>
-<div class="wrap levels-bottom"><div aria-label="Tanulási szintek" class="levels" id="evfolyamok"><div class="level"><strong>🎒 5–8. osztály</strong><span>Általános iskolai gyakorlás</span></div><div class="level"><strong>📘 9–12. osztály</strong><span>Középiskolai felkészülés</span></div><div class="level"><strong>🎓 Érettségi</strong><span>Vizsgafelkészítő feladatok</span></div></div></div>
-<div class="back-top-wrap"><a class="back-top" href="#top">↑ Vissza az elejére</a></div>
-<footer>© <span id="year"></span> SuliTesztek · Tanulj. Gyakorolj. Fejlődj.</footer>
-<script>
+body:not(.high-contrast) .card-wrap.recently-opened .test-card {
+background:#D8DEE1!important;
+border-color:#899BA4!important
+}
+body:not(.high-contrast) .test-card strong,body:not(.high-contrast) .card-desc,body:not(.high-contrast) .card-arrow {
+color:#20324B!important
+}
+</style>
+    </head>
+    <body>
+        <header>
+            <div class="wrap nav">
+                <div class="header-brand-group"><img alt="SuliTesztek logó" class="header-mark" src="logo.png"/>
+                    <div class="brandtext"><a aria-label="SuliTesztek kezdőlap" class="logo" href="#top"><span class="nav-brand">Suli<span class="color">Tesztek</span></span></a><span aria-label="Klébi" class="klebi">Klébi<span aria-hidden="true" class="klebi-star">✦</span></span>
+                        <div class="brand-motto">Tanulj. Gyakorolj. Fejlődj.
+                        </div>
+                    </div>
+                </div>
+                <nav aria-label="Fő navigáció"><a href="#tesztek">Tesztek</a><a href="#evfolyamok">Évfolyamok</a><a href="#topic-2">Érettségi</a>
+                </nav>
+                <div aria-label="Megjelenítési beállítások" class="access-tools" role="group"><button aria-pressed="false" id="contrast-toggle" title="Kontrasztos megjelenítés" type="button">◐ Kontraszt</button><button aria-pressed="false" id="font-toggle" title="Nagyobb betűméret" type="button">A+ Betűméret</button>
+                </div>
+                <div class="clock">
+                    <div id="clock-time">
+                    </div>
+                    <div id="clock-date">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="hero" id="top">
+            <div class="wrap hero-grid modern-hero-grid">
+                <div class="toolbar modern-toolbar" id="tesztek"><input aria-label="Keresés a tesztek között" autocomplete="off" class="search" id="search" placeholder="Keress tantárgyra, témára vagy kulcsszóra…" type="search"/>
+                    <div class="extra-filters"><label>Évfolyam <select aria-label="Évfolyam szerinti szűrés" id="grade-filter"><option value="">Mindegyik</option><option value="5-8">5–8. osztály</option><option value="9-12">9–12. osztály</option><option value="erettsegi">Érettségi</option><option value="nem-jelolt">Még nincs besorolva</option></select></label>
+                        <label>Nehézség <select aria-label="Nehézségi szint szerinti szűrés" id="difficulty-filter"><option value="">Mindegyik</option><option value="kezdo">Kezdő</option><option value="kezdo-kozep">Kezdő–középhaladó</option><option value="kozep">Középhaladó</option><option value="nem-jelolt">Nincs megadva</option></select></label>
+                        <label class="favorite-only"><input id="favorites-only" type="checkbox"/> ★ Csak kedvencek</label>
+                        <button class="reset-filters" id="reset-filters" type="button">Szűrők törlése</button>
+                    </div>
+                    <section aria-label="Témakörök szűrése" class="topic-filters">
+                        <div class="topic-filter-title">Témakörök szűrése
+                        </div>
+                        <div aria-label="Témakör szűrők" class="chips" id="chips">
+                        </div>
+                        <details class="topic-overflow" id="topic-overflow">
+                            <summary>További témakörök
+                            </summary>
+                            <div aria-label="További témakörök" class="chips overflow-chips" id="overflow-chips">
+                            </div>
+                        </details>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <main class="wrap">
+            <section class="topic" data-topic="Python – alapok" id="topic-0">
+                <div class="section-head">
+                    <div><h2>🐍 Python – alapok</h2><p>Az első lépések: alapfogalmak, eljárások és függvények.</p>
+                    </div><span class="count">3 teszt</span>
+                </div>
+                <div class="test-grid">
+                    <div class="card-wrap"><a class="test-card" data-difficulty="kezdo" data-grade="nem-jelolt" href="python_alapok_teszt_google_sheets.html"><span class="card-title"><span class="card-icon">🐍</span><strong>Python alapok teszt</strong></span><span class="card-desc">Google Sheets kapcsolattal, hibavisszajelzéssel</span><span class="tag">Google Sheets · Hibavisszajelzés</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python alapok teszt" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                    <div class="card-wrap"><a class="test-card" data-difficulty="kezdo" data-grade="nem-jelolt" href="python_fuggvenyek_eljarasok_onjavito_teszt.html"><span class="card-title"><span class="card-icon">🐍</span><strong>Python függvények, eljárások alapok</strong></span><span class="card-desc">Önjavító teszt hibavisszajelzéssel</span><span class="tag">Önjavító</span><span class="card-meta">Önjavító</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python függvények, eljárások alapok" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                    <div class="card-wrap"><a class="test-card" data-difficulty="kezdo" data-grade="nem-jelolt" href="python_eljarasok_onjavito_teszt.html"><span class="card-title"><span class="card-icon">🐍</span><strong>Python eljárások (és függvények) – alapok</strong></span><span class="card-desc">Eljárások gyakorlása</span><span class="tag">Önjavító</span><span class="card-meta">Önjavító</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python eljárások (és függvények) – alapok" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                </div>
+            </section>
+            <section class="topic" data-topic="Python – gyakorló kvízek" id="topic-1">
+                <div class="section-head">
+                    <div><h2>🧠 Python – gyakorló kvízek</h2><p>Érettségi stílusú feladatok, eredménytárolással.</p>
+                    </div><span class="count">3 teszt</span>
+                </div>
+                <div class="test-grid">
+                    <div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="erettsegi" href="python_fuggvenygyakorló_erettsegi_kviz_kodos.html"><span class="card-title"><span class="card-icon">🧠</span><strong>Python gyakorló (függvényes) kvíz</strong></span><span class="card-desc">Kóddal védett teszt (kód: alma). Témák: range, listák, enumerate, zip, szövegkezelés.</span><span class="tag">Kóddal védett · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python gyakorló (függvényes) kvíz" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                    <div class="card-wrap"><a class="test-card" data-difficulty="kezdo-kozep" data-grade="erettsegi" href="python_erettsegi_kviz_kezdo_kozephalado.html"><span class="card-title"><span class="card-icon">🧠</span><strong>Python kvíz – kezdő és középhaladó</strong></span><span class="card-desc">Kóddal védett teszt (kód: alma). Ciklusok, elágazások, algoritmusok.</span><span class="tag">Kóddal védett · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python kvíz – kezdő és középhaladó" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                    <div class="card-wrap"><a class="test-card" data-difficulty="kozep" data-grade="erettsegi" href="python_erettsegi_kviz_kozephalado_korai%20verzio.html"><span class="card-title"><span class="card-icon">🧠</span><strong>Python kvíz középhaladóknak</strong></span><span class="card-desc">Komplex, többlépéses feladatok (kód: alma).</span><span class="tag">Középhaladó</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Python kvíz középhaladóknak" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                </div>
+            </section>
+            <section class="topic" data-topic="Érettségi" id="topic-2">
+                <div class="section-head">
+                    <div><h2>🎓 Érettségi</h2><p>Felkészülés a vizsgára.</p>
+                    </div><span class="count">1 teszt</span>
+                </div>
+                <div class="test-grid">
+                    <div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="erettsegi" href="erettsegire_keszules_jav.html"><span class="card-title"><span class="card-icon">🎓</span><strong>Érettségire készülés</strong></span><span class="card-desc">Gyakorlófeladatok az érettségire.</span><span class="tag">Érettségi</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Érettségire készülés" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                </div>
+            </section>
+            <section class="topic" data-topic="Gépírás" id="topic-3">
+                <div class="section-head">
+                    <div><h2>⌨️ Gépírás</h2>
+                        <p>Gyakorlás időméréssel és hibaszámlálással.</p>
+                    </div><span class="count">1 teszt</span>
+                </div>
+                <div class="test-grid">
+                    <div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="nem-jelolt" href="https://blankagyorffi.github.io/gepiras/">
+                        <span class="card-title"><span class="card-icon">⌨️</span><strong>Gépírás gyakorlatok visszajelzéssel</strong></span><span class="card-desc">Eredmények tárolásával, idő- és hibaszámlálással.</span><span class="tag">Időmérés · Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Gépírás gyakorlatok visszajelzéssel" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                </div>
+            </section>
+            <section class="topic" data-topic="Egyéb" id="topic-4">
+                <div class="section-head">
+                    <div><h2>📁 Egyéb</h2><p>További tesztek és tananyagok.</p>
+                    </div>
+                    <span class="count">2 teszt</span>
+                </div>
+                <div class="test-grid">
+                    <div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="nem-jelolt" href="masik_teszt.html">
+                        <span class="card-title"><span class="card-icon">📁</span><strong>Másik teszt</strong></span><span class="card-desc">Google Sheets kapcsolattal, hibavisszajelzéssel.</span><span class="tag">Google Sheets</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: Másik teszt" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                    <div class="card-wrap"><a class="test-card" data-difficulty="nem-jelolt" data-grade="5-8" href="digikult_5_kviz.html"><span class="card-title"><span class="card-icon">📁</span><strong>5. osztályos Kvíz 1</strong></span><span class="card-desc">Digitális kultúra: operációs rendszer, fájlok, képernyőkép, levelezés. 30 kérdés.</span><span class="tag">5. osztály · Gyakorlás</span><span class="card-meta">30 kérdés</span><span class="card-arrow">Teszt megnyitása →</span></a><button aria-label="Kedvencekhez adás: 5. osztályos Kvíz 1" aria-pressed="false" class="favorite" title="Kedvencekhez adás" type="button">☆</button>
+                    </div>
+                </div>
+            </section>
+            <p class="empty" id="empty" role="status">Nincs találat a keresésre.</p>
+        </main>
+        <div class="wrap levels-bottom">
+            <div aria-label="Tanulási szintek" class="levels" id="evfolyamok">
+                <div class="level"><strong>🎒 5–8. osztály</strong><span>Általános iskolai gyakorlás</span>
+                </div>
+                <div class="level"><strong>📘 9–12. osztály</strong><span>Középiskolai felkészülés</span>
+                </div>
+                <div class="level"><strong>🎓 Érettségi</strong><span>Vizsgafelkészítő feladatok</span>
+                </div>
+            </div>
+        </div>
+        <div class="back-top-wrap"><a class="back-top" href="#top">↑ Vissza az elejére</a>
+        </div>
+        <footer>© <span id="year"></span> SuliTesztek · Tanulj. Gyakorolj. Fejlődj.
+        </footer>
+        <script>
 const TZ='Europe/Budapest';
 const timeFmt=new Intl.DateTimeFormat('hu-HU',{timeZone:TZ,hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
 const dateFmt=new Intl.DateTimeFormat('hu-HU',{timeZone:TZ,year:'numeric',month:'long',day:'numeric',weekday:'long'});
@@ -409,14 +2074,13 @@ const overflowBox=document.getElementById('overflow-chips');
 const overflowDetails=document.getElementById('topic-overflow');
 const topicButtons=[...chipsBox.children];
 if(topicButtons.length>7){
- const usageKey='sulitesztek-topic-usage-v1';let usage={};
- try{usage=JSON.parse(localStorage.getItem(usageKey)||'{}')||{}}catch(e){}
- const all=topicButtons.slice(1).sort((a,b)=>(usage[b.textContent]||0)-(usage[a.textContent]||0));
- chipsBox.replaceChildren(topicButtons[0],...all.slice(0,5));
- all.slice(5).forEach(b=>overflowBox.appendChild(b));
- overflowDetails.hidden=false;
+const usageKey='sulitesztek-topic-usage-v1';let usage={};
+try{usage=JSON.parse(localStorage.getItem(usageKey)||'{}')||{}}catch(e){}
+const all=topicButtons.slice(1).sort((a,b)=>(usage[b.textContent]||0)-(usage[a.textContent]||0));
+chipsBox.replaceChildren(topicButtons[0],...all.slice(0,5));
+all.slice(5).forEach(b=>overflowBox.appendChild(b));
+overflowDetails.hidden=false;
 }else{overflowDetails.hidden=true;}
-
 const gradeFilter=document.getElementById('grade-filter');
 const difficultyFilter=document.getElementById('difficulty-filter');
 const favoritesOnly=document.getElementById('favorites-only');
@@ -424,91 +2088,91 @@ const favoritesKey='sulitesztek-favorites-v1';
 let favorites=[];
 try {const value=JSON.parse(localStorage.getItem(favoritesKey)||'[]');favorites=Array.isArray(value)?value:[]}catch(e){}
 document.querySelectorAll('.card-wrap').forEach(wrap=>{
- const card=wrap.querySelector('.test-card'),button=wrap.querySelector('.favorite');
- const url=card.getAttribute('href');
- function updateFavorite(){const on=favorites.includes(url);button.textContent=on?'★':'☆';button.setAttribute('aria-pressed',String(on));button.setAttribute('aria-label',(on?'Eltávolítás a kedvencekből: ':'Kedvencekhez adás: ')+card.querySelector('strong').textContent)}
- updateFavorite();
- button.addEventListener('click',()=>{
-  favorites=favorites.includes(url)?favorites.filter(v=>v!==url):[...favorites,url];
-  try{localStorage.setItem(favoritesKey,JSON.stringify(favorites))}catch(e){}
-  updateFavorite();apply();
- });
+const card=wrap.querySelector('.test-card'),button=wrap.querySelector('.favorite');
+const url=card.getAttribute('href');
+function updateFavorite(){const on=favorites.includes(url);button.textContent=on?'★':'☆';button.setAttribute('aria-pressed',String(on));button.setAttribute('aria-label',(on?'Eltávolítás a kedvencekből: ':'Kedvencekhez adás: ')+card.querySelector('strong').textContent)}
+updateFavorite();
+button.addEventListener('click',()=>{
+favorites=favorites.includes(url)?favorites.filter(v=>v!==url):[...favorites,url];
+try{localStorage.setItem(favoritesKey,JSON.stringify(favorites))}catch(e){}
+updateFavorite();apply();
+});
 });
 function apply(){
- const q=search.value.trim().toLocaleLowerCase('hu-HU');
- let any=false;
- sections.forEach(s=>{
-  let visible=0;
-  s.querySelectorAll('.card-wrap').forEach(wrap=>{
-   const card=wrap.querySelector('.test-card');
-   const matchText=!q||card.textContent.toLocaleLowerCase('hu-HU').includes(q);
-   const matchGrade=!gradeFilter.value||card.dataset.grade===gradeFilter.value;
-   const matchDifficulty=!difficultyFilter.value||card.dataset.difficulty===difficultyFilter.value;
-   const matchFavorite=!favoritesOnly.checked||favorites.includes(card.getAttribute('href'));
-   const show=matchText&&matchGrade&&matchDifficulty&&matchFavorite;
-   wrap.hidden=!show;if(show)visible++;
-  });
-  const show=(!activeTopic||s.dataset.topic===activeTopic)&&visible>0;
-  s.hidden=!show;if(show)any=true;
- });
- empty.style.display=any?'none':'block';
+const q=search.value.trim().toLocaleLowerCase('hu-HU');
+let any=false;
+sections.forEach(s=>{
+let visible=0;
+s.querySelectorAll('.card-wrap').forEach(wrap=>{
+const card=wrap.querySelector('.test-card');
+const matchText=!q||card.textContent.toLocaleLowerCase('hu-HU').includes(q);
+const matchGrade=!gradeFilter.value||card.dataset.grade===gradeFilter.value;
+const matchDifficulty=!difficultyFilter.value||card.dataset.difficulty===difficultyFilter.value;
+const matchFavorite=!favoritesOnly.checked||favorites.includes(card.getAttribute('href'));
+const show=matchText&&matchGrade&&matchDifficulty&&matchFavorite;
+wrap.hidden=!show;if(show)visible++;
+});
+const show=(!activeTopic||s.dataset.topic===activeTopic)&&visible>0;
+s.hidden=!show;if(show)any=true;
+});
+empty.style.display=any?'none':'block';
 }
 gradeFilter.addEventListener('change',apply);
 difficultyFilter.addEventListener('change',apply);
 favoritesOnly.addEventListener('change',apply);
 document.getElementById('reset-filters').addEventListener('click',()=>{
- search.value='';gradeFilter.value='';difficultyFilter.value='';favoritesOnly.checked=false;
- activeTopic='';document.querySelectorAll('.topic-filters .chip').forEach(c=>{const isAll=c.textContent==='Mind';c.classList.toggle('active',isAll);c.setAttribute('aria-pressed',String(isAll))});
- apply();
+search.value='';gradeFilter.value='';difficultyFilter.value='';favoritesOnly.checked=false;
+activeTopic='';document.querySelectorAll('.topic-filters .chip').forEach(c=>{const isAll=c.textContent==='Mind';c.classList.toggle('active',isAll);c.setAttribute('aria-pressed',String(isAll))});
+apply();
 });
 search.addEventListener('input',apply);
-
 (function(){
- const keys=[['contrast-toggle','high-contrast','sulitesztek-contrast'],['font-toggle','large-text','sulitesztek-large-text']];
- keys.forEach(([id,cls,key])=>{
-   const button=document.getElementById(id);
-   let saved=false;
-   try{saved=localStorage.getItem(key)==='true'}catch(e){}
-   document.body.classList.toggle(cls,saved);
-   button.setAttribute('aria-pressed',String(saved));
-   button.addEventListener('click',()=>{
-     const on=document.body.classList.toggle(cls);
-     button.setAttribute('aria-pressed',String(on));
-     try{localStorage.setItem(key,String(on))}catch(e){}
-   });
- });
+const keys=[['contrast-toggle','high-contrast','sulitesztek-contrast'],['font-toggle','large-text','sulitesztek-large-text']];
+keys.forEach(([id,cls,key])=>{
+const button=document.getElementById(id);
+let saved=false;
+try{saved=localStorage.getItem(key)==='true'}catch(e){}
+document.body.classList.toggle(cls,saved);
+button.setAttribute('aria-pressed',String(saved));
+button.addEventListener('click',()=>{
+const on=document.body.classList.toggle(cls);
+button.setAttribute('aria-pressed',String(on));
+try{localStorage.setItem(key,String(on))}catch(e){}
+});
+});
 })();
-
 // Az utolsó megnyitás ideje helyben tárolódik; egy óra után a jelölés eltűnik.
 (function(){
- const storageKey='sulitesztek-recent-open-v1';
- const hour=60*60*1000;
- let history={};
- try{const stored=JSON.parse(localStorage.getItem(storageKey)||'{}');if(stored&&typeof stored==='object'&&!Array.isArray(stored))history=stored}catch(e){}
- const cards=[...document.querySelectorAll('.card-wrap')];
- function save(){try{localStorage.setItem(storageKey,JSON.stringify(history))}catch(e){}}
- function update(){
-  const now=Date.now();let changed=false;
-  for(const [url,time] of Object.entries(history)){
-   if(typeof time!=='number'||time>now||now-time>=hour){delete history[url];changed=true}
-  }
-  cards.forEach(wrap=>{
-   const card=wrap.querySelector('.test-card');const url=card.getAttribute('href');
-   const recent=Object.prototype.hasOwnProperty.call(history,url);
-   wrap.classList.toggle('recently-opened',recent);
-   let label=card.querySelector('.recent-label');
-   if(recent&&!label){label=document.createElement('span');label.className='recent-label';label.textContent='◷ Nemrég megnyitva';card.insertBefore(label,card.querySelector('.card-arrow'))}
-   if(!recent&&label)label.remove();
-  });
-  if(changed)save();
- }
- cards.forEach(wrap=>{
-  const card=wrap.querySelector('.test-card');
-  card.addEventListener('click',()=>{history[card.getAttribute('href')]=Date.now();save();update()});
- });
- window.addEventListener('pageshow',update);
- document.addEventListener('visibilitychange',()=>{if(!document.hidden)update()});
- window.setInterval(update,60000);
- update();
+const storageKey='sulitesztek-recent-open-v1';
+const hour=60*60*1000;
+let history={};
+try{const stored=JSON.parse(localStorage.getItem(storageKey)||'{}');if(stored&&typeof stored==='object'&&!Array.isArray(stored))history=stored}catch(e){}
+const cards=[...document.querySelectorAll('.card-wrap')];
+function save(){try{localStorage.setItem(storageKey,JSON.stringify(history))}catch(e){}}
+function update(){
+const now=Date.now();let changed=false;
+for(const [url,time] of Object.entries(history)){
+if(typeof time!=='number'||time>now||now-time>=hour){delete history[url];changed=true}
+}
+cards.forEach(wrap=>{
+const card=wrap.querySelector('.test-card');const url=card.getAttribute('href');
+const recent=Object.prototype.hasOwnProperty.call(history,url);
+wrap.classList.toggle('recently-opened',recent);
+let label=card.querySelector('.recent-label');
+if(recent&&!label){label=document.createElement('span');label.className='recent-label';label.textContent='◷ Nemrég megnyitva';card.insertBefore(label,card.querySelector('.card-arrow'))}
+if(!recent&&label)label.remove();
+});
+if(changed)save();
+}
+cards.forEach(wrap=>{
+const card=wrap.querySelector('.test-card');
+card.addEventListener('click',()=>{history[card.getAttribute('href')]=Date.now();save();update()});
+});
+window.addEventListener('pageshow',update);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)update()});
+window.setInterval(update,60000);
+update();
 })();
-</script></body></html>
+</script>
+    </body>
+</html>
