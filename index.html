@@ -368,6 +368,16 @@ body.high-contrast .modern-toolbar,body.high-contrast header{background:#fff!imp
 body.high-contrast .hero{background:#dce5f4!important}
 body.high-contrast .topic-filters .chip{background:#fff!important;color:#06183a!important;border:2px solid #06183a!important}
 body.high-contrast .topic-filters .chip.active{background:#06183a!important;color:#fff!important}
+
+/* Világos, de nem fehér tesztkártyák; a háttér színei változatlanok. */
+body:not(.high-contrast) .topic:nth-of-type(5n + 1) .test-card{background:#ECF4F4!important;border-color:#B6CDD0!important}
+body:not(.high-contrast) .topic:nth-of-type(5n + 2) .test-card{background:#EDF5EE!important;border-color:#BDD3C4!important}
+body:not(.high-contrast) .topic:nth-of-type(5n + 3) .test-card{background:#F6F0E7!important;border-color:#D8C8B5!important}
+body:not(.high-contrast) .topic:nth-of-type(5n + 4) .test-card{background:#F1EFF7!important;border-color:#CBC6DC!important}
+body:not(.high-contrast) .topic:nth-of-type(5n + 5) .test-card{background:#EAF3F1!important;border-color:#B6D0C9!important}
+/* A megnyitott kártya szürkés jelzése maradjon jól megkülönböztethető. */
+body:not(.high-contrast) .card-wrap.recently-opened .test-card{background:#D8DEE1!important;border-color:#899BA4!important}
+body:not(.high-contrast) .test-card strong,body:not(.high-contrast) .card-desc,body:not(.high-contrast) .card-arrow{color:#20324B!important}
 </style></head>
 <body>
 <header><div class="wrap nav"><div class="header-brand-group"><img alt="SuliTesztek logó" class="header-mark" src="logo.png"/><div class="brandtext"><a aria-label="SuliTesztek kezdőlap" class="logo" href="#top"><span class="nav-brand">Suli<span class="color">Tesztek</span></span></a><span aria-label="Klébi" class="klebi">Klébi<span aria-hidden="true" class="klebi-star">✦</span></span><div class="brand-motto">Tanulj. Gyakorolj. Fejlődj.</div></div></div><nav aria-label="Fő navigáció"><a href="#tesztek">Tesztek</a><a href="#evfolyamok">Évfolyamok</a><a href="#topic-2">Érettségi</a></nav><div aria-label="Megjelenítési beállítások" class="access-tools" role="group"><button aria-pressed="false" id="contrast-toggle" title="Kontrasztos megjelenítés" type="button">◐ Kontraszt</button><button aria-pressed="false" id="font-toggle" title="Nagyobb betűméret" type="button">A+ Betűméret</button></div><div class="clock"><div id="clock-time"></div><div id="clock-date"></div></div></div></header>
